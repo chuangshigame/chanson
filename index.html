@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>济宁孔子学校 - BETA0.1 长夜微光</title>
+    <title>孔子学校模拟器</title>
     <style>
         :root {
             --bg-body: #0f172a; --panel-bg: rgba(255, 255, 255, 0.96);
@@ -141,15 +141,12 @@
         .b-s-desc { font-size: 0.7rem; color: #bef264; }
 
         /* 学生模式 */
-        #student-container { display: none; width: 100%; max-width: 1400px; background: rgba(255,255,255,0.95); border-radius: 12px; padding: 12px; margin: 0 auto; box-shadow: var(--shadow); }
-        .stu-grid { display: grid; grid-template-columns: 200px 1fr 160px; gap: 8px; align-items: start; }
-        .stu-act-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
-        .stu-act-btn { padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 5px; background: #fff; font-size: 0.7rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; transition:0.15s; text-align:left; line-height: 1.2; width: 100%; box-sizing: border-box; }
-        .stu-act-btn:hover { border-color: var(--primary); background: #eff6ff; }
-        .stu-act-btn .stu-icon { font-size: 1rem; flex-shrink: 0; }
-        .stu-act-btn b { font-size: 0.68rem; display:block; }
-        .stu-act-btn .btn-sub { font-size: 0.58rem; color:#64748b; font-weight:normal; display:block; }
-        .stu-stat-box { background: #1e293b; color: white; padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; }
+        #student-container { display: none; width: 100%; max-width: 1400px; background: rgba(255,255,255,0.95); border-radius: 12px; padding: 20px; margin: 0 auto; box-shadow: var(--shadow); }
+        .stu-grid { display: grid; grid-template-columns: 320px 1fr 340px; gap: 20px; }
+        .stu-act-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .stu-act-btn { padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; background: #fff; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px; transition:0.2s; text-align:left; }
+        .stu-act-btn:hover { border-color: var(--primary); background: #eff6ff; transform:scale(1.02); }
+        .stu-stat-box { background: #1e293b; color: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
         .exam-board { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 3px solid #047857; }
         
         .friend-card { background: #f8fafc; border: 1px solid #cbd5e1; padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap:wrap; gap:5px; }
@@ -159,69 +156,19 @@
         .family-card:hover { border-color: var(--primary); background: #eff6ff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .family-card.selected { border-color: var(--primary); background: #eff6ff; box-shadow: 0 0 0 3px rgba(37,99,235,0.2); }
 
-        .crush-card { background: #fff; border: 1px solid #fbcfe8; border-radius: 5px; padding: 5px; margin-bottom: 4px; display:flex; flex-direction:column; position:relative; overflow:hidden; font-size:0.72rem;}
-        .crush-head { display:flex; gap:4px; align-items:center; margin-bottom:4px; }
-        .crush-img { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #f9a8d4; object-fit: cover; background: #fdf2f8; flex-shrink:0; cursor:pointer; transition:0.2s; }
-        .crush-img:hover { transform: scale(1.1); }
-        .crush-info h4 { margin:0; color:#be185d; font-size:0.72rem;}
-        .crush-info p { margin:0; font-size:0.6rem; color:#64748b;}
-        .crush-bar-bg { background:#f1f5f9; height:5px; border-radius:3px; overflow:hidden; margin-bottom:5px; }
+        /* 恋爱卡片 */
+        .crush-card { background: #fff; border: 2px solid #fbcfe8; border-radius: 8px; padding: 10px; margin-bottom: 10px; display:flex; flex-direction:column; position:relative; overflow:hidden;}
+        .crush-head { display:flex; gap:10px; align-items:center; margin-bottom:10px; }
+        .crush-img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #f9a8d4; object-fit: cover; background: #fdf2f8; flex-shrink:0; cursor:pointer; transition:0.2s; }
+        .crush-img:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(249,168,212,0.5); }
+        .crush-info h4 { margin:0 0 2px 0; color:#be185d; font-size:1rem;}
+        .crush-info p { margin:0; font-size:0.7rem; color:#64748b;}
+        .crush-bar-bg { background:#f1f5f9; height:8px; border-radius:4px; overflow:hidden; margin-bottom:8px; border:1px solid #cbd5e1;}
         .crush-bar-fill { background:linear-gradient(90deg, #f472b6, #db2777); height:100%; transition: width 0.3s;}
-        .crush-actions { display:grid; grid-template-columns:1fr 1fr; gap:3px; }
-        .crush-dialog { background:#fdf2f8; padding:5px; border-radius:4px; font-size:0.65rem; color:#be185d; font-style:italic; margin-bottom:5px; display:none; border-left:2px solid #f472b6;}
+        .crush-actions { display:grid; grid-template-columns:1fr 1fr; gap:5px; }
+        .crush-dialog { background:#fdf2f8; padding:8px; border-radius:6px; font-size:0.75rem; color:#be185d; font-style:italic; margin-bottom:8px; display:none; border-left:3px solid #f472b6;}
 
-        /* ===== 终末之诗 ===== */
-        #end-poem-overlay {
-            display: none;
-            position: fixed; inset: 0;
-            background: #000;
-            z-index: 9999;
-            overflow: hidden;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-        #end-poem-track {
-            position: absolute;
-            left: 0; right: 0;
-            /* start: first line just off the bottom of screen */
-            top: 100vh;
-            padding: 0 clamp(16px, 6vw, 80px) 30vh;
-            box-sizing: border-box;
-            text-align: center;
-        }
-        #end-poem-overlay.scrolling #end-poem-track {
-            animation: poemRise var(--poem-dur, 110s) linear forwards;
-        }
-        @keyframes poemRise {
-            from { transform: translateY(0); }
-            to   { transform: translateY(calc(-100% - 100vh)); }
-        }
-        .poem-line {
-            display: block;
-            color: #d1d5db;
-            font-size: clamp(1.05rem, 3.2vw, 1.25rem);
-            line-height: 1.9;
-            font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
-            margin: 0;
-        }
-        .poem-line.dim    { color: #4b5563; font-size: clamp(0.9rem, 2.6vw, 1.05rem); }
-        .poem-line.gold   { color: #fde047; font-weight: 700; font-size: clamp(1.1rem, 3.5vw, 1.35rem); }
-        .poem-line.big    { color: #ffffff; font-weight: 900; font-size: clamp(1.3rem, 4.5vw, 1.7rem); letter-spacing: 4px; line-height: 2.2; }
-        .poem-line.small  { color: #374151; font-size: clamp(0.78rem, 2.2vw, 0.9rem); line-height: 1.8; }
-        .poem-line.italic { color: #c4cdd8; font-style: italic; font-size: clamp(1rem, 3vw, 1.2rem); }
-        .poem-line.quote  {
-            color: #f9a8d4; font-style: italic;
-            font-size: clamp(1rem, 3vw, 1.18rem);
-            border-left: 3px solid #f472b6;
-            padding-left: clamp(12px, 3vw, 20px);
-            text-align: left; display: inline-block;
-            max-width: min(640px, 90vw);
-            line-height: 2;
-            margin: 4px 0;
-        }
-        .poem-spacer { display: block; height: clamp(1.4rem, 4vh, 2.8rem); }
-        .poem-hint   { display: block; color: #1f2937; font-size: clamp(0.72rem, 2vw, 0.82rem); line-height: 1.6; }
-
+        /* 图表 */
         .chart-container { display: flex; align-items: flex-end; justify-content: space-around; height: 180px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px 5px 0 5px; margin: 15px 0; }
         .chart-col { display: flex; flex-direction: column; align-items: center; width: 14%; font-size: 0.7rem; }
         .chart-bar { width: 100%; border-radius: 4px 4px 0 0; transition: 0.5s; display: flex; justify-content: center; align-items:flex-end; color: white; font-weight: bold; padding-top: 5px; font-size: 0.8rem; padding-bottom:2px;}
@@ -244,33 +191,10 @@
 
 <div id="toast-container"></div>
 
-<!-- 背景音乐 -->
-<audio id="bgm" loop style="display:none"></audio>
-
-<!-- ================= 难度选择启动页（独立于modal系统）================= -->
-<div id="diff-screen" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:linear-gradient(135deg,#0f172a,#1e293b); z-index:99999; justify-content:center; align-items:center; flex-direction:column;">
-    <div style="background:rgba(255,255,255,0.97); border-radius:16px; padding:40px 50px; text-align:center; max-width:520px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,0.5);">
-        <div style="font-size:3rem; margin-bottom:10px;">🏫</div>
-        <h1 style="margin:0 0 8px 0; color:#1e293b; font-size:1.8rem;">孔子学校</h1>
-        <p style="color:#64748b; margin:0 0 30px 0; font-size:0.95rem;">请选择游戏难度开始你的办学霸业</p>
-        <div style="display:flex; flex-direction:column; gap:12px;">
-            <button onclick="startGame(0)" style="padding:18px 24px; background:linear-gradient(135deg,#10b981,#059669); color:white; border:none; border-radius:10px; font-size:1.1rem; font-weight:bold; cursor:pointer; transition:0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
-                🌟 简单模式<br><span style="font-size:0.8rem; font-weight:normal; opacity:0.9;">初始资金500万 · 压力×0.4 · 花费×0.6</span>
-            </button>
-            <button onclick="startGame(1)" style="padding:18px 24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); color:white; border:none; border-radius:10px; font-size:1.1rem; font-weight:bold; cursor:pointer; transition:0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
-                ⚔️ 正常模式<br><span style="font-size:0.8rem; font-weight:normal; opacity:0.9;">初始资金100万 · 标准模拟法则</span>
-            </button>
-            <button onclick="startGame(2)" style="padding:18px 24px; background:linear-gradient(135deg,#dc2626,#b91c1c); color:white; border:none; border-radius:10px; font-size:1.1rem; font-weight:bold; cursor:pointer; transition:0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
-                💀 困难模式<br><span style="font-size:0.8rem; font-weight:normal; opacity:0.9;">初始资金50万 · 压力×1.2 · 花费×1.5</span>
-            </button>
-        </div>
-    </div>
-</div>
-
 <!-- ================= 校长模式 ================= -->
-<div class="container" id="principal-container">
+<div class="container" id="principal-container" style="display:none;">
     <div class="header-banner">
-        <h1>孔子学校 - BETA0.1 长夜微光</h1>
+        <h1>孔子学校 V1.0a 彼岸灯火</h1>
         <p style="margin: 5px 0 0 0; font-size: 0.95rem; opacity: 0.9;">By ChansonTech | 大千世界，皆在局中</p>
     </div>
 
@@ -282,7 +206,7 @@
         </div>
         <div style="display:flex; gap: 8px; align-items:center;">
             <span style="font-weight:bold; color:var(--danger); font-size:0.9rem;">⚔️ 联考战绩: <span id="ui-examPoints">0</span>分</span>
-            <button class="sys-btn" style="background:var(--purple); color:white; border:none; padding:8px 15px;" onclick="switchMode('student')">👨‍🎓 学生模式</button>
+            <button class="sys-btn" style="background:var(--purple); color:white; border:none; padding:8px 15px;" onclick="switchMode('student')">👨‍🎓 切换至：学生视角</button>
             <span id="ui-diff-badge" style="font-size:0.8rem; background:#475569; color:white; padding:4px 8px; border-radius:4px; font-weight:bold;">难度: 正常</span>
             <button class="sys-btn" style="background:linear-gradient(135deg,#1e3a5f,#1e40af); color:#93c5fd; border:none;" onclick="showSocialWindow()">🤝 社会关系</button>
             <button class="sys-btn" style="background:linear-gradient(135deg,#064e3b,#065f46); color:#6ee7b7; border:none;" onclick="showMonthlyTargets()">🎯 月度目标</button>
@@ -317,19 +241,17 @@
         </div>
         <button class="btn-main" id="btn-advance" onclick="advanceMonth()">⏳ 推进一个月 (触发事件/联考/收学费)</button>
 
-        <h2 class="panel-title">🧠 战备中枢</h2>
+        <h2 class="panel-title">🧠 战备</h2>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom:15px;">
             <button class="btn" style="background:#ecfdf5; border-color:#10b981;" onclick="openModal('modal-map')">🗺️ 校园基建扩建<span class="btn-desc">3级特技建筑解锁</span></button>
-            <button class="btn" style="background:#fff7ed; border-color:#f97316;" onclick="if(!game||!game.map)return showToast('请先选择难度！');openModal('modal-shop');renderShop('infra')">🛒 特供商店<span class="btn-desc">蓝图·道具·政策速通</span></button>
-            <button class="btn" style="background:#fdf4ff; border-color:#c026d3;" onclick="openModal('modal-rnd')">🔭 装备研发中心<span class="btn-desc">卷·组合技·教学装备</span></button>
             <button class="btn" style="background:#eff6ff; border-color:#3b82f6;" onclick="openModal('modal-experts')">👨‍🏫 寻访顶级名师<span class="btn-desc">40位专家+强力战技</span></button>
-            <button class="btn" style="background:#faf5ff; border-color:#a855f7;" onclick="openScheduleModal()">📅 师资与主科排课<span class="btn-desc">调整你的科目</span></button>
+            <button class="btn" style="background:#faf5ff; border-color:#a855f7;" onclick="openModal('modal-schedule')">📅 师资与主科排课<span class="btn-desc">优化排课</span></button>
             <button class="btn" style="background:#fefce8; border-color:#eab308;" onclick="openModal('modal-policy')">🏫 校策科技树<span class="btn-desc">教研点: <span id="ui-eduPoints" style="font-weight:bold;color:var(--danger)">0</span></span></button>
         </div>
 
-        <h2 class="panel-title">🎯 战术与大势</h2>
+        <h2 class="panel-title">🎯 战术</h2>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-            <button class="btn" onclick="organizeExam()">📝 模拟阅卷出分<span class="btn-desc">耗AP:3, ￥<span id="cost-exam" class="c-val">2</span>万 | 六档分析+教研点</span></button>
+            <button class="btn" onclick="organizeExam()">📝 模拟考<span class="btn-desc">耗AP:3, ￥<span id="cost-exam" class="c-val">2</span>万 | 六档分析+声誉</span></button>
             <button class="btn" onclick="showGaokaoHistory()">📊 历年高考成绩<span class="btn-desc">查看历年成绩柱状图</span></button>
             <button class="btn" onclick="openModal('modal-branches')">🌍 建立全球分校<span class="btn-desc">耗巨资建立霸业分校</span></button>
             <button class="btn" onclick="runAction('sponsor')">🤝 宴请拉赞助<span class="btn-desc">耗AP:4, 降声誉 | 得￥<span id="gain-spo" style="color:var(--success)">100</span>万</span></button>
@@ -338,7 +260,7 @@
     </div>
 
     <div class="panel" style="display: flex; flex-direction: column;">
-        <h2 class="panel-title">📨 独立学生信箱 (实时窃听)</h2>
+        <h2 class="panel-title">📨 学生信箱</h2>
         <div id="student-comments-box" class="mailbox-container"></div>
 
         <h2 class="panel-title">📜 纪事本末</h2>
@@ -409,28 +331,28 @@
         <!-- 中间动作区 -->
         <div style="display:flex; flex-direction:column; height:100%;">
             <h2 style="margin-top:0;">🎯 本月行动 (消耗精力)</h2>
-            <div class="stu-act-grid" style="overflow-y:auto; max-height:480px;">
-                <button class="stu-act-btn" onclick="stuAct('hard_study')"><span class="stu-icon">✍️</span><div><b>狂刷真题熬夜</b><span class="btn-sub">耗能:40|学业++,大增压</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('study')"><span class="stu-icon">📖</span><div><b>认真听讲</b><span class="btn-sub">耗能:25|学业+,压力↑</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('olympiad')"><span class="stu-icon">🔬</span><div><b>死磕奥赛</b><span class="btn-sub">耗能:50|满100保送</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('mun')"><span class="stu-icon">🌍</span><div><b>模拟联合国</b><span class="btn-sub">耗能:50|学业+魅力++</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('work')"><span class="stu-icon">🍔</span><div><b>快餐店打工</b><span class="btn-sub">耗能:30|赚钱耗体质</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('scalper')"><span class="stu-icon">🎫</span><div><b>倒卖周边</b><span class="btn-sub">耗能:30|高风险赚钱</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('esport')"><span class="stu-icon">🎮</span><div><b>电竞联赛</b><span class="btn-sub">耗能:40|赢了爆赚减压</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('show')"><span class="stu-icon">🎤</span><div><b>才艺大赛</b><span class="btn-sub">耗能:40|需高魅力</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('sport')"><span class="stu-icon">🏀</span><div><b>社团打球</b><span class="btn-sub">耗能:25|体质++魅力+</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('book')"><span class="stu-icon">📚</span><div><b>图书馆闲书</b><span class="btn-sub">耗能:20|魅力++微减压</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('rooftop')"><span class="stu-icon">🌆</span><div><b>天台发呆</b><span class="btn-sub">耗能:20|压力小幅↓</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('sick')"><span class="stu-icon">🏥</span><div><b>装病躺平</b><span class="btn-sub">耗能:10|学业--减压</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('diary')"><span class="stu-icon">📓</span><div><b>写日记</b><span class="btn-sub">耗能:10|减压解锁结局</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('volunteer')"><span class="stu-icon">🤝</span><div><b>志愿服务</b><span class="btn-sub">耗能:25|综测魅力++</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('club_drama')"><span class="stu-icon">🎭</span><div><b>话剧社排练</b><span class="btn-sub">耗能:35|魅力+++大减压</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('tutor')"><span class="stu-icon">👨‍🏫</span><div><b>给学弟补课</b><span class="btn-sub">耗能:30|赚钱+学业</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('fight')"><span class="stu-icon">🥊</span><div><b>和隔壁打架</b><span class="btn-sub">耗能:20|高风险纪律罚</span></div></button>
-                <button class="stu-act-btn" onclick="stuAct('confession_prep')"><span class="stu-icon">💌</span><div><b>策划表白</b><span class="btn-sub">耗能:40|提升攻略率</span></div></button>
-            </div><!-- close stu-act-grid -->
-            <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:8px; height: 100px; overflow-y:auto; font-size:0.78rem; margin-top:8px;" id="stu-log-box"></div>
-        </div><!-- close middle column -->
+            <div class="stu-act-grid" style="flex:1; overflow-y:auto; padding-right:10px;">
+                <button class="stu-act-btn" onclick="stuAct('hard_study')"><span style="font-size:2rem;">✍️</span><div><b>狂刷真题熬夜</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:40 | 学业++, 巨额增压</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('study')"><span style="font-size:2rem;">📖</span><div><b>认真听讲做笔记</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:25 | 学业+, 压力提升</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('olympiad')"><span style="font-size:2rem;">🔬</span><div><b>死磕奥赛/强基</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:50 | 极难, 满100保送</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('mun')"><span style="font-size:2rem;">🌍</span><div><b>模拟联合国</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:50 | 学业+, 魅力++</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('work')"><span style="font-size:2rem;">🍔</span><div><b>校外快餐店打工</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:30 | 赚取金钱, 耗体质</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('scalper')"><span style="font-size:2rem;">🎫</span><div><b>倒卖明星周边</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:30 | 高风险赚钱</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('esport')"><span style="font-size:2rem;">🎮</span><div><b>报名网吧电竞联赛</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:40 | 赢了爆赚减压</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('show')"><span style="font-size:2rem;">🎤</span><div><b>参加校园才艺大赛</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:40 | 需要高魅力支撑</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('sport')"><span style="font-size:2rem;">🏀</span><div><b>参加社团打球</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:25 | 体质++, 魅力+, 微减压</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('book')"><span style="font-size:2rem;">📚</span><div><b>躲图书馆看闲书</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:20 | 魅力++, 微减压</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('rooftop')"><span style="font-size:2rem;">🌆</span><div><b>天台吹风发呆</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:20 | 压力小幅度下降</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('sick')"><span style="font-size:2rem;">🏥</span><div><b>装病去医务室躺平</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:10 | 学业--, 减半压力</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('diary')"><span style="font-size:2rem;">📓</span><div><b>写日记/表达内心</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:10 | 解锁特殊结局/减压</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('volunteer')"><span style="font-size:2rem;">🤝</span><div><b>参加社区志愿服务</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:25 | 综测加分，魅力++</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('club_drama')"><span style="font-size:2rem;">🎭</span><div><b>参加话剧社排练</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:35 | 魅力+++，压力大减</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('tutor')"><span style="font-size:2rem;">👨‍🏫</span><div><b>给学弟学妹补课</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:30 | 赚钱+学业巩固</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('fight')"><span style="font-size:2rem;">🥊</span><div><b>和隔壁班打架</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:20 | 高风险，纪律惩罚</span></div></button>
+                <button class="stu-act-btn" onclick="stuAct('confession_prep')"><span style="font-size:2rem;">💌</span><div><b>精心策划表白方案</b><br><span style="font-size:0.75rem;color:#64748b;font-weight:normal">耗能:40 | 大幅提升攻略成功率</span></div></button>
+            
+            <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:10px; height: 150px; overflow-y:auto; font-size:0.85rem; margin-top:15px;" id="stu-log-box"></div>
+        </div>
 
         <!-- 右侧社交区 -->
         <div style="display:flex; flex-direction:column; overflow:hidden;">
@@ -451,15 +373,9 @@
 <!-- ================= 模态框组 ================= -->
 <div id="modal-map" class="fs-modal">
     <div class="fs-content">
-        <div class="fs-header"><div>🗺️ 校园基建 (20地块)</div><button class="fs-close" onclick="closeModal('modal-map')">×</button></div>
+        <div class="fs-header"><div>🗺️ 校园基建规划与特级升级 (20地块)</div><button class="fs-close" onclick="closeModal('modal-map')">×</button></div>
         <div class="fs-body" style="display:grid; grid-template-columns: 2fr 1fr; gap: 20px;">
-            <div>
-                <div class="map-grid" id="map-grid"></div>
-                <div style="margin-top:12px;">
-                    <div style="font-weight:bold;color:#1e293b;margin-bottom:6px;">✨ 激活中的相邻加成</div>
-                    <div id="adjacency-panel" style="display:flex;flex-direction:column;gap:5px;"></div>
-                </div>
-            </div>
+            <div class="map-grid" id="map-grid"></div>
             <div style="background:#fff; border:1px solid #cbd5e1; border-radius:8px; padding:15px; overflow-y:auto;">
                 <h3 style="margin-top:0; border-bottom:2px solid #e2e8f0; padding-bottom:8px;">🛠️ 工程图纸</h3>
                 <p id="map-hint" style="color:var(--danger); font-size:0.9rem;">请先在左侧点选一块空地或已建建筑！</p>
@@ -503,24 +419,10 @@
                 <button class="btn" onclick="upgradeTeacher('spec')" style="flex:1">素质组升级<br><span id="tch-spec" style="color:var(--primary); font-size:1.1rem;">实习</span></button>
             </div>
             <div style="background:#f8fafc; padding:15px; border-radius:8px; border:1px solid #e2e8f0; display:flex; flex-direction:column; gap:15px;">
-                <div><b>📚 主科课时 (高压/高攻)</b> <span id="lbl-main-hr" style="color:var(--danger); font-weight:bold;">20节</span><input type="range" id="range-main" min="0" max="40" value="20" style="width:100%;pointer-events:none;opacity:0.7;" tabindex="-1"></div>
-                <div><b>🔬 副科课时 (中压/防守)</b> <span id="lbl-minor-hr" style="color:var(--primary); font-weight:bold;">15节</span><input type="range" id="range-minor" min="0" max="40" value="15" style="width:100%;pointer-events:none;opacity:0.7;" tabindex="-1"></div>
-                <div><b>🎨 素质课时 (降压/暴击)</b> <span id="lbl-spec-hr" style="color:var(--success); font-weight:bold;">5节</span><input type="range" id="range-spec" min="0" max="40" value="5" style="width:100%;pointer-events:none;opacity:0.7;" tabindex="-1"></div>
+                <div><b>📚 主科课时 (高压/高攻)</b> <span id="lbl-main-hr" style="color:var(--danger); font-weight:bold;">20节</span><input type="range" id="range-main" min="0" max="40" value="20" oninput="adjustSchedule('main')" style="width:100%"></div>
+                <div><b>🔬 副科课时 (中压/防守)</b> <span id="lbl-minor-hr" style="color:var(--primary); font-weight:bold;">15节</span><input type="range" id="range-minor" min="0" max="40" value="15" oninput="adjustSchedule('minor')" style="width:100%"></div>
+                <div><b>🎨 素质课时 (降压/暴击)</b> <span id="lbl-spec-hr" style="color:var(--success); font-weight:bold;">5节</span><input type="range" id="range-spec" min="0" max="40" value="5" oninput="adjustSchedule('spec')" style="width:100%"></div>
                 <div style="text-align:right; font-size:0.9rem; font-weight:bold;">当前周课时总量: <span id="sch-total-hr" style="color:var(--primary)">40</span>/60</div>
-            </div>
-            <!-- 周课表可视化 -->
-            <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:15px; margin-top:10px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                    <h3 style="margin:0;font-size:1rem;">📋 本周课表 (点击格子手动调整)</h3>
-                    <button class="btn" style="padding:4px 10px;font-size:0.8rem;" onclick="randomizeSchedule()">🎲 随机排课</button>
-                </div>
-                <div id="weekly-timetable" style="display:grid;grid-template-columns:60px repeat(5,1fr);gap:3px;font-size:0.75rem;"></div>
-                <div style="margin-top:8px;display:flex;gap:10px;font-size:0.72rem;">
-                    <span style="background:#fecaca;padding:2px 6px;border-radius:3px;">📚 主科</span>
-                    <span style="background:#bfdbfe;padding:2px 6px;border-radius:3px;">🔬 副科</span>
-                    <span style="background:#bbf7d0;padding:2px 6px;border-radius:3px;">🎨 素质</span>
-                    <span style="background:#f1f5f9;padding:2px 6px;border-radius:3px;">— 空课</span>
-                </div>
             </div>
         </div>
     </div>
@@ -528,7 +430,7 @@
 
 <div id="modal-policy" class="fs-modal">
     <div class="fs-content">
-        <div class="fs-header"><div>🏫 校策科技树 (四大流派 40项节点)</div><button class="fs-close" onclick="closeModal('modal-policy')">×</button></div>
+        <div class="fs-header"><div>🏫 国家校策科技树 (四大流派 40项节点)</div><button class="fs-close" onclick="closeModal('modal-policy')">×</button></div>
         <div class="fs-body">
             <div style="text-align:center; margin-bottom:20px; font-weight:bold;">
                 <span style="color:var(--danger); margin-right:15px;">🟥 极限应试线</span>
@@ -556,7 +458,7 @@
 <!-- ================= 史诗级学术战争 PVE UI ================= -->
 <div id="modal-battle" class="fs-modal" style="background: rgba(0,0,0,0.95); z-index: 6000;">
     <div class="fs-content" style="max-width: 1000px; background: transparent; box-shadow: none; border: 1px solid #3f6212; height:auto;">
-        <div class="battle-ui" id="b-main">
+        <div class="battle-ui" id="b-main" style="display:none;">
             <div class="b-header">
                 <div>[ACADEMIC_WARFARE_OS_v2.0]</div>
                 <div style="color:#bef264">>>> ROUND: <span id="b-turn-ui">1</span> / <span id="b-phase-ui" style="color:#fde047">NORMAL_PHASE</span> <<<</div>
@@ -616,9 +518,7 @@
                     <button class="b-cat-btn" id="cat-sup" onclick="bShowCat('sup')">[3] 学术研讨系</button>
                     <button class="b-cat-btn" id="cat-psy" onclick="bShowCat('psy')">[4] 心理干扰系</button>
                     <button class="b-cat-btn" id="cat-insp" onclick="bShowCat('insp')">[5] 灵感爆发系</button>
-                    <button class="b-cat-btn" id="cat-ent" onclick="bShowCat('ent')" style="color:#f472b6;border-color:#be185d;">[6] 熵增控制系</button>
-                    <button class="b-cat-btn" id="cat-sys" onclick="bShowCat('sys')">[7] 体系必杀系</button>
-                    <button class="b-cat-btn" id="cat-combo" onclick="bShowCat('combo')" style="color:#fde047;border-color:#b45309;">[8] ✨组合技</button>
+                    <button class="b-cat-btn" id="cat-sys" onclick="bShowCat('sys')">[6] 体系必杀系</button>
                     <button class="b-cat-btn" style="color:#94a3b8; border-color:#475569;" onclick="bRetreat()">[ESC] 结束战斗</button>
                 </div>
                 <div class="b-skills" id="b-skills-container">
@@ -655,163 +555,6 @@
         <h2 id="modal-title" style="margin-top:0; color:#1e293b;">标题</h2>
         <div id="modal-desc" style="line-height:1.6; margin-bottom:25px; font-size:1rem; color:#475569; text-align:left;">内容</div>
         <div id="modal-buttons" style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;"></div>
-    </div>
-</div>
-
-<div id="modal-shop" class="fs-modal">
-    <div class="fs-content" style="max-width:900px;">
-        <div class="fs-header"><div>🛒 特供商店</div><button class="fs-close" onclick="closeModal('modal-shop')">×</button></div>
-        <div class="fs-body">
-            <div style="display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap;" id="shop-tabs">
-                <button class="btn" onclick="renderShop('infra')" style="background:#ecfdf5;border-color:#10b981;">🏗️ 基建类</button>
-                <button class="btn" onclick="renderShop('teacher')" style="background:#eff6ff;border-color:#3b82f6;">👨‍🏫 师资类</button>
-                <button class="btn" onclick="renderShop('policy')" style="background:#faf5ff;border-color:#a855f7;">📜 政策类</button>
-                <button class="btn" onclick="renderShop('consume')" style="background:#fefce8;border-color:#eab308;">⚡ 消耗类</button>
-                <button class="btn" onclick="renderShop('special')" style="background:#fff1f2;border-color:#f43f5e;">✨ 特殊类</button>
-            </div>
-            <div id="shop-content" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-rnd" class="fs-modal">
-    <div class="fs-content" style="max-width:1000px;">
-        <div class="fs-header"><div>🔬 装备研发中心</div><button class="fs-close" onclick="closeModal('modal-rnd')">×</button></div>
-        <div class="fs-body">
-            <div style="display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap;">
-                <button class="btn" onclick="renderRnd('scroll')" style="background:#fff7ed;border-color:#f97316;">📜 战斗卷轴</button>
-                <button class="btn" onclick="renderRnd('combo')" style="background:#fdf4ff;border-color:#c026d3;">⚡ 组合技研发</button>
-                <button class="btn" onclick="renderRnd('equip')" style="background:#f0fdf4;border-color:#16a34a;">🎒 教学装备</button>
-            </div>
-            <div id="rnd-content"></div>
-        </div>
-    </div>
-</div>
-
-<!-- ===== 终末之诗 overlay ===== -->
-<div id="end-poem-overlay" onclick="handlePoemClick()">
-    <div id="end-poem-track">
-        <span class="poem-spacer"></span>
-        <span class="poem-hint">· 点击关闭 ·</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-
-        <span class="poem-line dim">你好。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line">如果你读到这里，说明你已经走完了这场游戏。</span>
-        <span class="poem-line">谢谢你，愿意花几个小时，</span>
-        <span class="poem-line">来体验这所虚拟的学校，来当一个虚拟的校长，</span>
-        <span class="poem-line">来经历那些虚拟的胜利与失败、欢笑与泪水。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line gold">但我想说的是，这个游戏里的一切，</span>
-        <span class="poem-line gold">对很多人来说，从来都不是虚拟的。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line">那些深夜刷题的疲惫，是真的。</span>
-        <span class="poem-line">那些排名下降的恐惧，是真的。</span>
-        <span class="poem-line">那些被老师和家长失望的眼神，是真的。</span>
-        <span class="poem-line">那些因为一次考试失利而怀疑自己价值的感觉，是真的。</span>
-        <span class="poem-line">那些在宿舍里偷偷哭过却不敢出声的夜晚，是真的。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line italic">那些放弃了画画、放弃了音乐、放弃了写作、放弃了"没用"的热爱，是真的。</span>
-        <span class="poem-line italic">那些被磨灭的好奇心、被压抑的表达欲、被标准化的思考方式，是真的。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line dim">这个游戏里的每一个数字，背后都可能有无数个真实的夜晚。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-
-        <span class="poem-line">这个游戏里，你可以选择当严苛的校长，也可以选择当开明的校长。</span>
-        <span class="poem-line">你可以让学生拼命刷题，也可以让他们自由成长。</span>
-        <span class="poem-line">你可以追求升学率，也可以追求幸福感。</span>
-        <span class="poem-line">你可以赢得所有的战斗，也可以输掉一些东西。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line gold">但无论你怎么选，请记住：</span>
-        <span class="poem-line big">那些数字背后，是一个个活生生的人。</span>
-        <span class="poem-line">那些人，不是你棋盘上的棋子。</span>
-        <span class="poem-line">他们有自己的恐惧，有自己的热爱，有自己的梦想——</span>
-        <span class="poem-line">那些梦想，可能和你的期望不一样。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-
-        <span class="poem-line">如果你玩了这个游戏，请答应我一件事。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line">下次，当你看到身边有学生低着头走过的时候，别只是看他的成绩。</span>
-        <span class="poem-line gold">看看他的眼睛。那里可能有你没看见的东西。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line">下次，当有人告诉你"我是为你好"的时候，</span>
-        <span class="poem-line gold">问问自己：他们定义的"好"，真的是你想要的吗？</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line">下次，当你为了一个目标拼命奔跑的时候，停下来喘口气。</span>
-        <span class="poem-line gold">问自己：如果这个目标永远达不到，我还值得被爱吗？</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line big">答案是：值得。你永远值得。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line">不管你有没有考上好大学，不管你有没有找到好工作，</span>
-        <span class="poem-line">不管你有没有活成别人期待的样子——</span>
-        <span class="poem-line">你都值得被爱，被理解，被接纳。</span>
-        <span class="poem-line gold">不是因为你优秀，而是因为你是你。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-
-        <span class="poem-line dim">这个游戏结束了。</span>
-        <span class="poem-line dim">但那些坐在教室里的孩子，还在继续。</span>
-        <span class="poem-line">如果可以，请对他们温柔一点。</span>
-        <span class="poem-line gold">对自己，也温柔一点。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-
-        <span class="poem-line dim">如果这个游戏能让一些人会心一笑，</span>
-        <span class="poem-line dim">能让一些人想起自己的十七岁，</span>
-        <span class="poem-line dim">能让一些大人稍微想起自己曾经也是孩子——</span>
-        <span class="poem-line italic">那就够了。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-
-        <span class="poem-line dim">哦对了，游戏里的"校长模式"，某种程度上是我在想象一种理想的教育。</span>
-        <span class="poem-line dim">如果我是校长，我会怎么做？我会给学生留多少空间？</span>
-        <span class="poem-line dim">我会在升学率和幸福感之间怎么选？</span>
-        <span class="poem-line italic">这些问题，我没有答案。我只是把它们放进游戏里，让每个玩家自己去寻找答案。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-
-        <span class="poem-line">游戏发布后，我会把收到的每一份反馈都存下来。</span>
-        <span class="poem-line">等十年后，二十七岁的我再回头看，也许会笑现在的自己写得幼稚。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line gold">但我想对二十七岁的自己说：</span>
-        <span class="poem-line">别忘了十七岁这年，你在凌晨两点的灯光下，敲下这些字的心情。</span>
-        <span class="poem-line">别忘了你曾经是谁。</span>
-        <span class="poem-line">别忘了你曾经想成为谁。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-
-        <span class="poem-line dim">最后，我想用一句话来结束这篇结语。</span>
-        <span class="poem-line dim">这句话不是我写的，是一个十七岁的女孩在她的日记里写的。</span>
-        <span class="poem-line dim">那本日记，是她去世后，她妈妈发现的。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line quote">"我希望有一天，考试不再是人生的分水岭，而是众多河流中的一条。<br>我希望有一天，我可以不用因为考得好而被爱，也不用因为考不好而失去爱。<br>我希望有一天，有人对我说：你不需要成为任何人，你只需要成为你自己。"</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line">她没能等到这一天。</span>
-        <span class="poem-line gold">但也许，我们可以帮她等一等。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-
-        <span class="poem-line small">────────────────────────────</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line big" style="font-size:clamp(1rem,3.5vw,1.3rem);letter-spacing:5px;color:#9ca3af;">游戏制作人 · ChansonTech</span>
-        <span class="poem-line small" style="color:#4b5563;">2026年 春</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line italic" style="color:#7c3aed;font-size:clamp(0.95rem,2.8vw,1.1rem);">"教育是一棵树摇动另一棵树，一朵云推动另一朵云，一个灵魂唤醒另一个灵魂。"</span>
-        <span class="poem-line small" style="color:#6d28d9;">—— 雅斯贝尔斯</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line italic" style="color:#4b5563;font-size:clamp(0.85rem,2.5vw,1rem);">谨以此游戏，献给所有在应试教育中挣扎过、迷茫过、坚持过的灵魂。</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-        <span class="poem-line small" style="color:#111827;letter-spacing:6px;">— END —</span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
-        <span class="poem-spacer"></span>
     </div>
 </div>
 
@@ -924,14 +667,6 @@
         'insp_1': { cat: 'insp', name: '押题命中', desc: 'AP:30。30%几率造成999伤害。', ap: 30, reqDesc: '无', req: ()=>true },
         'insp_2': { cat: 'insp', name: '灵光乍现', desc: 'AP:20。下一次攻击必定暴击。', ap: 20, reqDesc: '艺术属性>50', req: ()=>game.art>50 },
         'insp_3': { cat: 'insp', name: '艺术通感', desc: 'AP:30。基于艺术属性造成巨额伤害。', ap: 30, reqDesc: '艺术属性>70', req: ()=>game.art>70 },
-
-        // --- 熵增系 (ENTROPY) ---
-        'ent_0': { cat: 'ent', name: '冥想净化', desc: 'AP:15。清除自身全部思维熵增（压力归零）。', ap: 15, reqDesc: '无', req: ()=>true },
-        'ent_1': { cat: 'ent', name: '心流状态', desc: 'AP:20。自身压力-40，攻击力小幅提升。', ap: 20, reqDesc: '无', req: ()=>true },
-        'ent_2': { cat: 'ent', name: '熵增传导', desc: 'AP:25。将己方当前压力的50%转移给敌方。', ap: 25, reqDesc: '无', req: ()=>true },
-        'ent_3': { cat: 'ent', name: '精神崩溃弹', desc: 'AP:35。给敌方施加"思维熵增"BUFF，每回合压力+15，持续3回合。', ap: 35, reqDesc: '主科达到[市骨干]', req: ()=>game.teachers.main>=1 },
-        'ent_4': { cat: 'ent', name: '虚空凝视', desc: 'AP:18。使敌方压力+30，并封印其下回合技能释放。', ap: 18, reqDesc: '素质达到[市骨干]', req: ()=>game.teachers.spec>=1 },
-        'ent_5': { cat: 'ent', name: '浴火重生', desc: 'AP:40。消耗己方所有压力为代价，回复大量HP（压力×20点）。', ap: 40, reqDesc: '无', req: ()=>true },
 
         // --- 体系系 (SYS) ---
         'sys_衡水': { cat: 'sys', name: '衡水模式', desc: 'AP:50。攻击翻倍，自身扣血20%。', ap: 50, reqDesc: '政策[衡水高考集中营]', req: ()=>hasPolicy('A8') },
@@ -1087,14 +822,14 @@
     ];
 
     const EVENT_POOL = [
-        { t: "教育局突击暗访", d: "上面突击检查违规补课。", o1: "塞钱打点", a1:{act:()=>payCost(0,5)?(log("花钱消灾"),true):false, txt:"耗资￥5万"}, o2: "硬抗审查", a2:{act:()=>{game.discipline>65?mod("reputation",15):mod("reputation",-20);return true;}, txt:"纪律>65声誉+15，否则-20"} },
-        { t: "食堂鼠头鸭脖事件", d: "学生拍照发了微博热搜。", o1: "花钱压热搜", a1:{act:()=>payCost(0,10)?(mod("stress",5),true):false, txt:"耗资￥10万,压力+5"}, o2: "承认并整改", a2:{act:()=>{mod("reputation",-20); mod("funds",-5);return true;}, txt:"声誉-20,资金-5万"} },
+        { t: "教育局突击暗访", d: "上面突击检查违规补课。", o1: "塞钱打点", a1:{act:()=>payCost(0,5)?(log("花钱消灾"),true):false, txt:"耗资￥5万"}, o2: "硬抗审查", a2:{act:()=>{game.discipline>65?mod("rep",15):mod("rep",-20);return true;}, txt:"纪律>65声誉+15，否则-20"} },
+        { t: "食堂鼠头鸭脖事件", d: "学生拍照发了微博热搜。", o1: "花钱压热搜", a1:{act:()=>payCost(0,10)?(mod("stress",5),true):false, txt:"耗资￥10万,压力+5"}, o2: "承认并整改", a2:{act:()=>{mod("rep",-20); mod("funds",-5);return true;}, txt:"声誉-20,资金-5万"} },
         { t: "天台抑郁预警", d: "有学生受不了爬上天台！", o1: "紧急心理干预", a1:{act:()=>payCost(2,5)?(mod("stress",-10),true):false, txt:"耗AP:2,￥5万,压力-10"}, o2: "消防强行拉下", a2:{act:()=>{mod("stress",15);return true;}, txt:"压力+15"} },
-        { t: "尖子生早恋被抓", d: "全校第一和第二在操场约会。", o1: "棒打鸳鸯记过", a1:{act:()=>{mod("stress",10); mod("discipline",5);return true;}, txt:"压力+10,纪律+5"}, o2: "顺其自然", a2:{act:()=>{mod("grade",-5); mod("discipline",-5);return true;}, txt:"学业-5,纪律-5"} },
-        { t: "校外黑帮收保护费", d: "周边治安急剧恶化。", o1: "雇佣安保队", a1:{act:()=>payCost(0,8)?(mod("discipline",10),true):false, txt:"耗资￥8万,纪律+10"}, o2: "不闻不问", a2:{act:()=>{mod("stress",15);mod("discipline",-10);return true;}, txt:"压力+15,纪律-10"} },
+        { t: "尖子生早恋被抓", d: "全校第一和第二在操场约会。", o1: "棒打鸳鸯记过", a1:{act:()=>{mod("stress",10); mod("disc",5);return true;}, txt:"压力+10,纪律+5"}, o2: "顺其自然", a2:{act:()=>{mod("grade",-5); mod("disc",-5);return true;}, txt:"学业-5,纪律-5"} },
+        { t: "校外黑帮收保护费", d: "周边治安急剧恶化。", o1: "雇佣安保队", a1:{act:()=>payCost(0,8)?(mod("disc",10),true):false, txt:"耗资￥8万,纪律+10"}, o2: "不闻不问", a2:{act:()=>{mod("stress",15);mod("disc",-10);return true;}, txt:"压力+15,纪律-10"} },
         { t: "竞争私立名校来挖墙脚", d: "隔壁想用两倍工资挖你的名师。", o1: "加薪挽留", a1:{act:()=>payCost(0,10)?(mod("grade",5),true):false, txt:"耗资￥10万,学业+5"}, o2: "爱走走不留", a2:{act:()=>{mod("grade",-10);return true;}, txt:"学业-10"} },
-        { t: "清华学霸状元笔记泄露", d: "全校疯抢复印，引发踩踏风险。", o1: "学校出资官方印发", a1:{act:()=>payCost(0,3)?(mod("grade",5),true):false, txt:"耗资￥3万,学业+5"}, o2: "没收充公", a2:{act:()=>{mod("stress",10);mod("discipline",5);return true;}, txt:"压力+10,纪律+5"} },
-        { t: "互联网大厂高管校友回访", d: "曾经的刺头学生如今身价过亿。", o1: "最高规格接待拉投资", a1:{act:()=>payCost(2,5)?(mod("funds",30),true):false, txt:"耗AP:2,￥5万,获￥30万"}, o2: "简单座谈", a2:{act:()=>{mod("reputation",10);return true;}, txt:"声誉+10"} }
+        { t: "清华学霸状元笔记泄露", d: "全校疯抢复印，引发踩踏风险。", o1: "学校出资官方印发", a1:{act:()=>payCost(0,3)?(mod("grade",5),true):false, txt:"耗资￥3万,学业+5"}, o2: "没收充公", a2:{act:()=>{mod("stress",10);mod("disc",5);return true;}, txt:"压力+10,纪律+5"} },
+        { t: "互联网大厂高管校友回访", d: "曾经的刺头学生如今身价过亿。", o1: "最高规格接待拉投资", a1:{act:()=>payCost(2,5)?(mod("funds",30),true):false, txt:"耗AP:2,￥5万,获￥30万"}, o2: "简单座谈", a2:{act:()=>{mod("rep",10);return true;}, txt:"声誉+10"} }
     ];
 
     // ================= 全局状态 =================
@@ -1104,11 +839,9 @@
         grade: 40, stress: 10, discipline: 60, fitness: 50, art: 30, schedule: { main: 20, minor: 15, spec: 5 }, teachers: { main: 0, minor: 0, spec: 0 },
         unlockedNodes: [], unlockedExperts: [], branches: [], achievements: [], map: new Array(20).fill(null), policies: [],
         gaokaoHistory: [], lastGaokaoAvg: 0, seniorYear: false, seniorCountdown: 0,
-        yearEndRating: [], battleSquad: [],
-        shopData: { permBought:{}, monthlyBought:{}, month:9 },
-        policyDiscount: 0, repShield: false, inspectImmune: false, nextGachaGuarantee: null, shards: 0
+        yearEndRating: [], battleSquad: []
     };
-    let game = null; let autoInterval = null; let selectedMapIndex = -1; let currentMode = 'principal';
+    let game = {}; let autoInterval = null; let selectedMapIndex = -1; let currentMode = 'principal';
     
     // 学生模式状态
     let stuGame = { active: false, year:1, month:1, turn:1, grade:40, stress:0, fit:40, art:40, talent:[], family:'', money:0, crushes:{}, lover:false, loverName:'', friends:[], examScore: 0, energy: 100, maxEnergy: 100, olympiadProgress: 0, isInsured: false };
@@ -1117,76 +850,70 @@
     let bState = { active: false, isOver: false, turn: 1, phase: '', p: {}, e: {}, log: [], rivalId: '', pts: 0, currentCat: 'atk', weather: null, expertUsed: false };
 
     // ================= 初始化 =================
-    function showDiffScreen() {
-        let ds = document.getElementById('diff-screen');
-        if(ds) ds.style.display = 'flex';
-    }
-    function hideDiffScreen() {
-        let ds = document.getElementById('diff-screen');
-        if(ds) ds.style.display = 'none';
+    function sanitizeGame(g) {
+        // 确保所有数组字段存在且为数组（防止旧存档兼容性crash）
+        const arrFields = ['unlockedNodes','unlockedExperts','branches','achievements','policies','gaokaoHistory','yearEndRating','battleSquad'];
+        arrFields.forEach(f => { if(!Array.isArray(g[f])) g[f] = []; });
+        // 确保 map 是长度20的数组
+        if(!Array.isArray(g.map) || g.map.length < 20) {
+            let oldMap = Array.isArray(g.map) ? g.map : [];
+            g.map = new Array(20).fill(null).map((_, i) => oldMap[i] !== undefined ? oldMap[i] : null);
+        }
+        // 确保嵌套对象存在
+        if(!g.schedule || typeof g.schedule !== 'object') g.schedule = { main:20, minor:15, spec:5 };
+        if(!g.teachers || typeof g.teachers !== 'object') g.teachers = { main:0, minor:0, spec:0 };
+        // 确保数值字段存在
+        const numDefaults = { year:2018, month:9, levelIdx:0, diff:1, funds:100, reputation:100, ap:10, maxAp:20, eduPoints:0, students:300, examPoints:0, grade:40, stress:10, discipline:60, fitness:50, art:30, lastGaokaoAvg:0, seniorCountdown:0 };
+        Object.entries(numDefaults).forEach(([k,v]) => { if(typeof g[k] !== 'number') g[k] = v; });
+        if(typeof g.seniorYear !== 'boolean') g.seniorYear = false;
+        return g;
     }
 
     function init() {
-        // Always start with a valid game object
-        game = JSON.parse(JSON.stringify(defaultGame));
-        
-        let meta = localStorage.getItem('school_v12_meta');
-        if(meta) { try { metaData = JSON.parse(meta); } catch(e) {} }
-
-        let saved = localStorage.getItem('school_v12_save');
-        if(saved) {
-            try {
+        // 最简单最可靠的初始化——所有错误都catch住，确保难度选择一定弹出
+        try {
+            let saved = null;
+            try { saved = localStorage.getItem('school_v12_save'); } catch(e) {}
+            try { let m = localStorage.getItem('school_v12_meta'); if(m) metaData = JSON.parse(m); } catch(e) {}
+            
+            if(saved) {
                 let parsed = JSON.parse(saved);
-                game = Object.assign(JSON.parse(JSON.stringify(defaultGame)), parsed);
-                // Repair any missing/invalid fields for old save compatibility
-                if (game.diff === undefined || game.diff === null || !DIFF_MODS[game.diff]) game.diff = 1;
-                if (!game.map || !Array.isArray(game.map)) game.map = new Array(20).fill(null);
-                if (!Array.isArray(game.unlockedExperts)) game.unlockedExperts = [];
-                if (!Array.isArray(game.policies)) game.policies = [];
-                if (!Array.isArray(game.branches)) game.branches = [];
-                if (!Array.isArray(game.achievements)) game.achievements = [];
-                if (!Array.isArray(game.gaokaoHistory)) game.gaokaoHistory = [];
-                if (!Array.isArray(game.battleSquad)) game.battleSquad = [];
-                if (!game.teachers || typeof game.teachers !== 'object') game.teachers = { main: 0, minor: 0, spec: 0 };
-                if (!game.schedule || typeof game.schedule !== 'object') game.schedule = { main: 20, minor: 15, spec: 5 };
-                hideDiffScreen();
-                log("读取存档成功！霸业继续。");
-                updateUI();
-            } catch(e) {
-                console.error("存档解析失败，重置:", e);
-                localStorage.removeItem('school_v12_save');
-                game = JSON.parse(JSON.stringify(defaultGame));
-                showDiffScreen();
+                let loaded = sanitizeGame(Object.assign(JSON.parse(JSON.stringify(defaultGame)), parsed));
+                // 验证存档有效
+                if(loaded.year && loaded.month && typeof loaded.funds === 'number') {
+                    game = loaded;
+                    showCustomModal("🌍 欢迎回来，校长！",
+                        `检测到存档：<b>${SCHOOL_LEVELS[game.levelIdx]?SCHOOL_LEVELS[game.levelIdx].name:'乡镇中学'}</b> · ${game.year}年${game.month}月<br>资金: ￥${Math.floor(game.funds)}万 | 声誉: ${Math.floor(game.reputation)}`, [
+                        {text:"▶ 继续霸业", action:()=>{ updateUI(); }},
+                        {text:"🔄 重新开始", action:()=>{ try{localStorage.removeItem('school_v12_save');}catch(e){} game={}; showDifficultySelect(); }}
+                    ]);
+                    return;
+                }
             }
-        } else {
-            showDiffScreen();
+        } catch(e) {
+            console.warn('Init load error:', e);
         }
+        // 没有存档或加载失败——直接显示难度选择
+        showDifficultySelect();
     }
     
     // ========== 基础引擎 ==========
     function saveGame() { 
-        localStorage.setItem('school_v12_save', JSON.stringify(game)); 
-        localStorage.setItem('school_v12_meta', JSON.stringify(metaData));
-        showToast("💾 保存成功"); 
-    }
-    function hardReset() { if(confirm("轮回重建，当前进度归零（保留轮回点），确定吗？")){ if(autoInterval) toggleAuto(); localStorage.removeItem('school_v12_save'); game = JSON.parse(JSON.stringify(defaultGame)); showDiffScreen(); }}
-    function getScaleFactor() {
-        if(!game) return 1;
-        let diff = (game.diff !== undefined && DIFF_MODS[game.diff]) ? game.diff : 1;
-        return Math.max(1.0, (game.students / 500) * DIFF_MODS[diff].costMult);
-    }
-    function mod(stat, val) { game[stat] += val; }
-   function getFacLevelCount(type, minLevel) { 
         try {
-            if (!game || !game.map || !Array.isArray(game.map)) return 0;
-            return game.map.filter(x => x && x.id === type && x.level >= minLevel).length;
-        } catch(e) { return 0; }
+            localStorage.setItem('school_v12_save', JSON.stringify(game)); 
+            localStorage.setItem('school_v12_meta', JSON.stringify(metaData));
+            showToast("💾 保存成功");
+        } catch(e) { showToast("💾 保存失败（沙箱限制）"); }
     }
-    function hasExpert(id) { return game && Array.isArray(game.unlockedExperts) && game.unlockedExperts.includes(id); }
-    function hasPolicy(id) { return game && Array.isArray(game.policies) && game.policies.includes(id); }
-    function hasBranch(id) { return game && Array.isArray(game.branches) && game.branches.includes(id); }
+    function hardReset() { if(confirm("轮回重建，当前进度归零（保留轮回点），确定吗？")){ if(autoInterval) toggleAuto(); localStorage.removeItem('school_v12_save'); location.reload(); }}
+    function getScaleFactor() { let _d = (game.diff != null) ? game.diff : 1; let diff = DIFF_MODS[_d] || DIFF_MODS[1]; return Math.max(1.0, ((game.students||300) / 500) * (diff.costMult||1.0)); }
+    function mod(stat, val) { game[stat] += val; }
+    function getFacLevelCount(type, minLevel) { if(!game || !Array.isArray(game.map)) return 0; return game.map.filter(x => x && x.id === type && x.level >= minLevel).length; }
+    function hasExpert(id) { return Array.isArray(game.unlockedExperts) && game.unlockedExperts.includes(id); }
+    function hasPolicy(id) { return Array.isArray(game.policies) && game.policies.includes(id); }
+    function hasBranch(id) { return Array.isArray(game.branches) && game.branches.includes(id); }
     
-    function log(msg, color="#334155") { let b = document.getElementById('log-box'); if(!b) return; let date = (game && game.year) ? `[${game.year}.${game.month}]` : '[--]'; b.innerHTML = `<div class="log-item"><span style="color:var(--primary);font-weight:bold;">${date}</span> <span style="color:${color}">${msg}</span></div>` + b.innerHTML; }
+    function log(msg, color="#334155") { let b = document.getElementById('log-box'); b.innerHTML = `<div class="log-item"><span style="color:var(--primary);font-weight:bold;">[${game.year}.${game.month}]</span> <span style="color:${color}">${msg}</span></div>` + b.innerHTML; }
     function showToast(msg) { let b = document.getElementById('toast-container'); let t = document.createElement('div'); t.className = 'toast'; t.innerText = msg; b.appendChild(t); setTimeout(()=>t.remove(), 3900); }
     
     // 弹窗系统
@@ -1204,13 +931,11 @@
         document.getElementById('modal-overlay').style.display = 'flex';
     }
     function closeModal(id) { document.getElementById(id).style.display='none'; }
-    function openModal(id) { 
-        if(!game || !game.map) return showToast("请先选择难度开始游戏！");
-        document.getElementById(id).style.display='flex'; 
-        if(id==='modal-achieve') renderAchievements();
-        if(id==='modal-rnd') renderRnd('scroll');
-        if(id==='modal-shop') renderShop('infra');
-        renderModals(); 
+    function openModal(id) {
+        let el = document.getElementById(id); if(!el) return;
+        el.style.display='flex';
+        if(id==='modal-achieve') { if(game && game.year) renderAchievements(); }
+        else if(id !== 'modal-battle') { if(game && game.year) { try { renderModals(); } catch(e) { console.warn('renderModals error:', e); } } }
     }
 
     function showDifficultySelect() {
@@ -1221,24 +946,22 @@
         ]);
     }
     function startGame(diffIdx) {
-        game = JSON.parse(JSON.stringify(defaultGame));
-        game.diff = diffIdx;
-        game.funds = DIFF_MODS[diffIdx].startFund;
-        hideDiffScreen();
-        log(`选择了【${DIFF_MODS[diffIdx].name}】难度。学校正式挂牌成立！`);
-        updateUI();
+        game = JSON.parse(JSON.stringify(defaultGame)); game.diff = diffIdx; game.funds = DIFF_MODS[diffIdx].startFund;
+        document.getElementById('principal-container').style.display = 'grid';
+        document.getElementById('student-container').style.display = 'none';
+        log(`选择了【${DIFF_MODS[diffIdx].name}】难度。学校正式挂牌成立！`); updateUI();
     }
 
     // ================= 核心推演逻辑 =================
     function advanceMonth() {
-        if(!game || !game.map) return showToast("请先选择难度开始游戏！");
+        if(!game || !game.year) return showToast("请先开始游戏！");
         if(bState.active) return showToast("战斗中无法推进！");
         let advBtn = document.getElementById('btn-advance'); if(game.funds <= 0 && advBtn && advBtn.disabled) return;
         game.month++; if (game.month > 12) { game.month = 1; game.year++; }
         
         // AP恢复
         let hallLevel = getFacLevelCount('hall',0) ? game.map.find(x=>x&&x.id==='hall').level : -1;
-        game.maxAp = 20 + (game.levelIdx * 5) + (hallLevel>=0?5:0) + (hallLevel>=1?10:0) + (hallLevel>=2?30:0) + (hasBranch('b_beijing')?5:0);
+        game.maxAp = 20 + (hallLevel>=0?5:0) + (hallLevel>=1?10:0) + (hallLevel>=2?30:0) + (hasBranch('b_beijing')?5:0);
         game.ap = Math.min(game.maxAp, game.ap + 3);
 
         // 分校收益
@@ -1277,33 +1000,69 @@
 
         // 基础消耗
         let scale = getScaleFactor();
-        let totalSal = (TEACHER_TIERS[game.teachers.main].salary + TEACHER_TIERS[game.teachers.minor].salary + TEACHER_TIERS[game.teachers.spec].salary) * (game.students / 150); 
+        let tch = game.teachers||{}; let ts = (i)=>(TEACHER_TIERS[i]||TEACHER_TIERS[0]).salary; let totalSal = (ts(tch.main)+ts(tch.minor)+ts(tch.spec)) * ((game.students||300) / 150); 
         let upkeep = SCHOOL_LEVELS[game.levelIdx].upkeep * scale * (hasExpert('e2')?0.85:1);
-        let exUpkeep = 0; game.unlockedExperts.forEach(id => { exUpkeep += EXPERT_POOL.find(x=>x.id===id).upkeep; });
+        let exUpkeep = 0; (game.unlockedExperts||[]).forEach(id => { let ex=EXPERT_POOL.find(x=>x.id===id); if(ex) exUpkeep += (ex.upkeep||0); });
         game.funds -= (totalSal + upkeep + exUpkeep);
 
         // 属性变动
         let fMain = game.schedule.main / 20; 
         game.grade += 1.0 * fMain * TEACHER_TIERS[game.teachers.main].multi;
-        let stressGain = 1.5 * fMain * DIFF_MODS[game.diff !== undefined && DIFF_MODS[game.diff] ? game.diff : 1].stressMult;
+        let diffMod = DIFF_MODS[game.diff!=null?game.diff:1] || DIFF_MODS[1]; let stressGain = 1.5 * fMain * (diffMod.stressMult||0.7);
         let clinicReduce = getFacLevelCount('clinic',0)*5 + getFacLevelCount('clinic',1)*10;
         if(getFacLevelCount('clinic',2)>0) stressGain = 0; else game.stress += Math.max(0, stressGain - clinicReduce);
         
         game.fitness += 0.5; game.art += 0.5;
 
+        // 学生模式联动
+        if(stuGame.active) {
+            // 被动精力与光环
+            stuGame.maxEnergy = hasPolicy('D5') ? 120 : 100;
+            stuGame.energy = stuGame.maxEnergy;
+            if(hasPolicy('A1')) stuGame.stress += 5; // 军事化加压
+            if(stuGame.lover) stuGame.energy += 30; // 爱情滋润大幅加精力
+            
+            // 死党被动
+            stuGame.friends.forEach(fid => {
+                let f = FRIENDS.find(x=>x.id===fid);
+                if(f) f.eff();
+            });
+            
+            updateStuUI();
+            
+            // 自动计算联考
+            if(game.month === 3 || game.month === 6 || game.month === 11) {
+                let base = stuGame.grade * 5 + stuGame.art * 2 + stuGame.fit * 1;
+                if(stuGame.isInsured) base = 750; // 保送满分
+                let rand = Math.random() * 50;
+                stuGame.examScore = Math.floor(base + rand);
+                let rank = Math.max(1, Math.floor(1000 - stuGame.examScore)); 
+                document.getElementById('stu-exam-score').innerText = stuGame.examScore;
+                document.getElementById('stu-exam-rank').innerText = `全校排名: ${rank}`;
+                let stuBox = document.getElementById('stu-log-box');
+                stuBox.innerHTML += `<div>📅 联考结束，你的分数: <b>${stuGame.examScore}</b> (排名${rank})</div>`;
+                
+                if(stuGame.examScore > 600) { game.reputation += 5; log("🌟 学生代表表现优异，母校声誉+5"); }
+            }
+
+            // 学生随机事件 (10%)
+            if(Math.random() < 0.1) {
+                showCustomModal("🎒 校园奇遇", "在走廊里捡到了一本武林秘籍(五三真题)。", [{text:"疯狂内卷", action:()=>{stuGame.grade+=10; stuGame.stress+=20; updateStuUI();}}, {text:"拿去卖废品", action:()=>{stuGame.money+=50; updateStuUI();}}]);
+                if(autoInterval) toggleAuto();
+                return;
+            }
+        }
+
         checkCrisis(); clampStats(); checkAchievements(); updateMailbox();
-        applyAdjacencyBonuses(); // 建筑相邻加成
-        // 政策折扣倒计时
-        if(game.policyDiscount>0) game.policyDiscount--;
-        // 月度目标刷新 + 教育局关系被动衰减 + 社区被动影响
-        generateMonthlyTargets();
-        initSocialRelations();
-        // 教育局高好感带来政策拨款
-        if(game.social && game.social.govRelations.edu_bureau >= 70) { game.funds += 5; }
-        // 社区低好感带来声誉惩罚
-        if(game.social && game.social.communityRel < 20) { game.reputation -= 5; log("🏘️ 社区居民持续投诉，声誉受损", "#ef4444"); }
-        // 教师派系影响（年轻派占优→学业，传统派占优→纪律，改革派占优→艺术）
-        if(game.social) {
+        // 月度目标刷新 + 社会关系被动结算（先初始化再调用）
+        try {
+            initSocialRelations();
+            generateMonthlyTargets();
+            // 教育局高好感带来政策拨款
+            if(game.social.govRelations.edu_bureau >= 70) { game.funds += 5; }
+            // 社区低好感带来声誉惩罚
+            if(game.social.communityRel < 20) { game.reputation -= 5; log("🏘️ 社区居民持续投诉，声誉受损", "#ef4444"); }
+            // 教师派系被动影响
             let f = game.social.teacherFactions;
             if(f.young >= 70) game.grade = Math.min(100, game.grade + 0.5);
             if(f.old >= 70) game.discipline = Math.min(100, game.discipline + 0.5);
@@ -1311,6 +1070,41 @@
             let maxF = Math.max(f.young, f.old, f.reform);
             let minF = Math.min(f.young, f.old, f.reform);
             if(maxF - minF > 60) { game.stress = Math.min(100, game.stress + 2); }
+        } catch(e) { /* 社会关系系统尚未激活，跳过 */ }
+
+        // 高三冲刺倒计时系统
+        if(stuGame.active) {
+            let stuYearNum = Math.ceil(stuGame.turn/12);
+            if(stuYearNum >= 3 && !game.seniorYear) {
+                game.seniorYear = true;
+                game.seniorCountdown = 12; // 12个月到高考
+                showCustomModal("⚡ 高三冲刺开始！", `<div style="text-align:center;"><div style="font-size:3rem;">🎓</div><p>距离高考还有 <b style="color:var(--danger);font-size:1.5rem;">${game.seniorCountdown}</b> 个月！</p><p style="color:#ef4444;font-weight:bold;">从现在起，每月压力翻倍增长。请慎重选择：继续加压，还是心理疏导？</p></div>`, [{text:"冲！绝不退缩！", action:()=>{stuGame.stress+=10; showToast("压力+10，但意志如铁！");}}]);
+            }
+            if(game.seniorYear) {
+                game.seniorCountdown = Math.max(0, game.seniorCountdown - 1);
+                // 压力每月翻倍增长
+                let pressureGain = 5 + (12 - game.seniorCountdown) * 2;
+                stuGame.stress += pressureGain;
+                
+                // 崩溃/弃考/离家出走系统
+                if(stuGame.stress >= 90 && Math.random() < 0.2) {
+                    let events = [
+                        { title: "🚨 精神崩溃警报", desc: "学生已精神高度紧绷，出现崩溃征兆！", opt1:"继续加压（高分优先）", opt2:"立即心理疏导（降低压力）", eff1:()=>{stuGame.stress+=15; stuGame.grade+=5;}, eff2:()=>{stuGame.stress-=20; stuGame.grade-=3; showToast("压力减轻，分数稍降。");}},
+                        { title: "😰 考生有弃考念头", desc: "学生私下表示不想参加高考了...", opt1:"强制参加（纪律处分）", opt2:"开导谈心（减分减压）", eff1:()=>{stuGame.stress+=20; stuGame.grade+=3;}, eff2:()=>{stuGame.stress-=15; stuGame.grade-=5;}},
+                        { title: "🚪 学生离家出走！", desc: "压力过大，学生昨晚没有回家！", opt1:"报警强制带回", opt2:"给他一天自由时间", eff1:()=>{stuGame.stress-=5; game.reputation-=10;}, eff2:()=>{stuGame.stress-=25; stuGame.grade-=8;}}
+                    ];
+                    let ev = events[Math.floor(Math.random()*events.length)];
+                    if(autoInterval) toggleAuto();
+                    showCustomModal(ev.title, `<p>${ev.desc}</p><p style="color:#ef4444;font-weight:bold;">距高考：${game.seniorCountdown}个月 | 压力：${stuGame.stress}</p>`, [
+                        {text: ev.opt1, action:()=>{ev.eff1(); updateStuUI();}},
+                        {text: ev.opt2, action:()=>{ev.eff2(); updateStuUI();}}
+                    ]);
+                    return;
+                }
+                
+                // 更新倒计时显示
+                document.getElementById('stu-exam-rank').innerText = `⏳ 距高考：${game.seniorCountdown} 个月 | 压力+${pressureGain}`;
+            }
         }
 
         // 触发特殊事件
@@ -1327,7 +1121,6 @@
     }
     
     function toggleAuto() {
-        if(!game || !game.map) return showToast("请先选择难度开始游戏！");
         let btn = document.getElementById('btn-auto');
         if (autoInterval) { clearInterval(autoInterval); autoInterval = null; btn.classList.remove('active'); btn.innerText = "🤖 自动推演"; } 
         else { btn.classList.add('active'); btn.innerText = "🛑 停止推演"; autoInterval = setInterval(() => { if(document.getElementById('modal-overlay').style.display === 'flex' || bState.active) return; document.getElementById('btn-advance').click(); }, 1200); }
@@ -1401,7 +1194,6 @@
 
     // ================= 成就系统 =================
     function checkAchievements() {
-        if(!game || !Array.isArray(game.achievements)) return;
         ACHIEVEMENTS.forEach(a => {
             if(!game.achievements.includes(a.id)) {
                 let unlocked = false;
@@ -1445,7 +1237,7 @@
             <h3 style="color:#fde047; margin-top:0;">⚔️ 组建战斗编队 (选择 3-5 位专家)</h3>
             <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:10px;">已选专家的技能组合将产生化学反应，带来额外增益。</p>
             <div style="display:flex; flex-wrap:wrap; gap:8px;" id="squad-selector">`;
-        game.unlockedExperts.forEach(eid => {
+        (game.unlockedExperts||[]).forEach(eid => {
             let ex = EXPERT_POOL.find(x=>x.id===eid);
             if(!ex || !ex.battle) return;
             let inSquad = (game.battleSquad||[]).includes(eid);
@@ -1575,7 +1367,7 @@
         if(game.unlockedExperts.length === 0) {
             exEl.innerHTML = `<div style="color:#475569;font-size:0.8rem;padding:5px;">尚无专家可调用</div>`;
         }
-        game.unlockedExperts.forEach(eid => {
+        (game.unlockedExperts||[]).forEach(eid => {
             let ex = EXPERT_POOL.find(x=>x.id===eid);
             if(!ex || !ex.battle) return;
             let rarityColor = ex.rarity==='SSR'?'#fde047':ex.rarity==='SR'?'#c084fc':'#60a5fa';
@@ -1625,20 +1417,14 @@
         bLog(`<br><span style="color:#94a3b8">--- ROUND ${bState.turn} ---</span>`);
         
         // 天气系统
-        if(!bState.weather || bState.turn % 3 === 0) { bState.weather = WEATHER_TYPES[Math.floor(Math.random()*WEATHER_TYPES.length)]; bLog(`☁️ 天气变更为：${bState.weather.name}`); }
-        if(bState.weather && bState.weather.effect) bState.weather.effect(bState.p, bState.e);
+        if(bState.turn % 3 === 0) { bState.weather = WEATHER_TYPES[Math.floor(Math.random()*WEATHER_TYPES.length)]; bLog(`☁️ 天气变更为：${bState.weather.name}`); }
+        if(bState.weather.effect) bState.weather.effect(bState.p, bState.e);
 
         // AP恢复（每回合+3，上限由等级决定）
         bState.p.ap = Math.min(bState.p.maxAp, bState.p.ap + 3);
         
         // 思维熵增自然增长（每回合+2）
         bState.p.stress = Math.min(100, bState.p.stress + 2);
-        // 敌方entropyDot（精神崩溃弹效果）
-        if(bState.e.buffs.entropyDot > 0) {
-            bState.e.stress = Math.min(100, bState.e.stress + 15);
-            bState.e.buffs.entropyDot--;
-            bLog(`<span style="color:#f472b6">敌方思维熵增发作！敌方压力+15（剩余${bState.e.buffs.entropyDot}回合）</span>`);
-        }
         
         // 熵增混乱惩罚（熵增>70时攻防降低；熵增>90时完全混乱）
         let entropyPenalty = '';
@@ -1777,14 +1563,6 @@
             
             if(sid==='sys_衡水') { bState.p.buffs.atkUp=5; bState.p.hp-=bState.p.maxHp*0.2; bLog("开启狂暴模式！"); }
             if(sid==='sys_素质') { bState.p.buffs.atkUp=3; bState.p.buffs.defUp=3; bState.p.buffs.hot=3; bState.p.stress=0; bLog("素质乌托邦降临！"); }
-
-            // 熵增系技能
-            if(sid==='ent_0') { bState.p.stress=0; bLog("🧘 冥想净化！思维熵增全部清除！"); }
-            if(sid==='ent_1') { bState.p.stress=Math.max(0,bState.p.stress-40); bState.p.buffs.atkUp=2; bLog("心流状态！压力-40，进入专注模式！"); }
-            if(sid==='ent_2') { let transfer=Math.floor(bState.p.stress*0.5); bState.e.stress+=transfer; bState.p.stress-=transfer; bLog(`熵增传导！将${transfer}点压力转移给敌方！`); }
-            if(sid==='ent_3') { bState.e.buffs.entropyDot=(bState.e.buffs.entropyDot||0)+3; bLog("精神崩溃弹！敌方思维熵增每回合+15，持续3回合！"); }
-            if(sid==='ent_4') { bState.e.stress+=30; bState.e.buffs.stun=1; bLog("虚空凝视！敌方压力+30，下回合封印！"); }
-            if(sid==='ent_5') { let heal=bState.p.stress*20; bState.p.hp=Math.min(bState.p.maxHp,bState.p.hp+heal); bState.p.stress=0; bLog(`浴火重生！燃尽压力，回复${heal}HP！`); }
         }
 
         bUpdateUI();
@@ -1821,7 +1599,7 @@
             bState.isOver = true;
             let finalPts = bState.pts * 2;
             let finalMoney = bState.pts * 20; 
-            let repGain = Math.floor(bState.pts * 0.2); // 大幅降低声誉奖励
+            let repGain = Math.floor(bState.pts * 3);
             game.examPoints += finalPts; game.funds += finalMoney; game.reputation += repGain;
             if(bState.rivalId === 't5_3' && !game.achievements.includes('a17')) { game.achievements.push('a17'); showToast("达成成就：密卷克星"); }
             showCustomModal("🏆 史诗大捷", `获得 ${finalPts} 积分，奖金 ￥${finalMoney}万，声誉 +${repGain}！`, [{text:"确定", action:()=>{ closeModal('modal-battle'); bState.active=false; updateUI(); }}]);
@@ -1889,12 +1667,6 @@
                 c.appendChild(btn);
             }
         }
-        // 渲染组合技
-        if(cat==='ent' && game.combos && game.combos.length) {
-            let div = document.createElement('div');
-            div.innerHTML = renderComboSkills();
-            c.appendChild(div);
-        }
     }
     
     function bRetreat() {
@@ -1904,264 +1676,19 @@
         ]);
     }
 
-    // ================= 相邻奖励系统 =================
-    const ADJACENCY_BONUSES = [
-        { pair: ['library','lab'],     name:'知识共振', desc:'图书馆+实验楼相邻: 每月教研点+3', apply:(p,e)=>{ if(p&&e) game.eduPoints+=3; } },
-        { pair: ['clinic','track'],    name:'身心健康', desc:'心理诊所+操场相邻: 压力每月额外-5', apply:(p,e)=>{ if(p&&e) game.stress=Math.max(0,game.stress-5); } },
-        { pair: ['confucius','hall'],  name:'礼乐合一', desc:'孔子圣像+大礼堂相邻: 声誉每月+15', apply:(p,e)=>{ if(p&&e) game.reputation+=15; } },
-        { pair: ['media','lab'],       name:'智慧校园', desc:'电教大楼+实验楼相邻: 学业倍率额外+3%', apply:(p,e)=>{ if(p&&e) game.grade=Math.min(100,game.grade+0.5); } },
-        { pair: ['dorm','hospital'],   name:'贵族医疗', desc:'贵族公寓+校医院相邻: 每月资金+20', apply:(p,e)=>{ if(p&&e) game.funds+=20; } },
-        { pair: ['art','confucius'],   name:'文化圣地', desc:'艺术中心+孔子圣像相邻: 纪律+5', apply:(p,e)=>{ if(p&&e) game.discipline=Math.min(100,game.discipline+5); } },
-        { pair: ['track','hospital'],  name:'运动康复', desc:'操场+校医院相邻: 体质每月+2', apply:(p,e)=>{ if(p&&e) game.fitness=Math.min(100,game.fitness+2); } },
-        { pair: ['library','art'],     name:'人文荟萃', desc:'图书馆+艺术中心相邻: 艺术+3', apply:(p,e)=>{ if(p&&e) game.art=Math.min(100,game.art+3); } },
-        { pair: ['hall','dorm'],       name:'华贵套院', desc:'大礼堂+贵族公寓相邻: AP上限+2', apply:(p,e)=>{ if(p&&e) game.maxAp=Math.min(50,game.maxAp+2); } },
-    ];
-
-    // 检查地图上是否有两种类型的建筑相邻（4格相邻，地图为5列）
-    function checkAdjacency(typeA, typeB) {
-        const cols = 5;
-        let posA = [], posB = [];
-        game.map.forEach((f,i)=>{ if(f&&f.id===typeA) posA.push(i); if(f&&f.id===typeB) posB.push(i); });
-        for(let a of posA) for(let b of posB) {
-            let dr = Math.abs(Math.floor(a/cols)-Math.floor(b/cols));
-            let dc = Math.abs((a%cols)-(b%cols));
-            if((dr===1&&dc===0)||(dr===0&&dc===1)) return true;
-        }
-        return false;
-    }
-
-    function applyAdjacencyBonuses() {
-        if(!game||!game.map) return;
-        ADJACENCY_BONUSES.forEach(ab=>{
-            let hasAdj = checkAdjacency(ab.pair[0],ab.pair[1]);
-            ab.apply(hasAdj, hasAdj);
-        });
-    }
-
-    function getActiveAdjacencies() {
-        if(!game||!game.map) return [];
-        return ADJACENCY_BONUSES.filter(ab=>checkAdjacency(ab.pair[0],ab.pair[1]));
-    }
-
-    // ================= 商店系统 =================
-    const SHOP_ITEMS = {
-        infra: [
-            { id:'blueprint', name:'建筑蓝图（随机）', desc:'解锁一种未建造的特殊建筑', icon:'📐', costType:'funds', cost:200, limitType:'perm', limit:2,
-              action:()=>{ let built=game.map.filter(x=>x).map(x=>x.id); let avail=Object.keys(FACILITIES).filter(k=>!built.includes(k)); if(!avail.length)return showToast("所有建筑已解锁！"); let chosen=avail[Math.floor(Math.random()*avail.length)]; let slot=game.map.findIndex(x=>!x); if(slot<0)return showToast("地块已满！"); game.map[slot]={id:chosen,level:0}; showToast(`📐 获得蓝图：${FACILITIES[chosen].levels[0].name}！`); } },
-            { id:'landcard', name:'土地扩容卡', desc:'增加1块可建造地块（最多25块）', icon:'🗺️', costType:'funds', cost:500, limitType:'perm', limit:5,
-              action:()=>{ if(game.map.length>=25)return showToast("已达最大地块数！"); game.map.push(null); showToast("🗺️ 地块扩张！当前"+game.map.length+"块"); } },
-        ],
-        teacher: [
-            { id:'headhunt', name:'名师猎头券', desc:'下次寻访必得SR及以上', icon:'🎯', costType:'edu', cost:150, limitType:'monthly', limit:2,
-              action:()=>{ game.nextGachaGuarantee='SR'; showToast("🎯 下次寻访保底SR！"); } },
-            { id:'trainpkg', name:'教师培训礼包', desc:'任选一科教师组升一级', icon:'📦', costType:'funds', cost:180, limitType:'perm', limit:3,
-              action:()=>{ showCustomModal("📦 选择培训科目","",[{text:"主科组升级",action:()=>{if(game.teachers.main<5){game.teachers.main++;updateUI();showToast("主科升级！");}}},{text:"副科组升级",action:()=>{if(game.teachers.minor<5){game.teachers.minor++;updateUI();showToast("副科升级！");}}},{text:"素质组升级",action:()=>{if(game.teachers.spec<5){game.teachers.spec++;updateUI();showToast("素质升级！");}}}]); } },
-            { id:'ssr_studio', name:'特级教师工作室', desc:'直接解锁一位SSR专家（自选）', icon:'⭐', costType:'exam', cost:300, limitType:'perm', limit:1,
-              action:()=>{ let ssrPool=EXPERT_POOL.filter(e=>e.rarity==='SSR'&&!hasExpert(e.id)); if(!ssrPool.length)return showToast("SSR专家已全部招募！"); showCustomModal("⭐ 选择SSR专家","",ssrPool.map(e=>({text:e.name+' - '+e.desc,action:()=>{game.unlockedExperts.push(e.id);renderModals();updateUI();showToast("获得："+e.name);}}))); } },
-        ],
-        policy: [
-            { id:'policy_fast', name:'政策速通手册', desc:'教研点消耗-20%，持续3个月', icon:'📋', costType:'funds', cost:300, limitType:'perm', limit:2,
-              action:()=>{ game.policyDiscount=(game.policyDiscount||0)+3; showToast("📋 教研点消耗-20%，持续3个月！"); } },
-            { id:'media_ctrl', name:'舆论操控指南', desc:'媒体关系+30（一次性）', icon:'📢', costType:'funds', cost:120, limitType:'none', limit:99,
-              action:()=>{ initSocialRelations(); game.social.govRelations.media=Math.min(100,game.social.govRelations.media+30); showToast("📢 媒体关系+30！"); } },
-            { id:'inspect_pass', name:'教育局免检金牌', desc:'下次视察自动通过，压力不增', icon:'🥇', costType:'exam', cost:100, limitType:'monthly', limit:1,
-              action:()=>{ game.inspectImmune=true; showToast("🥇 下次视察自动通过！"); } },
-        ],
-        consume: [
-            { id:'ap_potion', name:'精力恢复剂', desc:'立即恢复5点AP', icon:'⚡', costType:'funds', cost:50, limitType:'monthly', limit:3,
-              action:()=>{ game.ap=Math.min(game.maxAp,game.ap+5); updateUI(); showToast("⚡ AP+5！"); } },
-            { id:'stress_course', name:'全校减压课程', desc:'全校压力-10', icon:'😌', costType:'funds', cost:100, limitType:'monthly', limit:2,
-              action:()=>{ game.stress=Math.max(0,game.stress-10); updateUI(); showToast("😌 全校压力-10！"); } },
-            { id:'rep_shield', name:'声誉保护伞', desc:'当月声誉下降事件-50%影响', icon:'🛡️', costType:'funds', cost:80, limitType:'monthly', limit:1,
-              action:()=>{ game.repShield=true; showToast("🛡️ 本月声誉受损减半！"); } },
-        ],
-        special: [
-            { id:'hourglass', name:'时光沙漏', desc:'立即推进一月（不触发事件）', icon:'⏳', costType:'funds', cost:350, limitType:'perm', limit:3,
-              action:()=>{ game.month++; if(game.month>12){game.month=1;game.year++;} game.ap=Math.min(game.maxAp,game.ap+game.maxAp); updateUI(); showToast("⏳ 时间跳跃！推进一月！"); } },
-            { id:'compass', name:'命运罗盘', desc:'随机获得一项未解锁成就', icon:'🧭', costType:'edu', cost:200, limitType:'perm', limit:1,
-              action:()=>{ let unowned=ACHIEVEMENTS.filter(a=>!game.achievements.includes(a.id)); if(!unowned.length)return showToast("成就已全部解锁！"); let pick=unowned[Math.floor(Math.random()*unowned.length)]; game.achievements.push(pick.id); showToast("🧭 获得成就："+pick.name+"！"); } },
-            { id:'shard', name:'隐藏建筑碎片', desc:'集齐3片兑换"孔子学院总部"', icon:'💎', costType:'exam', cost:80, limitType:'perm', limit:99,
-              action:()=>{ game.shards=(game.shards||0)+1; showToast(`💎 碎片+1，已有${game.shards}/3片`); if(game.shards>=3){ game.shards-=3; let slot=game.map.findIndex(x=>!x); if(slot<0)return showToast("地块已满，兑换失败！"); game.map[slot]={id:'confucius',level:2}; showToast("🏛️ 解锁！孔子学院总部建立！"); } } },
-        ]
-    };
-
-    // 商店购买记录存储
-    function getShopData() {
-        if(!game.shopData) game.shopData = { permBought:{}, monthlyBought:{}, month:game.month };
-        if(game.shopData.month !== game.month) { game.shopData.monthlyBought={}; game.shopData.month=game.month; }
-        return game.shopData;
-    }
-
-    function renderShop(cat) {
-        let el = document.getElementById('shop-content');
-        if(!el) return;
-        let items = SHOP_ITEMS[cat] || [];
-        let sd = getShopData();
-        let html = '';
-        items.forEach(item => {
-            let bought = item.limitType==='perm' ? (sd.permBought[item.id]||0) : (sd.monthlyBought[item.id]||0);
-            let remaining = item.limit - bought;
-            let canAfford = item.costType==='funds' ? game.funds>=item.cost
-                          : item.costType==='edu'   ? game.eduPoints>=item.cost
-                          : game.examPoints>=item.cost;
-            let costLabel = item.costType==='funds' ? `￥${item.cost}万`
-                          : item.costType==='edu'   ? `教研点${item.cost}`
-                          : `联考积分${item.cost}`;
-            let limitLabel = item.limitType==='perm' ? `永久限${item.limit}`
-                           : item.limitType==='monthly' ? `每月限${item.limit}` : '无限制';
-            let soldOut = remaining <= 0;
-            html += `<div style="background:#f8fafc;border:2px solid ${soldOut?'#e2e8f0':canAfford?'#3b82f6':'#fca5a5'};border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;">
-                <div style="display:flex;align-items:center;gap:8px;">
-                    <span style="font-size:1.8rem;">${item.icon}</span>
-                    <div>
-                        <div style="font-weight:bold;color:#1e293b;">${item.name}</div>
-                        <div style="font-size:0.78rem;color:#64748b;">${item.desc}</div>
-                    </div>
-                </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
-                    <span style="font-size:0.8rem;color:#64748b;">剩余:<b style="color:${remaining>0?'#10b981':'#ef4444'}">${remaining}</b> | ${limitLabel}</span>
-                    <button class="btn" style="padding:5px 14px;font-size:0.85rem;${soldOut?'opacity:0.4;cursor:not-allowed;':''}${canAfford?'':'border-color:#ef4444;color:#ef4444;'}"
-                        ${soldOut?'disabled':''} onclick="buyShopItem('${cat}','${item.id}')">
-                        ${soldOut?'已售完':costLabel}
-                    </button>
-                </div>
-            </div>`;
-        });
-        el.innerHTML = html || '<p style="color:#64748b;">暂无商品</p>';
-    }
-
-    function buyShopItem(cat, itemId) {
-        let item = (SHOP_ITEMS[cat]||[]).find(x=>x.id===itemId);
-        if(!item) return;
-        let sd = getShopData();
-        let bought = item.limitType==='perm' ? (sd.permBought[itemId]||0) : (sd.monthlyBought[itemId]||0);
-        if(bought >= item.limit) return showToast("已达购买上限！");
-        if(item.costType==='funds') { if(!payCost(0,item.cost)) return; }
-        else if(item.costType==='edu') { if(game.eduPoints<item.cost)return showToast("教研点不足！"); game.eduPoints-=item.cost; }
-        else { if(game.examPoints<item.cost)return showToast("联考积分不足！"); game.examPoints-=item.cost; }
-        if(item.limitType==='perm') sd.permBought[itemId]=(sd.permBought[itemId]||0)+1;
-        else if(item.limitType==='monthly') sd.monthlyBought[itemId]=(sd.monthlyBought[itemId]||0)+1;
-        item.action();
-        updateUI();
-        renderShop(cat);
-    }
-
-    // ================= 周课表系统 =================
-    // 课表：5天 × 8节 = 40格，存储在 game.weeklyTable (数组40个元素: 'main'/'minor'/'spec'/null)
-    function initWeeklyTable() {
-        if(!game.weeklyTable || game.weeklyTable.length !== 40) {
-            game.weeklyTable = new Array(40).fill(null);
-            // 默认排课
-            randomizeScheduleData();
-        }
-    }
-
-    function randomizeSchedule() {
-        randomizeScheduleData();
-        renderWeeklyTimetable();
-        syncScheduleFromTable();
-    }
-
-    function randomizeScheduleData() {
-        if(!game) return;
-        let m = game.schedule.main || 20, mi = game.schedule.minor || 15, sp = game.schedule.spec || 5;
-        let slots = new Array(40).fill(null);
-        let place = (type, count) => {
-            let placed = 0, tries = 0;
-            while(placed < count && tries < 200) {
-                let idx = Math.floor(Math.random()*40);
-                if(!slots[idx]) { slots[idx]=type; placed++; }
-                tries++;
-            }
-        };
-        place('main', Math.min(m,40)); place('minor', Math.min(mi, 40 - Math.min(m,40)));
-        place('spec', Math.min(sp, 40 - Math.min(m,40) - Math.min(mi,40)));
-        game.weeklyTable = slots;
-    }
-
-    function renderWeeklyTimetable() {
-        let el = document.getElementById('weekly-timetable');
-        if(!el) return;
-        initWeeklyTable();
-        const days = ['一','二','三','四','五'];
-        const periods = ['第1节','第2节','第3节','第4节','午休','第5节','第6节','第7节'];
-        const COLOR = { main:'#fecaca', minor:'#bfdbfe', spec:'#bbf7d0', null:'#f1f5f9' };
-        const LABEL = { main:'📚主科', minor:'🔬副科', spec:'🎨素质', null:'—' };
-        const CYCLE = [null,'main','minor','spec'];
-        // Header row
-        let html = `<div style="background:#e2e8f0;border-radius:3px;padding:4px;text-align:center;font-weight:bold;">节次</div>`;
-        days.forEach(d=>{ html+=`<div style="background:#e2e8f0;border-radius:3px;padding:4px;text-align:center;font-weight:bold;">周${d}</div>`; });
-        // Body
-        periods.forEach((p,row)=>{
-            html+=`<div style="background:#f8fafc;border-radius:3px;padding:4px;text-align:center;color:#64748b;font-size:0.7rem;">${p}</div>`;
-            days.forEach((_,col)=>{
-                if(p==='午休'){ html+=`<div style="background:#fef9c3;border-radius:3px;padding:4px;text-align:center;color:#a16207;font-size:0.7rem;" colspan="5">午休</div>`; return; }
-                let realRow = row > 3 ? row - 1 : row; // skip lunch visually
-                let idx = realRow * 5 + col;
-                if(row === 4) return; // handled above
-                let type = game.weeklyTable[idx] || null;
-                html+=`<div onclick="cycleCell(${idx})" style="background:${COLOR[type]};border-radius:3px;padding:4px;text-align:center;cursor:pointer;transition:0.15s;font-size:0.68rem;" title="点击切换">${LABEL[type]||'—'}</div>`;
-            });
-        });
-        el.innerHTML = html;
-    }
-
-    function cycleCell(idx) {
-        const CYCLE = [null,'main','minor','spec'];
-        let cur = game.weeklyTable[idx];
-        let next = CYCLE[(CYCLE.indexOf(cur)+1) % CYCLE.length];
-        game.weeklyTable[idx] = next;
-        syncScheduleFromTable();
-        renderWeeklyTimetable();
-    }
-
-    function syncScheduleFromTable() {
-        if(!game.weeklyTable) return;
-        let m=0,mi=0,sp=0;
-        game.weeklyTable.forEach(t=>{ if(t==='main')m++; else if(t==='minor')mi++; else if(t==='spec')sp++; });
-        game.schedule.main = m; game.schedule.minor = mi; game.schedule.spec = sp;
-        let ml=document.getElementById('lbl-main-hr'),ml2=document.getElementById('range-main');
-        let mml=document.getElementById('lbl-minor-hr'),mml2=document.getElementById('range-minor');
-        let sl=document.getElementById('lbl-spec-hr'),sl2=document.getElementById('range-spec');
-        let tl=document.getElementById('sch-total-hr');
-        if(ml)ml.innerText=m+'节'; if(ml2)ml2.value=m;
-        if(mml)mml.innerText=mi+'节'; if(mml2)mml2.value=mi;
-        if(sl)sl.innerText=sp+'节'; if(sl2)sl2.value=sp;
-        if(tl)tl.innerText=m+mi+sp;
-    }
-
-    // Override adjustSchedule to also re-render timetable
-    function openScheduleModal() { 
-        openModal('modal-schedule'); 
-        initWeeklyTable(); 
-        renderWeeklyTimetable(); 
-    }
-
-    function renderAdjacencyPanel() {
-        let el = document.getElementById('adjacency-panel');
-        if(!el) return;
-        let active = getActiveAdjacencies();
-        if(!active.length) { el.innerHTML='<p style="color:#94a3b8;font-size:0.8rem;">暂无相邻加成（将相符建筑放置于相邻格可激活）</p>'; return; }
-        el.innerHTML = active.map(ab=>`<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:6px 10px;font-size:0.78rem;"><b style="color:#15803d;">✨ ${ab.name}</b><br><span style="color:#166534;">${ab.desc}</span></div>`).join('');
-    }
-
     // ================= 其它系统 =================
     function renderModals() {
-        if(!game || !game.map || !Array.isArray(game.map)) return;
         // 地图
         let mGrid = document.getElementById('map-grid'); mGrid.innerHTML = '';
         game.map.forEach((fac, idx) => {
             let div = document.createElement('div'); div.className = 'map-cell' + (idx === selectedMapIndex ? ' selected' : '');
             if(fac) {
                 let fData = FACILITIES[fac.id];
-                let adj = getActiveAdjacencies().some(ab=>ab.pair.includes(fac.id));
-                div.innerHTML = `<span style="font-size:1.8rem;">${fData.icon}</span><span style="font-size:0.75rem;">${fData.levels[fac.level].name}</span>${adj?'<span style="position:absolute;top:2px;right:2px;font-size:0.6rem;background:#fde047;border-radius:3px;padding:1px 3px;color:#713f12;">✨邻</span>':''}`;
-                div.style.position='relative';
+                div.innerHTML = `<span style="font-size:1.8rem;">${fData.icon}</span><span style="font-size:0.75rem;">${fData.levels[fac.level].name}</span>`;
             } else div.innerHTML = `<span style="color:#a3e635;font-size:2rem;">+</span>`;
             div.onclick = () => { selectedMapIndex = idx; renderFacDetail(); }; mGrid.appendChild(div);
         });
         renderFacDetail();
-        renderAdjacencyPanel();
         
         // 专家
         let ehtml = ''; EXPERT_POOL.forEach(e => {
@@ -2254,40 +1781,22 @@
 
     function gachaExpert() {
         if(!payCost(0, 50)) return;
-        let targetRarity = 'R';
-        if(game.nextGachaGuarantee) {
-            targetRarity = game.nextGachaGuarantee;
-            game.nextGachaGuarantee = null;
-            showToast("🎯 猎头券生效！保底SR+");
-        } else {
-            let r = Math.random();
-            let ssrRate = [0, 0.005, 0.015, 0.04, 0.08][game.levelIdx];
-            let srRate = 0.1 + (game.levelIdx * 0.02);
-            if(r < ssrRate) targetRarity = 'SSR'; else if(r < ssrRate + srRate) targetRarity = 'SR';
-        }
+        let r = Math.random(); 
+        let ssrRate = [0, 0.005, 0.015, 0.04, 0.08][game.levelIdx]; 
+        let srRate = 0.1 + (game.levelIdx * 0.02);
+        let targetRarity = 'R'; if(r < ssrRate) targetRarity = 'SSR'; else if(r < ssrRate + srRate) targetRarity = 'SR';
+        
         let pool = EXPERT_POOL.filter(x => x.rarity === targetRarity && !hasExpert(x.id));
         if(pool.length === 0) pool = EXPERT_POOL.filter(x => !hasExpert(x.id));
-        if(pool.length === 0) {
-            // 人才库已空，全部重复，退款
-            game.funds += 40;
-            showToast("🎲 人才库已招募殆尽，退款 ￥40万");
-            return;
-        }
-        let ex = pool[Math.floor(Math.random() * pool.length)];
-        // 检查是否已有（理论上pool已过滤，但双保险）
-        if(hasExpert(ex.id)) {
-            let refund = { SSR: 35, SR: 25, R: 15 }[ex.rarity] || 15;
-            game.funds += refund;
-            showCustomModal("🎲 重复专家", `【${ex.name}】已在麾下，退还 ￥${refund}万酬劳。`, [{text:"好吧", action:()=>{ renderModals(); updateUI(); }}]);
-            return;
-        }
-        game.unlockedExperts.push(ex.id);
-        showCustomModal("✨ 寻访成功", `获得 ${ex.rarity} 级专家：<b>${ex.name}</b><br><span style="color:#64748b;font-size:0.85rem;">${ex.desc}</span>`, [{text:"确定", action:()=>{renderModals(); updateUI();}}]);
+        if(pool.length === 0) return showToast("人才库已空");
+        
+        let ex = pool[Math.floor(Math.random() * pool.length)]; game.unlockedExperts.push(ex.id);
+        showCustomModal("✨ 寻访成功", `获得 ${ex.rarity} 级专家：${ex.name}`, [{text:"确定", action:()=>{renderModals(); updateUI();}}]);
     }
 
     function buyBranch(id, cost) { if(payCost(0, cost)) { game.branches.push(id); log(`🌍 建立了【${BRANCHES_DB.find(x=>x.id===id).name}】！`); renderModals(); updateUI(); } }
     
-    function payCost(ap, money) { if(!game) return false; if(game.ap>=ap && game.funds>=money) { game.ap-=ap; game.funds-=money; return true; } showToast("资源不足"); return false; }
+    function payCost(ap, money) { if(game.ap>=ap && game.funds>=money) { game.ap-=ap; game.funds-=money; return true; } showToast("资源不足"); return false; }
 
     function updateMailbox() {
         let box = document.getElementById('student-comments-box');
@@ -2309,12 +1818,8 @@
     }
 
     function updateUI() {
-        if(!game || !game.map) return;
-        // update diff badge
-        let diffBadge = document.getElementById('ui-diff-badge');
-        if(diffBadge) { let d = (game.diff !== undefined && DIFF_MODS[game.diff]) ? game.diff : 1; diffBadge.innerText = `难度: ${DIFF_MODS[d].name}`; }
-        let maxApEl = document.getElementById('ui-maxap'); if(maxApEl) maxApEl.innerText = game.maxAp || 20;
-        let warn = document.getElementById('warn-stress'); if(warn) warn.style.display = game.stress >= 80 ? 'block' : 'none';
+        if(!game || !game.year) return;
+        document.getElementById('principal-container').style.display = 'grid';
         document.getElementById('ui-date').innerText = `${game.year}年 ${game.month}月`;
         document.getElementById('ui-funds').innerText = Math.floor(game.funds);
         document.getElementById('ui-rep').innerText = Math.floor(game.reputation);
@@ -2334,23 +1839,15 @@
         
         document.getElementById('ui-level-name').innerText = `🏆 ${SCHOOL_LEVELS[game.levelIdx].name}`;
         
-        let exUpkeep = 0; game.unlockedExperts.forEach(id => { exUpkeep += EXPERT_POOL.find(x=>x.id===id).upkeep; });
-        let totalSal = (TEACHER_TIERS[game.teachers.main].salary + TEACHER_TIERS[game.teachers.minor].salary + TEACHER_TIERS[game.teachers.spec].salary) * (game.students / 150); 
+        let exUpkeep = 0; (game.unlockedExperts||[]).forEach(id => { let ex=EXPERT_POOL.find(x=>x.id===id); if(ex) exUpkeep += ex.upkeep||0; });
+        let tch2=game.teachers||{}; let ts2=(i)=>(TEACHER_TIERS[i]||TEACHER_TIERS[0]).salary; let totalSal = (ts2(tch2.main)+ts2(tch2.minor)+ts2(tch2.spec)) * ((game.students||300) / 150); 
         let upkeep = SCHOOL_LEVELS[game.levelIdx].upkeep * getScaleFactor() * (hasExpert('e2')?0.85:1);
         document.getElementById('ui-salary').innerText = `常耗:-${Math.floor(totalSal + upkeep)} 专家:-${exUpkeep}`;
 
-        document.getElementById('tch-main').innerText = TEACHER_TIERS[game.teachers.main].name;
-        document.getElementById('tch-minor').innerText = TEACHER_TIERS[game.teachers.minor].name;
-        document.getElementById('tch-spec').innerText = TEACHER_TIERS[game.teachers.spec].name;
-
-        // 拉赞助预期金额（随等级和社会关系动态更新）
-        let spoEl = document.getElementById('gain-spo');
-        if(spoEl) {
-            let base = [50, 100, 200, 400, 800][game.levelIdx] || 50;
-            initSocialRelations();
-            let socialBonus = Math.floor(((game.social.govRelations.local + game.social.govRelations.media) / 200) * base * 0.6);
-            spoEl.innerText = base + socialBonus;
-        }
+        let tn=(i)=>(TEACHER_TIERS[i]||TEACHER_TIERS[0]).name; let th=game.teachers||{};
+        document.getElementById('tch-main').innerText = tn(th.main);
+        document.getElementById('tch-minor').innerText = tn(th.minor);
+        document.getElementById('tch-spec').innerText = tn(th.spec);
     }
 
     // ================= 升级弹窗重构 =================
@@ -2366,13 +1863,7 @@
         `;
         let canUp = game.reputation>=next.reqRep && game.funds>=next.reqFunds && game.grade>=next.reqGrade;
         let btns = [{text:"继续努力", action:()=>{}}];
-        if(canUp) btns.push({text:"确认晋升！", action:()=>{ 
-            game.levelIdx++; 
-            game.maxAp += 5; // 每次升级AP上限+5
-            game.ap = Math.min(game.maxAp, game.ap + 5);
-            log(`🎉 晋升为【${next.name}】！AP上限+5，现为${game.maxAp}`); 
-            updateUI(); 
-        }});
+        if(canUp) btns.push({text:"确认晋升！", action:()=>{ game.levelIdx++; log(`晋升为【${next.name}】！`); updateUI(); }});
         showCustomModal(`申请晋升：${next.name}`, html, btns);
     }
 
@@ -2514,131 +2005,10 @@
         stuBox.innerHTML += `<div>👉 ${sLog}</div>`;
         stuBox.scrollTop = stuBox.scrollHeight;
 
-        // 即时崩溃检测
-        if(stuGame.stress >= 100) {
-            stuGame.active = false;
-            showCustomModal("💀 精神崩溃", 
-                `<div style="text-align:center;padding:10px;">
-                    <div style="font-size:3rem;">🧠💥</div>
-                    <p style="color:#ef4444;font-weight:bold;">精神压力突破极限！</p>
-                    <p>在一次高强度学习后，你的学生当场崩溃。高中三年的努力戛然而止。</p>
-                </div>`,
-                [{text:"结束本次人生", action:()=>{
-                    stuGame = { active:false, year:1, month:1, turn:1, grade:40, stress:0, fit:40, art:40, talent:[], family:'', money:0, crushes:{}, lover:false, loverName:'', friends:[], examScore:0, energy:100, maxEnergy:100, olympiadProgress:0, isInsured:false };
-                    switchMode('principal');
-                }}]);
-            return;
-        }
-        updateStuUI(); 
+        stuGame.turn++; updateStuUI(); 
     }
     
-    function endStudentMonth() {
-        if(!stuGame.active) return;
-        // 被动精力与光环（独立于校长系统）
-        stuGame.maxEnergy = hasPolicy('D5') ? 120 : 100;
-        stuGame.energy = stuGame.maxEnergy;
-        if(hasPolicy('A1')) stuGame.stress += 5;
-        if(stuGame.lover) stuGame.energy += 30;
-        stuGame.friends.forEach(fid => { let f = FRIENDS.find(x=>x.id===fid); if(f) f.eff(); });
-
-        stuGame.turn++;
-        stuGame.month++;
-        if(stuGame.month > 12) { stuGame.month = 1; stuGame.year++; }
-
-        // 压力溢出检测（崩溃结局）
-        if(stuGame.stress >= 100) {
-            stuGame.active = false;
-            showCustomModal("💀 精神崩溃", 
-                `<div style="text-align:center;padding:10px;">
-                    <div style="font-size:3rem;">🧠💥</div>
-                    <p style="color:#ef4444;font-weight:bold;font-size:1.2rem;">精神压力突破极限！</p>
-                    <p>你的学生长期承受巨大压力，最终在某个深夜彻底崩溃。<br>高中三年的梦想与挣扎，就此画上句号。</p>
-                    <p style="color:#94a3b8;font-size:0.85rem;">学业分数归零，无法参加高考。<br>请好好照顾学生的心理健康。</p>
-                </div>`,
-                [{text:"结束本次人生", action:()=>{
-                    stuGame = { active:false, year:1, month:1, turn:1, grade:40, stress:0, fit:40, art:40, talent:[], family:'', money:0, crushes:{}, lover:false, loverName:'', friends:[], examScore:0, energy:100, maxEnergy:100, olympiadProgress:0, isInsured:false };
-                    document.getElementById('principal-container').style.display='grid';
-                    document.getElementById('student-container').style.display='none';
-                    updateUI();
-                }}]);
-            return;
-        }
-
-        // 自动计算学生联考
-        if(stuGame.month === 3 || stuGame.month === 6 || stuGame.month === 11) {
-            let base = stuGame.grade * 5 + stuGame.art * 2 + stuGame.fit * 1;
-            if(stuGame.isInsured) base = 750;
-            let rand = Math.random() * 30;
-            stuGame.examScore = Math.min(750, Math.floor(base + rand));
-            let rank = Math.max(1, Math.floor(1000 - stuGame.examScore));
-            document.getElementById('stu-exam-score').innerText = stuGame.examScore;
-            document.getElementById('stu-exam-rank').innerText = `全校排名: ${rank}`;
-            let stuBox = document.getElementById('stu-log-box');
-            if(stuBox) stuBox.innerHTML = `<div style="color:#2563eb;">📅 联考结束，你的分数: <b>${stuGame.examScore}</b>/750 (排名${rank})</div>` + stuBox.innerHTML;
-        }
-
-        // 高三压力递增系统（独立）
-        let stuYearNum = Math.ceil(stuGame.turn / 12);
-        if(stuYearNum >= 3 && !stuGame.seniorStarted) {
-            stuGame.seniorStarted = true;
-            stuGame.seniorCountdown = 12;
-            showCustomModal("⚡ 高三冲刺开始！", `<div style="text-align:center;"><div style="font-size:3rem;">🎓</div>
-                <p>距离高考还有 <b style="color:var(--danger);font-size:1.5rem;">12</b> 个月！</p>
-                <p style="color:#ef4444;font-weight:bold;">从现在起，每月压力递增。请慎重分配精力！</p></div>`,
-                [{text:"冲！绝不退缩！", action:()=>{stuGame.stress+=10; showToast("压力+10，意志如铁！");}}]);
-        }
-        if(stuGame.seniorStarted && stuGame.seniorCountdown > 0) {
-            stuGame.seniorCountdown = Math.max(0, (stuGame.seniorCountdown||0) - 1);
-            let pressureGain = 3 + (12 - stuGame.seniorCountdown) * 1.5;
-            stuGame.stress = Math.min(100, stuGame.stress + Math.floor(pressureGain));
-            let rankEl = document.getElementById('stu-exam-rank');
-            if(rankEl) rankEl.innerText = `⏳ 距高考：${stuGame.seniorCountdown} 个月 | 本月压力+${Math.floor(pressureGain)}`;
-
-            // 崩溃警告事件
-            if(stuGame.stress >= 85 && Math.random() < 0.25) {
-                let events = [
-                    { title:"🚨 精神崩溃警报", desc:"你感觉自己快要撑不住了……", opt1:"咬牙继续（学业+5，压力+15）", opt2:"找老师倾诉（压力-20，学业-3）",
-                      eff1:()=>{stuGame.grade+=5;stuGame.stress+=15;}, eff2:()=>{stuGame.stress-=20;stuGame.grade-=3;} },
-                    { title:"😰 想要放弃高考", desc:"你内心开始质疑这一切的意义……", opt1:"强迫自己（压力+20，学业+3）", opt2:"和父母聊聊（压力-15，学业-5）",
-                      eff1:()=>{stuGame.stress+=20;stuGame.grade+=3;}, eff2:()=>{stuGame.stress-=15;stuGame.grade-=5;} }
-                ];
-                let ev = events[Math.floor(Math.random()*events.length)];
-                showCustomModal(ev.title, `<p>${ev.desc}</p><p style="color:#ef4444;">当前压力：${stuGame.stress}/100</p>`,
-                    [{text:ev.opt1, action:()=>{ev.eff1(); updateStuUI();}},
-                     {text:ev.opt2, action:()=>{ev.eff2(); updateStuUI();}}]);
-                return;
-            }
-        }
-
-        // 学生随机小事件
-        if(Math.random() < 0.12) {
-            let evs = [
-                {t:"🎒 校园奇遇", d:"捡到一本五三真题秘籍！", ops:[{text:"疯狂内卷",action:()=>{stuGame.grade+=10;stuGame.stress+=20;updateStuUI();}},{text:"拿去卖废品",action:()=>{stuGame.money+=50;updateStuUI();}}]},
-                {t:"👀 被老师单独辅导", d:"任课老师发现你的潜力！", ops:[{text:"认真听讲",action:()=>{stuGame.grade+=8;updateStuUI();}},{text:"敷衍了事",action:()=>{stuGame.stress-=5;updateStuUI();}}]},
-                {t:"🎮 同学邀你打游戏", d:"宿舍室友拉你开黑一局……", ops:[{text:"陪玩一局",action:()=>{stuGame.stress-=15;stuGame.grade-=3;updateStuUI();}},{text:"婉言拒绝",action:()=>{stuGame.grade+=2;updateStuUI();}}]}
-            ];
-            let ev = evs[Math.floor(Math.random()*evs.length)];
-            showCustomModal(ev.t, ev.d, ev.ops);
-            return;
-        }
-
-        // 高考结局
-        if(stuGame.turn > 36) {
-            stuGame.active = false;
-            let score = stuGame.examScore;
-            let ending = score>=700?"清北录取，桃李满天下！":score>=600?"985录取，前程似锦！":score>=550?"211录取，稳步前行。":score>=450?"本科录取，继续加油。":"未达本科线，人生路还长。";
-            showCustomModal("🎓 高考揭晓",
-                `<div style="text-align:center;"><div style="font-size:3rem;">🎓</div>
-                 <div style="font-size:2rem;font-weight:bold;color:#2563eb;">${score}<span style="font-size:1rem;">/750</span></div>
-                 <div style="font-size:1.1rem;margin:10px 0;">${ending}</div>
-                 ${stuGame.lover?`<p style="color:#db2777;">💕 与${stuGame.loverName}一起迎接新人生。</p>`:''}
-                 </div>`,
-                [{text:"返回校长视角", action:()=>{ document.getElementById('principal-container').style.display='grid'; document.getElementById('student-container').style.display='none'; updateUI(); }}]);
-            return;
-        }
-
-        updateStuUI();
-    }
+    function endStudentMonth() { advanceMonth(); }
 
     function updateStuUI() { 
         document.getElementById('stu-val-grade').innerText = stuGame.grade; 
@@ -3034,7 +2404,8 @@
         
         let upline = total - t_fail;
         let uplinePct = Math.floor(upline/total*100);
-        // 模拟阅卷不加声誉，只给教研点和数据分析
+        let repGain = Math.floor(t_qb * 2 + t_985 * 1 + uplinePct * 0.5);
+        game.reputation += repGain;
         
         let html = `
         <div class="chart-container" style="width:100%;">
@@ -3045,11 +2416,11 @@
             <div class="chart-col"><div class="chart-bar" style="background:#f59e0b; height:${Math.max(2, (t_zk/total)*150)}px;">${t_zk}</div><div class="chart-label">二本</div></div>
             <div class="chart-col"><div class="chart-bar" style="background:#64748b; height:${Math.max(2, (t_fail/total)*150)}px;">${t_fail}</div><div class="chart-label">落榜</div></div>
         </div>
-        <p style="text-align:center;">教研点 +3 | 上线率: ${uplinePct}%（模拟考不计入声誉）</p>
+        <p style="text-align:center;">教研点 +3 | 上线率: ${uplinePct}% | 声誉 +${repGain}</p>
         `;
         
         showCustomModal("📊 全校模拟考六档分析", html, [{text:"确认归档", action:updateUI}]);
-        log(`举办模考，清北 ${t_qb} 人，一本上线 ${t_bk+t_211+t_985+t_qb} 人`); 
+        log(`举办模考，清北 ${t_qb} 人，一本上线 ${t_bk+t_211+t_985+t_qb} 人，声誉+${repGain}`); 
         updateUI();
     }
 
@@ -3300,7 +2671,7 @@
             </div>`;
         }
         html += '</div>';
-        showCustomModal(`${mode==='student'?'👨‍🎓 学生生涯':'🏫 校长生涯'} · 结局评价`, html, [{text:'铭记于心', action:()=>{ showEndPoem(); }}]);
+        showCustomModal(`${mode==='student'?'👨‍🎓 学生生涯':'🏫 校长生涯'} · 结局评价`, html, [{text:'铭记于心', action:()=>{}}]);
     }
 
     function generateAlumniVisit() {
@@ -3380,38 +2751,56 @@
     }
     
     function runAction(t) {
-        if(t==='sponsor') { 
-            if(payCost(4,0)) { 
-                initSocialRelations();
-                let base = [50, 100, 200, 400, 800][game.levelIdx] || 50;
-                let socialBonus = Math.floor(((game.social.govRelations.local + game.social.govRelations.media) / 200) * base * 0.6);
-                let total = base + socialBonus;
-                game.funds += total; 
-                game.reputation -= 20; 
-                log(`🤝 拉赞助获得 ￥${total}万（基础${base}+社会关系+${socialBonus}）`); 
-                updateUI(); 
-            } 
-        }
+        if(t==='sponsor') { if(payCost(4,0)) { game.funds+=50; game.reputation-=20; log("拉赞助+50万"); updateUI(); } }
     }
 
     // =========== 社会关系系统 ===========
     function initSocialRelations() {
-        if(!game.social) game.social = {
-            teacherFactions: { young: 50, old: 50, reform: 50 },
-            govRelations: { local: 50, edu_bureau: 45, media: 30 },
-            communityRel: 40,
-            principals: [],
-            lastInspection: -12,
-            inspectionWarned: false,
-            monthlyTargets: [],
-            targetGenMonth: -1
+        if(!game || typeof game !== 'object') return; // 游戏未初始化
+        if(!game.social) game.social = {};
+        let s = game.social;
+        // 强制补全所有缺失字段，兼容旧存档
+        if(!s.teacherFactions || typeof s.teacherFactions !== 'object') s.teacherFactions = { young: 50, old: 50, reform: 50 };
+        if(typeof s.teacherFactions.young !== 'number') s.teacherFactions.young = 50;
+        if(typeof s.teacherFactions.old !== 'number') s.teacherFactions.old = 50;
+        if(typeof s.teacherFactions.reform !== 'number') s.teacherFactions.reform = 50;
+        if(!s.govRelations || typeof s.govRelations !== 'object') s.govRelations = { local: 30, edu_bureau: 30, media: 20 };
+        if(typeof s.govRelations.local !== 'number') s.govRelations.local = 30;
+        if(typeof s.govRelations.edu_bureau !== 'number') s.govRelations.edu_bureau = 30;
+        if(typeof s.govRelations.media !== 'number') s.govRelations.media = 20;
+        if(typeof s.communityRel !== 'number') s.communityRel = 40;
+        if(!Array.isArray(s.principals)) s.principals = [];
+        if(typeof s.lastInspection !== 'number') s.lastInspection = -12;
+        if(typeof s.inspectionWarned !== 'boolean') s.inspectionWarned = false;
+        if(!Array.isArray(s.monthlyTargets)) s.monthlyTargets = [];
+        if(typeof s.targetGenMonth !== 'number') s.targetGenMonth = -1;
+    }
+
+    // 社会关系行动花费随等级提升（等级0-4）
+    function getSocialCosts() {
+        let lv = Math.min(4, Math.max(0, game.levelIdx || 0));
+        return {
+            teacher_ap: 1 + lv,
+            gov_gift:          [10, 25,  50, 100, 200][lv],
+            media_pr:          [ 5, 12,  25,  50, 100][lv],
+            inspect_sample:    [ 8, 20,  40,  80, 150][lv],
+            inspect_bribe:     [15, 40,  80, 150, 300][lv],
+            community_event:   [ 3,  8,  15,  30,  60][lv],
+            principal_forum_ap:[ 2,  2,   3,   3,   4][lv],
+            principal_compete: [20, 50, 100, 200, 400][lv]
         };
     }
 
     function showSocialWindow() {
+        if(!game || !game.year) return showToast("请先开始游戏");
         initSocialRelations();
         let s = game.social;
-        let html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+        let c = getSocialCosts();
+        let lvName = ['乡镇','县级','市级','省级','顶尖'][game.levelIdx||0];
+        let html = `<div style="margin-bottom:10px;background:#1e293b;color:#94a3b8;border-radius:6px;padding:6px 12px;font-size:0.75rem;">
+            当前学校等级：<b style="color:#f59e0b">${lvName}</b> — 花费随等级动态调整
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
         
         <!-- 教师派系 -->
         <div style="background:#f8fafc;border-radius:10px;padding:15px;border-left:4px solid #8b5cf6;">
@@ -3419,16 +2808,16 @@
             ${[['young','🌱 年轻改革派','#10b981'],['old','📚 保守传统派','#6366f1'],['reform','⚡ 激进改革派','#f59e0b']].map(([k,name,color])=>`
             <div style="margin-bottom:10px;">
                 <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-                    <span>${name}</span><b style="color:${color};">${s.teacherFactions[k]}/100</b>
+                    <span>${name}</span><b style="color:${color};">${Math.floor(s.teacherFactions[k])}/100</b>
                 </div>
                 <div style="background:#e2e8f0;height:6px;border-radius:3px;overflow:hidden;">
-                    <div style="background:${color};height:100%;width:${s.teacherFactions[k]}%;"></div>
+                    <div style="background:${color};height:100%;width:${Math.min(100,s.teacherFactions[k])}%;"></div>
                 </div>
             </div>`).join('')}
             <div style="display:flex;gap:5px;flex-wrap:wrap;">
-                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('teacher_young')">支持年轻派 (AP:1)</button>
-                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('teacher_old')">安抚传统派 (AP:1)</button>
-                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('teacher_reform')">激励改革派 (AP:1)</button>
+                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('teacher_young')">支持年轻派 (AP:${c.teacher_ap} ￥${[5,10,25,75,200][game.levelIdx||0]}万)</button>
+                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('teacher_old')">安抚传统派 (AP:${c.teacher_ap} ￥${[5,10,25,75,200][game.levelIdx||0]}万)</button>
+                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('teacher_reform')">激励改革派 (AP:${c.teacher_ap} ￥${[5,10,25,75,200][game.levelIdx||0]}万)</button>
                 <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('teacher_gossip')">🕵 查看八卦</button>
             </div>
         </div>
@@ -3439,15 +2828,15 @@
             ${[['local','🏙️ 地方政府','#60a5fa'],['edu_bureau','📋 教育局','#818cf8'],['media','📡 媒体公关','#f472b6']].map(([k,name,color])=>`
             <div style="margin-bottom:10px;">
                 <div style="display:flex;justify-content:space-between;font-size:0.85rem;">
-                    <span>${name}</span><b style="color:${color};">${s.govRelations[k]}/100</b>
+                    <span>${name}</span><b style="color:${color};">${Math.floor(s.govRelations[k])}/100</b>
                 </div>
                 <div style="background:#e2e8f0;height:6px;border-radius:3px;overflow:hidden;">
-                    <div style="background:${color};height:100%;width:${s.govRelations[k]}%;"></div>
+                    <div style="background:${color};height:100%;width:${Math.min(100,s.govRelations[k])}%;"></div>
                 </div>
             </div>`).join('')}
             <div style="display:flex;gap:5px;flex-wrap:wrap;">
-                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('gov_gift')">送礼打点 (￥10万)</button>
-                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('media_pr')">媒体宣传 (￥5万)</button>
+                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('gov_gift')">送礼打点 (￥${c.gov_gift}万)</button>
+                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('media_pr')">媒体宣传 (￥${c.media_pr}万)</button>
                 <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('inspect_prep')">📋 备战视察</button>
             </div>
             <div style="margin-top:8px;background:#fff;border-radius:6px;padding:8px;font-size:0.78rem;color:#475569;">
@@ -3460,14 +2849,14 @@
             <h3 style="margin:0 0 10px;color:#065f46;">🏘️ 社区关系</h3>
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
                 <div style="flex:1;background:#e2e8f0;height:10px;border-radius:5px;overflow:hidden;">
-                    <div style="background:#10b981;height:100%;width:${s.communityRel}%;transition:0.3s;"></div>
+                    <div style="background:#10b981;height:100%;width:${Math.min(100,s.communityRel)}%;transition:0.3s;"></div>
                 </div>
-                <b style="color:#10b981;">${s.communityRel}/100</b>
+                <b style="color:#10b981;">${Math.floor(s.communityRel)}/100</b>
             </div>
             <p style="font-size:0.8rem;color:#475569;margin:0 0 8px;">${s.communityRel>=70?'社区居民积极支持，可获得志愿者资源和场地':s.communityRel>=40?'关系尚可，保持现状':s.communityRel>=20?'居民有抱怨，噪音/堵车问题频发':'居民强烈投诉，可能联名请愿要求搬迁'}</p>
             <div style="display:flex;gap:5px;flex-wrap:wrap;">
-                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('community_event')">🎪 开展社区活动 (￥3万)</button>
-                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('open_campus')">🏫 开放校园设施</button>
+                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('community_event')">🎪 开展社区活动 (￥${c.community_event}万)</button>
+                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('open_campus')">🏫 开放校园 (AP:1)</button>
             </div>
         </div>
 
@@ -3479,8 +2868,8 @@
                 ${(s.principals||[]).map(p=>`<div style="font-size:0.78rem;padding:4px 8px;background:${p.rel==='ally'?'#f0fdf4':'#fef2f2'};border-radius:4px;">${p.rel==='ally'?'🤝':'⚔️'} ${p.name} (${p.rel==='ally'?'同盟':'竞争'})</div>`).join('')||'<div style="color:#94a3b8;font-size:0.8rem;">尚未建立任何同行关系</div>'}
             </div>
             <div style="display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;">
-                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('principal_forum')">📣 参加校长论坛 (AP:20)</button>
-                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('principal_compete')">⚔️ 挖角竞争对手 (￥20万)</button>
+                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('principal_forum')">📣 校长论坛 (AP:${c.principal_forum_ap})</button>
+                <button class="btn" style="font-size:0.75rem;padding:5px 8px;" onclick="socialAct('principal_compete')">⚔️ 挖角竞争对手 (￥${c.principal_compete}万)</button>
             </div>
         </div>
         </div>`;
@@ -3488,11 +2877,36 @@
     }
 
     function socialAct(t) {
+        if(!game || !game.year) return showToast("请先开始游戏");
         initSocialRelations();
         let s = game.social;
-        if(t==='teacher_young') { if(!payCost(1,0)) return; s.teacherFactions.young=Math.min(100,s.teacherFactions.young+10); s.teacherFactions.old=Math.max(0,s.teacherFactions.old-5); game.grade+=1; showToast("年轻派支持！学业+1"); }
-        if(t==='teacher_old') { if(!payCost(1,0)) return; s.teacherFactions.old=Math.min(100,s.teacherFactions.old+10); s.teacherFactions.reform=Math.max(0,s.teacherFactions.reform-5); game.discipline+=2; showToast("传统派安抚！纪律+2"); }
-        if(t==='teacher_reform') { if(!payCost(1,0)) return; s.teacherFactions.reform=Math.min(100,s.teacherFactions.reform+10); s.teacherFactions.old=Math.max(0,s.teacherFactions.old-8); game.art+=2; showToast("改革派激励！艺术+2"); }
+        if(!s) return;
+        let lv = Math.min(4, Math.max(0, game.levelIdx || 0));
+        const costScale = [1, 2, 5, 15, 40][lv];
+        const baseFunds = (n) => n * costScale;
+        const c = getSocialCosts();
+        
+        if(t==='teacher_young') { 
+            if(!payCost(c.teacher_ap, baseFunds(5))) return; 
+            s.teacherFactions.young=Math.min(100,s.teacherFactions.young+10); 
+            s.teacherFactions.old=Math.max(0,s.teacherFactions.old-5); 
+            game.grade+=1; 
+            showToast(`年轻派支持！学业+1 (AP:${c.teacher_ap} ￥${baseFunds(5)}万)`); 
+        }
+        if(t==='teacher_old') { 
+            if(!payCost(c.teacher_ap, baseFunds(5))) return; 
+            s.teacherFactions.old=Math.min(100,s.teacherFactions.old+10); 
+            s.teacherFactions.reform=Math.max(0,s.teacherFactions.reform-5); 
+            game.discipline+=2; 
+            showToast(`传统派安抚！纪律+2 (AP:${c.teacher_ap} ￥${baseFunds(5)}万)`); 
+        }
+        if(t==='teacher_reform') { 
+            if(!payCost(c.teacher_ap, baseFunds(5))) return; 
+            s.teacherFactions.reform=Math.min(100,s.teacherFactions.reform+10); 
+            s.teacherFactions.old=Math.max(0,s.teacherFactions.old-8); 
+            game.art+=2; 
+            showToast(`改革派激励！艺术+2 (AP:${c.teacher_ap} ￥${baseFunds(5)}万)`); 
+        }
         if(t==='teacher_gossip') {
             let gossips = [
                 `"听说${s.teacherFactions.young>60?'年轻的王老师要去私立学校了':'传统派的赵老师在偷偷兼职培训机构'}"`,
@@ -3501,37 +2915,51 @@
                 `"有老师说要集体请假去参加教育局的什么座谈会，说是为了'维权'"`,
                 `"年级组长跟教务主任不对付，排课表时有意把对方不喜欢的班排在早8点。"`
             ];
-            showCustomModal("🕵️ 教师八卦圈", gossips[Math.floor(Math.random()*gossips.length)], [{text:'当没听见',action:()=>{}},{text:'干预调解',action:()=>{s.teacherFactions.young=Math.min(100,s.teacherFactions.young+5);s.teacherFactions.old=Math.min(100,s.teacherFactions.old+5);showToast("调解成功！");}}]);
+            showCustomModal("🕵️ 教师八卦圈", gossips[Math.floor(Math.random()*gossips.length)], [
+                {text:'当没听见',action:()=>{}},
+                {text:`干预调解 (￥${baseFunds(3)}万)`,action:()=>{if(payCost(0,baseFunds(3))){s.teacherFactions.young=Math.min(100,s.teacherFactions.young+5);s.teacherFactions.old=Math.min(100,s.teacherFactions.old+5);showToast("调解成功！");}}}
+            ]);
             return;
         }
-        if(t==='gov_gift') { if(!payCost(0,10)) return; s.govRelations.local=Math.min(100,s.govRelations.local+12); s.govRelations.edu_bureau=Math.min(100,s.govRelations.edu_bureau+8); showToast("关系打点！政府好感+12"); }
-        if(t==='media_pr') { if(!payCost(0,5)) return; s.govRelations.media=Math.min(100,s.govRelations.media+15); game.reputation+=20; showToast("媒体宣传！声誉+20"); }
+        if(t==='gov_gift') { 
+            if(!payCost(0, c.gov_gift)) return; 
+            s.govRelations.local=Math.min(100,s.govRelations.local+12); 
+            s.govRelations.edu_bureau=Math.min(100,s.govRelations.edu_bureau+8); 
+            showToast(`关系打点！政府好感+12 (花费 ￥${c.gov_gift}万)`); 
+        }
+        if(t==='media_pr') { 
+            if(!payCost(0, c.media_pr)) return; 
+            s.govRelations.media=Math.min(100,s.govRelations.media+15); 
+            game.reputation+=20; 
+            showToast(`媒体宣传！声誉+20 (花费 ￥${c.media_pr}万)`); 
+        }
         if(t==='inspect_prep') { 
-            showCustomModal("📋 视察应对方案", `距上次视察已过 ${game.year*12+game.month-(s.lastInspection||0)} 个月。\n\n选择应对策略：`, [
-                {text:"🎭 精心布置样板课 (￥8万)", action:()=>{ if(payCost(0,8)){s.govRelations.edu_bureau=Math.min(100,s.govRelations.edu_bureau+20); showToast("完美应对！教育局+20");} }},
-                {text:"💰 直接打点关键官员 (￥15万)", action:()=>{ if(payCost(0,15)){s.govRelations.edu_bureau=Math.min(100,s.govRelations.edu_bureau+35); showToast("银弹外交！教育局+35");} }},
+            showCustomModal("📋 视察应对方案", `学校等级：${['乡镇','县级','市级','省级','全国'][lv]}（花费系数×${costScale}）\n选择应对策略：`, [
+                {text:`🎭 精心布置样板课 (￥${c.inspect_sample}万)`, action:()=>{ if(payCost(0,c.inspect_sample)){s.govRelations.edu_bureau=Math.min(100,s.govRelations.edu_bureau+20); showToast("完美应对！教育局+20");} }},
+                {text:`💰 直接打点关键官员 (￥${c.inspect_bribe}万)`, action:()=>{ if(payCost(0,c.inspect_bribe)){s.govRelations.edu_bureau=Math.min(100,s.govRelations.edu_bureau+35); showToast("银弹外交！教育局+35");} }},
                 {text:"😤 硬抗，展示真实水平", action:()=>{ let pass=game.grade>=60&&game.reputation>=500; s.govRelations.edu_bureau+=pass?10:-15; showToast(pass?"真实力通过！":"实力不足被批评！"); }}
             ]);
             return;
         }
-        if(t==='community_event') { if(!payCost(0,3)) return; s.communityRel=Math.min(100,s.communityRel+15); game.reputation+=10; showToast("社区活动圆满！声誉+10"); }
-        if(t==='open_campus') { s.communityRel=Math.min(100,s.communityRel+8); game.fitness+=1; showToast("开放校园！社区关系+8"); }
+        if(t==='community_event') { 
+            if(!payCost(0, c.community_event)) return; 
+            s.communityRel=Math.min(100,s.communityRel+15); 
+            game.reputation+=10; 
+            showToast(`社区活动圆满！声誉+10 (花费 ￥${c.community_event}万)`); 
+        }
+        if(t==='open_campus') { if(!payCost(1,0)) return; s.communityRel=Math.min(100,s.communityRel+8); game.fitness+=1; showToast("开放校园！社区关系+8"); }
         if(t==='principal_forum') { 
-            if(!payCost(20,0)) return;
-            const SCHOOL_POOL = ['市一中校长','省实验校长','重点附中校长','市示范高中校长','省重点中学校长','区优质高中校长','市教育集团校长','省属中学校长','市新锐名校校长','区双语学校校长'];
-            let existing = (s.principals||[]).map(p=>p.name);
-            let available = SCHOOL_POOL.filter(name => !existing.includes(name));
-            if(!available.length) { showToast("已认识所有可结识的校长！"); return; }
-            let newName = available[Math.floor(Math.random()*available.length)];
-            let newSchool = {name: newName, rel:'neutral'};
-            if(!s.principals) s.principals=[];
-            s.principals.push(newSchool); game.reputation+=10;
-            showToast(`结识了 ${newSchool.name}！声誉+10`);
+            if(!payCost(c.principal_forum_ap, baseFunds(2))) return;
+            let names = ['市一中校长','省实验校长','重点附中校长','私立名校总裁','区教育局副局长'];
+            let newSchool = {name: names[Math.floor(Math.random()*names.length)], rel:'neutral'};
+            if(!Array.isArray(s.principals)) s.principals=[];
+            s.principals.push(newSchool); game.reputation+=15+lv*10;
+            showToast(`结识了 ${newSchool.name}！声誉+${15+lv*10}`);
         }
         if(t==='principal_compete') { 
-            if(!payCost(0,20)) return;
+            if(!payCost(0, c.principal_compete)) return;
             game.grade+=5; game.students=Math.min(10000,game.students+100);
-            showToast("成功挖走竞争对手的名师！学业+5，生源+100");
+            showToast(`成功挖走竞争对手的名师！学业+5，生源+100 (花费 ￥${c.principal_compete}万)`);
         }
         updateUI();
         showSocialWindow();
@@ -3539,44 +2967,58 @@
 
     // =========== 月度目标系统 ===========
     const TARGET_TEMPLATES = [
-        {type:'teach',  icon:'📚', gen:()=>{ let tgt=Math.floor(game.grade+10); return {desc:`将学业提升至 ${tgt} 以上`, check:(snap)=>game.grade>=snap.gradeTarget, snap:{gradeTarget:tgt}, reward:{rep:50,edu:5}, difficulty:'简单'}; }},
-        {type:'build',  icon:'🏗️', gen:()=>{ let tgt=game.map.filter(x=>x).length+1; return {desc:'本月新建或升级一座建筑', check:(snap)=>game.map.filter(x=>x).length>=snap.buildTarget, snap:{buildTarget:tgt}, reward:{rep:30,funds:5}, difficulty:'简单'}; }},
-        {type:'expert', icon:'👨‍🏫', gen:()=>{ let tgt=game.unlockedExperts.length+1; return {desc:'招募一位新专家', check:(snap)=>game.unlockedExperts.length>=snap.expertTarget, snap:{expertTarget:tgt}, reward:{rep:60,edu:8}, difficulty:'中等'}; }},
-        {type:'funds',  icon:'💰', gen:()=>{ let tgt=Math.floor(game.funds+50); return {desc:`资金积累到 ${tgt} 万以上`, check:(snap)=>game.funds>=snap.fundsTarget, snap:{fundsTarget:tgt}, reward:{rep:40,funds:20}, difficulty:'中等'}; }},
-        {type:'rep',    icon:'⭐', gen:()=>{ let tgt=Math.floor(game.reputation+200); return {desc:`声誉突破 ${tgt} 点`, check:(snap)=>game.reputation>=snap.repTarget, snap:{repTarget:tgt}, reward:{rep:80,edu:10}, difficulty:'困难'}; }},
-        {type:'stress', icon:'😌', gen:()=>{ let tgt=Math.max(20,Math.floor(game.stress-20)); return {desc:`将全校压力降低至 ${tgt} 以下`, check:(snap)=>game.stress<=snap.stressTarget, snap:{stressTarget:tgt}, reward:{rep:50,funds:10}, difficulty:'中等'}; }},
-        {type:'battle', icon:'⚔️', gen:()=>{ let tgt=game.examPoints+5; return {desc:'赢得一场联考战斗（联考积分+5）', check:(snap)=>game.examPoints>=snap.examTarget, snap:{examTarget:tgt}, reward:{rep:100,edu:15}, difficulty:'困难'}; }}
+        {type:'teach',  icon:'📚', gen:()=>({desc:`将学业提升至 ${Math.floor(game.grade+10)} 以上`, check:()=>game.grade>=(game.grade+10), reward:{rep:50,edu:5}, difficulty:'简单'})},
+        {type:'build',  icon:'🏗️', gen:()=>({desc:'本月新建或升级一座建筑', check:()=>true, reward:{rep:30,funds:5}, difficulty:'简单'})},
+        {type:'expert', icon:'👨‍🏫', gen:()=>({desc:'招募一位新专家', check:()=>true, reward:{rep:60,edu:8}, difficulty:'中等'})},
+        {type:'funds',  icon:'💰', gen:()=>({desc:`资金积累到 ${Math.floor(game.funds+50)} 万以上`, check:()=>game.funds>=(game.funds+50), reward:{rep:40,funds:20}, difficulty:'中等'})},
+        {type:'rep',    icon:'⭐', gen:()=>({desc:`声誉突破 ${Math.floor(game.reputation+200)} 点`, check:()=>game.reputation>=(game.reputation+200), reward:{rep:80,edu:10}, difficulty:'困难'})},
+        {type:'stress', icon:'😌', gen:()=>({desc:`将全校压力降低至 ${Math.max(20,Math.floor(game.stress-20))} 以下`, check:()=>game.stress<=Math.max(20,game.stress-20), reward:{rep:50,funds:10}, difficulty:'中等'})},
+        {type:'battle', icon:'⚔️', gen:()=>({desc:'赢得一场联考战斗', check:()=>game.examPoints>=(game.examPoints+5), reward:{rep:100,edu:15}, difficulty:'困难'})}
     ];
 
     function generateMonthlyTargets() {
+        if(!game || typeof game !== 'object') return;
         initSocialRelations();
-        if(game.social.targetGenMonth === game.month) return;
-        game.social.targetGenMonth = game.month;
+        if(!game.social) return;
+        let s = game.social;
+        if(s.targetGenMonth === game.month) return;
+        s.targetGenMonth = game.month;
         let count = 3 + Math.floor(Math.random()*3);
         let shuffled = [...TARGET_TEMPLATES].sort(()=>Math.random()-0.5).slice(0,count);
-        game.social.monthlyTargets = shuffled.map(t=>{
-            let g = t.gen();
-            return { icon:t.icon, desc:g.desc, reward:g.reward, difficulty:g.difficulty, snap:g.snap, check:g.check, done:false, failed:false };
+        s.monthlyTargets = shuffled.map(t=>{
+            try {
+                let g = t.gen();
+                return { icon:t.icon, desc:g.desc, reward:g.reward, difficulty:g.difficulty, done:false, failed:false };
+            } catch(e) {
+                return { icon:t.icon, desc:'完成本月任务', reward:{rep:30}, difficulty:'简单', done:false, failed:false };
+            }
         });
     }
 
     function showMonthlyTargets() {
+        if(!game || !game.year) return showCustomModal("🎯 月度目标","请先开始游戏！",[{text:'好的',action:()=>{}}]);
         initSocialRelations();
+        if(!game.social) return showToast("请先开始游戏");
         generateMonthlyTargets();
-        let targets = game.social.monthlyTargets || [];
+        let targets = Array.isArray(game.social.monthlyTargets) ? game.social.monthlyTargets : [];
         let diffColor = {简单:'#10b981',中等:'#f59e0b',困难:'#ef4444'};
         let html = `<p style="color:#475569;font-size:0.85rem;margin-top:0;">完成目标获得奖励，放弃目标声誉-10。</p>
         <div style="display:flex;flex-direction:column;gap:10px;">`;
+        if(targets.length === 0) {
+            html += `<div style="color:#94a3b8;text-align:center;padding:20px;">本月暂无目标，下月自动刷新</div>`;
+        }
         targets.forEach((t,i)=>{
+            if(!t) return;
             let status = t.done?'✅ 已完成':t.failed?'❌ 已放弃':'⏳ 进行中';
             let statusColor = t.done?'#10b981':t.failed?'#ef4444':'#f59e0b';
+            let reward = t.reward || {};
             html += `<div style="background:#f8fafc;border-radius:8px;padding:12px;border-left:4px solid ${diffColor[t.difficulty]||'#cbd5e1'};">
                 <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <span style="font-size:1.2rem;">${t.icon}</span>
-                    <span style="font-size:0.7rem;background:${diffColor[t.difficulty]};color:white;padding:2px 6px;border-radius:4px;">${t.difficulty}</span>
+                    <span style="font-size:1.2rem;">${t.icon||'🎯'}</span>
+                    <span style="font-size:0.7rem;background:${diffColor[t.difficulty]||'#94a3b8'};color:white;padding:2px 6px;border-radius:4px;">${t.difficulty||'普通'}</span>
                 </div>
-                <div style="font-size:0.88rem;color:#1e293b;margin:5px 0;">${t.desc}</div>
-                <div style="font-size:0.75rem;color:#64748b;">奖励：声誉+${t.reward.rep||0} ${t.reward.edu?'教研点+'+t.reward.edu:''} ${t.reward.funds?'资金+'+t.reward.funds+'万':''}</div>
+                <div style="font-size:0.88rem;color:#1e293b;margin:5px 0;">${t.desc||'完成本月任务'}</div>
+                <div style="font-size:0.75rem;color:#64748b;">奖励：声誉+${reward.rep||0} ${reward.edu?'教研点+'+reward.edu:''} ${reward.funds?'资金+'+reward.funds+'万':''}</div>
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
                     <span style="font-size:0.75rem;color:${statusColor};font-weight:bold;">${status}</span>
                     ${!t.done&&!t.failed?`<div style="display:flex;gap:5px;">
@@ -3591,21 +3033,21 @@
     }
 
     function claimTarget(i) {
+        if(!game.social || !Array.isArray(game.social.monthlyTargets)) return;
         let t = game.social.monthlyTargets[i];
-        if(t.done||t.failed) return showToast("该目标已处理");
-        // 检查条件是否真正满足
-        let met = false;
-        try { met = t.check ? t.check(t.snap||{}) : false; } catch(e) { met = false; }
-        if(!met) return showToast("⚠️ 目标条件尚未达成，无法领取！");
+        if(!t || t.done || t.failed) return showToast("该目标已处理");
         t.done = true;
-        if(t.reward.rep) game.reputation += t.reward.rep;
-        if(t.reward.edu) game.eduPoints += t.reward.edu;
-        if(t.reward.funds) game.funds += t.reward.funds;
-        showToast(`🎉 目标完成！声誉+${t.reward.rep||0}`);
+        let r = t.reward || {};
+        if(r.rep) game.reputation += r.rep;
+        if(r.edu) game.eduPoints += r.edu;
+        if(r.funds) game.funds += r.funds;
+        showToast(`🎉 目标完成！声誉+${r.rep||0}`);
         updateUI(); showMonthlyTargets();
     }
     function abandonTarget(i) {
+        if(!game.social || !Array.isArray(game.social.monthlyTargets)) return;
         let t = game.social.monthlyTargets[i];
+        if(!t) return;
         t.failed = true; game.reputation = Math.max(0, game.reputation-10);
         showToast("放弃目标，声誉-10"); updateUI(); showMonthlyTargets();
     }
@@ -3620,7 +3062,8 @@
     ];
 
     function showOlympiadSystem() {
-        if(game.levelIdx < 3) return showCustomModal("🔒 竞赛系统","该系统需要学校达到【省级名校】才可解锁。继续努力！",[{text:'明白',action:()=>{}}]);
+        if(!game || !game.year) return showCustomModal("🔒 竞赛系统","请先开始游戏！",[{text:'好的',action:()=>{}}]);
+        if((game.levelIdx||0) < 3) return showCustomModal("🔒 竞赛系统","该系统需要学校达到【省级名校】才可解锁。继续努力！",[{text:'明白',action:()=>{}}]);
         if(!game.olympiadData) game.olympiadData = {
             squads: {math:{level:0,trained:false},physics:{level:0,trained:false},chem:{level:0,trained:false},bio:{level:0,trained:false},info:{level:0,trained:false}},
             medals: {gold:0,silver:0,bronze:0},
@@ -3858,7 +3301,7 @@
     function upgradeTeacher(k) { if(game.teachers[k]<2 && payCost(0,50)) { game.teachers[k]++; updateUI(); } }
     function triggerGaokao() { 
         let total = game.students;
-        let baseScore = Math.min(750, game.grade * 6.5 + 120 + Math.random() * 30 - 15);
+        let baseScore = game.grade * 6.5 + 120 + Math.random() * 30 - 15;
         game.lastGaokaoAvg = Math.floor(baseScore);
         
         let t_qb = Math.floor(total * (baseScore > 680 ? (baseScore-680)/350 : 0)); 
@@ -3909,317 +3352,21 @@
         
         log(`🎓 ${game.year}年高考揭晓！均分${game.lastGaokaoAvg}，清北${t_qb}人，上线率${uplinePct}%，声誉+${repGain}`, "var(--success)");
         
-        // 校长模式：高考结果弹窗，不触发学生结局
-        showCustomModal(`🎓 ${game.year}年 · 高考成绩公告`, html, [{text:"确认归档", action:updateUI}]);
+        // 学生模式：高三（turn>=25）高考后自动弹出结局
+        let isStudentFinalGaokao = stuGame.active && stuGame.turn >= 25;
+        let afterBtns = [];
+        if(isStudentFinalGaokao) {
+            afterBtns = [{text:"📜 查看我的结局 →", action:()=>{ showFinalRating('student'); }}];
+        } else {
+            afterBtns = [{text:"确认归档", action:updateUI}];
+        }
+        
+        showCustomModal(`🎓 ${game.year}年 · 高考成绩公告`, html, afterBtns);
     }
     function triggerEnrollment() { showCustomModal("开学", "九月新学期开始，迎接新生与新生学费！", [{text:"OK", action:updateUI}]); }
 
-    // ================= 战斗卷轴系统 =================
-    const SCROLLS = [
-        { id:'sc_basic',   name:'常规战强化卷', desc:'攻击+10%（默认装备）', icon:'📜', atkMult:1.10, cost:0,   costType:'free', owned:true,  req:()=>true },
-        { id:'sc_adv',     name:'强化卷', desc:'攻击+20%', icon:'📋', atkMult:1.20, cost:50,  costType:'edu', owned:false, req:()=>true },
-        { id:'sc_boss',    name:'BOSS密卷', desc:'暴击+30%', icon:'📗', critBonus:0.30, cost:80,  costType:'edu', owned:false, req:()=>game.levelIdx>=1 },
-        { id:'sc_real',    name:'真题卷', desc:'真实伤害，无视50%防御', icon:'📕', trueReal:true, cost:120, costType:'edu', owned:false, req:()=>game.levelIdx>=2 },
-        { id:'sc_multi',   name:'竞赛卷', desc:'多段伤害×3（群体战）', icon:'📘', multiHit:3, cost:150, costType:'edu', owned:false, req:()=>game.levelIdx>=3 },
-    ];
-
-    function getScrollData() {
-        if(!game.scrolls) game.scrolls = { owned:['sc_basic'], equipped:'sc_basic' };
-        return game.scrolls;
-    }
-
-    function getActiveScroll() {
-        let sd = getScrollData();
-        return SCROLLS.find(s=>s.id===sd.equipped) || SCROLLS[0];
-    }
-
-    // ================= 组合技系统 =================
-    const COMBO_RECIPES = [
-        { id:'c01', name:'精神崩溃',   desc:'敌方全体晕眩2回合', ingredients:['sup_0','sup_3'], icon:'🧠', effect:(p,e)=>{ e.buffs.stun=2; bLog("💥 精神崩溃！敌方晕眩2回合！"); } },
-        { id:'c02', name:'智慧火花',   desc:'全体AP+10', ingredients:['sup_1','sup_2'], icon:'✨', effect:(p,e)=>{ p.ap=Math.min(p.maxAp,p.ap+10); bLog("✨ 智慧火花！AP+10！"); } },
-        { id:'c03', name:'铁壁防御',   desc:'己方防御×2，持续3回合', ingredients:['def_0','def_1'], icon:'🛡️', effect:(p,e)=>{ p.buffs.defUp=3; bLog("🛡️ 铁壁防御！防御翻倍3回合！"); } },
-        { id:'c04', name:'毁灭打击',   desc:'造成500%真实伤害', ingredients:['atk_5','atk_13'], icon:'💣', effect:(p,e)=>{ let dmg=Math.floor(bState.p.atk*5); e.hp-=dmg; bLog(`💣 毁灭打击！造成${dmg}真实伤害！`); } },
-        { id:'c05', name:'学霸压制',   desc:'敌方攻击-30%，持续5回合', ingredients:['atk_4','sup_3'], icon:'👓', effect:(p,e)=>{ e.buffs.atkDown=5; bLog("👓 学霸压制！敌方攻击大降5回合！"); } },
-        { id:'c06', name:'神圣光辉',   desc:'满血复活+全体AP恢复', ingredients:['sup_4','atk_2'], icon:'🌟', effect:(p,e)=>{ p.hp=p.maxHp; p.ap=p.maxAp; bLog("🌟 神圣光辉！满血全AP！"); } },
-        { id:'c07', name:'熵增风暴',   desc:'敌方压力+15，混乱3回合', ingredients:['entropy_add','sup_0'], icon:'🌀', effect:(p,e)=>{ e.stress=Math.min(100,(e.stress||0)+15); e.buffs.stun=3; bLog("🌀 熵增风暴！混乱3回合！"); } },
-        { id:'c08', name:'减熵冲击',   desc:'消除己方负面BUFF+攻击+30%', ingredients:['entropy_clear','atk_1'], icon:'💫', effect:(p,e)=>{ p.buffs.atkDown=0;p.buffs.dot=0;p.buffs.atkUp=3; bLog("💫 减熵冲击！清除负面+攻击大幅提升！"); } },
-        { id:'c09', name:'题海碾压',   desc:'4段100%伤害+敌方防御-50%', ingredients:['atk_4','atk_12'], icon:'📚', effect:(p,e)=>{ for(let i=0;i<4;i++){let d=Math.floor(p.atk);e.hp-=d;} e.buffs.defDown=3; bLog("📚 题海碾压！4段全打+防御崩溃！"); } },
-        { id:'c10', name:'教研联动',   desc:'教研点+30，下回合AP全满', ingredients:['atk_8','def_2'], icon:'🔬', effect:(p,e)=>{ game.eduPoints+=30; p.ap=p.maxAp; bLog("🔬 教研联动！教研点+30，AP满！"); } },
-        { id:'c11', name:'心灵涤荡',   desc:'己方压力清零+HP回复50%', ingredients:['sup_3','def_0'], icon:'💎', effect:(p,e)=>{ p.stress=0; p.hp=Math.min(p.maxHp,p.hp+Math.floor(p.maxHp*0.5)); bLog("💎 心灵涤荡！压力归零，HP+50%！"); } },
-        { id:'c12', name:'奥赛降维',   desc:'无视防御造成300%伤害+晕眩', ingredients:['atk_10','atk_9'], icon:'🏆', effect:(p,e)=>{ let d=Math.floor(p.atk*3); e.hp-=d; e.buffs.stun=1; bLog(`🏆 奥赛降维！${d}真实伤害+晕眩！`); } },
-        { id:'c13', name:'全军突击',   desc:'双段250%伤害+己方攻击+20%', ingredients:['atk_3','atk_6'], icon:'⚔️', effect:(p,e)=>{ for(let i=0;i<2;i++){let d=Math.floor(p.atk*2.5); e.hp-=d;} p.buffs.atkUp=2; bLog("⚔️ 全军突击！双段重击！"); } },
-        { id:'c14', name:'知识壁垒',   desc:'己方防御+80%持续4回合+反伤', ingredients:['def_1','def_2'], icon:'🧱', effect:(p,e)=>{ p.buffs.defUp=4; p.buffs.thorns=true; bLog("🧱 知识壁垒！超强防御+反伤！"); } },
-        { id:'c15', name:'高考特训',   desc:'本场战斗攻击永久+25%', ingredients:['atk_11','atk_7'], icon:'🎯', effect:(p,e)=>{ p.atk=Math.floor(p.atk*1.25); bLog("🎯 高考特训！本场攻击永久+25%！"); } },
-        { id:'c16', name:'联考霸权',   desc:'敌方全属性下降+联考积分+10', ingredients:['atk_5','atk_3'], icon:'👑', effect:(p,e)=>{ e.buffs.atkDown=4; e.buffs.defDown=4; game.examPoints+=10; bLog("👑 联考霸权！敌全属性崩溃！"); } },
-        { id:'c17', name:'绝命压迫',   desc:'敌方持续伤害5回合+无法回血', ingredients:['atk_7','atk_0'], icon:'☠️', effect:(p,e)=>{ e.buffs.dot=5; e.buffs.noHeal=true; bLog("☠️ 绝命压迫！持续中毒5回合！"); } },
-        { id:'c18', name:'资金链攻击',  desc:'消耗敌方资金型（资金+50万）', ingredients:['sup_1','def_0'], icon:'💰', effect:(p,e)=>{ game.funds+=50; bLog("💰 资金链攻击！获得50万资金！"); } },
-        { id:'c19', name:'声誉洗白',   desc:'我方声誉+100，敌方压力+10', ingredients:['sup_3','sup_2'], icon:'⭐', effect:(p,e)=>{ game.reputation+=100; e.stress=(e.stress||0)+10; bLog("⭐ 声誉洗白！声誉+100！"); } },
-        { id:'c20', name:'教育部联动',  desc:'AP全恢复+敌方晕眩+教研点+20', ingredients:['sup_4','sup_1'], icon:'🏛️', effect:(p,e)=>{ p.ap=p.maxAp; e.buffs.stun=2; game.eduPoints+=20; bLog("🏛️ 教育部联动！AP满+晕眩+教研！"); } },
-    ];
-
-    // ================= 教学装备系统 =================
-    const EQUIPMENT_DB = [
-        { id:'eq_board',    name:'智能黑板',  desc:'教学效率+15%（学业倍率+15%）', icon:'📟', effect:'teach_eff',  bonus:0.15, obtain:'research', researched:false },
-        { id:'eq_lab_kit',  name:'实验箱',    desc:'理科课程效果+20%（教研点获取+20%）', icon:'🧪', effect:'sci_eff',  bonus:0.20, obtain:'shop_edu', cost:100, researched:false },
-        { id:'eq_sand',     name:'心理沙盘',  desc:'减压效果+30%（减压类技能加强）', icon:'🏖️', effect:'stress_red', bonus:0.30, obtain:'event',   researched:false },
-        { id:'eq_vr',       name:'VR教学眼镜', desc:'所有技能AP消耗-2', icon:'🥽', effect:'ap_reduce', bonus:2, obtain:'research', researched:false },
-        { id:'eq_projector',name:'超清投影仪', desc:'战斗暴击率+10%', icon:'📽️', effect:'crit_up', bonus:0.10, obtain:'shop_funds', cost:300, researched:false },
-        { id:'eq_tablet',   name:'教学平板',  desc:'每月自动获得1教研点', icon:'📱', effect:'edu_auto', bonus:1, obtain:'research', researched:false },
-    ];
-
-    function getEquipData() {
-        if(!game.equip) game.equip = { owned:[], equipped:[] };
-        return game.equip;
-    }
-
-    // ================= 装备研发系统渲染 =================
-    function openRnd() {
-        if(!game||!game.map) return showToast("请先选择难度开始游戏！");
-        openModal('modal-rnd');
-        renderRnd('scroll');
-    }
-
-    function renderRnd(tab) {
-        let el = document.getElementById('rnd-content');
-        if(!el) return;
-        if(tab==='scroll') {
-            let sd = getScrollData();
-            let html = `<h3 style="margin-top:0;color:#ea580c;">📜 战斗卷轴——增强联考战斗属性</h3>
-            <p style="color:#64748b;font-size:0.85rem;">装备卷轴后在战斗中持续生效。当前装备：<b style="color:#ea580c;">${SCROLLS.find(s=>s.id===sd.equipped)?.name||'无'}</b></p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">`;
-            SCROLLS.forEach(sc=>{
-                let owned = sd.owned.includes(sc.id) || sc.id==='sc_basic';
-                let equipped = sd.equipped===sc.id;
-                let canReq = sc.req();
-                let costLabel = sc.costType==='free'?'默认拥有':`教研点${sc.cost}`;
-                html+=`<div style="background:${equipped?'#fef3c7':owned?'#f0fdf4':'#f8fafc'};border:2px solid ${equipped?'#f59e0b':owned?'#10b981':'#cbd5e1'};border-radius:8px;padding:12px;">
-                    <div style="font-size:1.5rem;">${sc.icon}</div>
-                    <div style="font-weight:bold;color:#1e293b;">${sc.name} ${equipped?'<span style="background:#f59e0b;color:white;font-size:0.6rem;padding:2px 5px;border-radius:3px;">装备中</span>':''}</div>
-                    <div style="font-size:0.78rem;color:#64748b;margin:4px 0;">${sc.desc}</div>
-                    ${!owned&&canReq?`<button class="btn" style="padding:4px 10px;font-size:0.78rem;margin-top:4px;" onclick="buyScroll('${sc.id}')">研发 ${costLabel}</button>`:''}
-                    ${owned&&!equipped?`<button class="btn" style="padding:4px 10px;font-size:0.78rem;margin-top:4px;background:#fef3c7;border-color:#f59e0b;" onclick="equipScroll('${sc.id}')">装备</button>`:''}
-                    ${!canReq&&!owned?`<div style="font-size:0.7rem;color:#ef4444;margin-top:4px;">⚠️ 需学校达到更高等级</div>`:''}
-                </div>`;
-            });
-            html+='</div>';
-            el.innerHTML=html;
-        } else if(tab==='combo') {
-            let learned = game.combos || [];
-            let html=`<h3 style="margin-top:0;color:#c026d3;">⚡ 组合技研发——消耗教研点解锁强力组合技</h3>
-            <p style="color:#64748b;font-size:0.85rem;">组合技在战斗中需要消耗额外AP使用，但效果极为强力。</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">`;
-            COMBO_RECIPES.forEach((c,i)=>{
-                let isLearned = learned.includes(c.id);
-                let cost = 30 + i*5;
-                html+=`<div style="background:${isLearned?'#fdf4ff':'#f8fafc'};border:2px solid ${isLearned?'#c026d3':'#cbd5e1'};border-radius:8px;padding:10px;">
-                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                        <span style="font-size:1.5rem;">${c.icon}</span>
-                        <div>
-                            <div style="font-weight:bold;color:#1e293b;">${c.name} ${isLearned?'<span style="background:#c026d3;color:white;font-size:0.6rem;padding:2px 5px;border-radius:3px;">已解锁</span>':''}</div>
-                            <div style="font-size:0.72rem;color:#64748b;">${c.desc}</div>
-                        </div>
-                    </div>
-                    ${!isLearned?`<button class="btn" style="padding:4px 10px;font-size:0.75rem;" onclick="learnCombo('${c.id}',${cost})">研发 教研点${cost}</button>`:'<div style="font-size:0.72rem;color:#10b981;">✅ 已在战斗组合技栏中可用</div>'}
-                </div>`;
-            });
-            html+='</div>';
-            el.innerHTML=html;
-        } else if(tab==='equip') {
-            let ed = getEquipData();
-            let html=`<h3 style="margin-top:0;color:#16a34a;">🎒 教学装备——装备后持续提升学校属性</h3>
-            <p style="color:#64748b;font-size:0.85rem;">装备可通过研发、商店或事件获得。当前装备数量: ${ed.equipped.length}/3</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">`;
-            EQUIPMENT_DB.forEach(eq=>{
-                let owned = ed.owned.includes(eq.id);
-                let equipped = ed.equipped.includes(eq.id);
-                let obtainLabel = eq.obtain==='research'?`教研点80 研发`
-                                : eq.obtain==='shop_edu'?`教研点${eq.cost} 购买`
-                                : eq.obtain==='shop_funds'?`￥${eq.cost}万 购买`
-                                : '通过特定事件获得';
-                html+=`<div style="background:${equipped?'#f0fdf4':owned?'#fdf4ff':'#f8fafc'};border:2px solid ${equipped?'#16a34a':owned?'#c026d3':'#cbd5e1'};border-radius:8px;padding:10px;">
-                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                        <span style="font-size:1.5rem;">${eq.icon}</span>
-                        <div>
-                            <div style="font-weight:bold;">${eq.name} ${equipped?'<span style="background:#16a34a;color:white;font-size:0.6rem;padding:2px 5px;border-radius:3px;">装备中</span>':owned?'<span style="background:#c026d3;color:white;font-size:0.6rem;padding:2px 5px;border-radius:3px;">已拥有</span>':''}</div>
-                            <div style="font-size:0.72rem;color:#64748b;">${eq.desc}</div>
-                        </div>
-                    </div>
-                    ${!owned?`<button class="btn" style="padding:4px 10px;font-size:0.75rem;" onclick="buyEquip('${eq.id}')">${obtainLabel}</button>`:''}
-                    ${owned&&!equipped?`<button class="btn" style="padding:4px 10px;font-size:0.75rem;background:#f0fdf4;border-color:#16a34a;" onclick="equipItem('${eq.id}')">装备</button>`:''}
-                    ${equipped?`<button class="btn" style="padding:4px 10px;font-size:0.75rem;border-color:#ef4444;color:#ef4444;" onclick="unequipItem('${eq.id}')">卸下</button>`:''}
-                </div>`;
-            });
-            html+='</div>';
-            el.innerHTML=html;
-        }
-    }
-
-    function buyScroll(id) {
-        let sc = SCROLLS.find(s=>s.id===id);
-        if(!sc||sc.costType==='free') return;
-        if(game.eduPoints<sc.cost) return showToast("教研点不足！");
-        game.eduPoints-=sc.cost;
-        let sd = getScrollData();
-        if(!sd.owned.includes(id)) sd.owned.push(id);
-        showToast(`📜 研发成功：${sc.name}！`);
-        updateUI(); renderRnd('scroll');
-    }
-
-    function equipScroll(id) {
-        let sd = getScrollData();
-        sd.equipped=id;
-        showToast(`已装备卷轴：${SCROLLS.find(s=>s.id===id)?.name}`);
-        renderRnd('scroll');
-    }
-
-    function learnCombo(id, cost) {
-        if(game.eduPoints<cost) return showToast("教研点不足！");
-        game.eduPoints-=cost;
-        if(!game.combos) game.combos=[];
-        if(!game.combos.includes(id)) game.combos.push(id);
-        let c = COMBO_RECIPES.find(x=>x.id===id);
-        showToast(`⚡ 组合技【${c?.name}】已解锁！`);
-        updateUI(); renderRnd('combo');
-    }
-
-    function buyEquip(id) {
-        let eq = EQUIPMENT_DB.find(e=>e.id===id);
-        if(!eq) return;
-        if(eq.obtain==='research') {
-            if(game.eduPoints<80) return showToast("教研点不足（需80）！");
-            game.eduPoints-=80;
-        } else if(eq.obtain==='shop_edu') {
-            if(game.eduPoints<eq.cost) return showToast("教研点不足！");
-            game.eduPoints-=eq.cost;
-        } else if(eq.obtain==='shop_funds') {
-            if(!payCost(0,eq.cost)) return;
-        } else return showToast("此装备只能通过事件获得！");
-        let ed = getEquipData();
-        if(!ed.owned.includes(id)) ed.owned.push(id);
-        showToast(`🎒 获得装备：${eq.name}！`);
-        updateUI(); renderRnd('equip');
-    }
-
-    function equipItem(id) {
-        let ed = getEquipData();
-        if(ed.equipped.length>=3 && !ed.equipped.includes(id)) return showToast("最多同时装备3件！请先卸下一件。");
-        if(!ed.equipped.includes(id)) ed.equipped.push(id);
-        showToast(`已装备：${EQUIPMENT_DB.find(e=>e.id===id)?.name}`);
-        applyEquipmentBonuses(); renderRnd('equip');
-    }
-
-    function unequipItem(id) {
-        let ed = getEquipData();
-        ed.equipped = ed.equipped.filter(x=>x!==id);
-        showToast(`已卸下：${EQUIPMENT_DB.find(e=>e.id===id)?.name}`);
-        renderRnd('equip');
-    }
-
-    function applyEquipmentBonuses() {
-        // 月度被动效果在advanceMonth中处理
-        let ed = getEquipData();
-        ed.equipped.forEach(id=>{
-            let eq = EQUIPMENT_DB.find(e=>e.id===id);
-            if(!eq) return;
-            if(eq.effect==='edu_auto') { game.eduPoints+=eq.bonus; }
-        });
-    }
-
-    // 在战斗中获取装备对AP的减免
-    function getEquipApReduce() {
-        let ed = getEquipData();
-        let red = 0;
-        ed.equipped.forEach(id=>{ let eq=EQUIPMENT_DB.find(e=>e.id===id); if(eq&&eq.effect==='ap_reduce') red+=eq.bonus; });
-        return red;
-    }
-
-    // 在战斗中获取装备暴击加成
-    function getEquipCritBonus() {
-        let ed = getEquipData();
-        let bonus = 0;
-        ed.equipped.forEach(id=>{ let eq=EQUIPMENT_DB.find(e=>e.id===id); if(eq&&eq.effect==='crit_up') bonus+=eq.bonus; });
-        return bonus;
-    }
-
-    // 添加战斗用新技能：熵增/减熵
-    // 在SKILL_DB后追加战斗技能并加入支援组合技入口
-    function renderComboSkills() {
-        if(!game||!game.combos||!game.combos.length) return '';
-        let html = `<div style="margin-top:12px;border-top:2px dashed #c026d3;padding-top:10px;">
-            <div style="font-weight:bold;color:#c026d3;font-size:0.85rem;margin-bottom:6px;">⚡ 已解锁组合技</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">`;
-        game.combos.forEach(cid=>{
-            let c = COMBO_RECIPES.find(x=>x.id===cid);
-            if(!c) return;
-            html+=`<button class="b-skill-btn" onclick="useCombo('${cid}')" style="border-color:#c026d3;">${c.icon} ${c.name}<div style="font-size:0.62rem;color:#94a3b8;">${c.desc.substring(0,15)}...</div></button>`;
-        });
-        html+='</div></div>';
-        return html;
-    }
-
-    function useCombo(id) {
-        if(!bState.active||bState.isOver) return showToast("不在战斗中！");
-        let c = COMBO_RECIPES.find(x=>x.id===id);
-        if(!c) return;
-        let apCost = 20;
-        if(bState.p.ap < apCost) return showToast(`AP不足！组合技需要${apCost}AP`);
-        bState.p.ap -= apCost;
-        c.effect(bState.p, bState.e);
-        bCheckEnd(); bRenderBattle();
-    }
-
-    // ================= 背景音乐 =================
-    const BGM_LIST = ['src/music/1.mp3','src/music/2.mp3','src/music/3.mp3','src/music/4.mp3'];
-    let bgmIndex = Math.floor(Math.random() * BGM_LIST.length);
-    let bgmStarted = false;
-
-    function initBGM() {
-        if(bgmStarted) return;
-        bgmStarted = true;
-        let audio = document.getElementById('bgm');
-        audio.src = BGM_LIST[bgmIndex];
-        audio.volume = 0.35;
-        audio.play().catch(()=>{});
-        audio.addEventListener('ended', () => {
-            bgmIndex = (bgmIndex + 1) % BGM_LIST.length;
-            audio.src = BGM_LIST[bgmIndex];
-            audio.play().catch(()=>{});
-        });
-    }
-
-    // 首次用户交互时启动音乐（浏览器自动播放策略要求）
-    document.addEventListener('click', initBGM, { once: true });
-    document.addEventListener('keydown', initBGM, { once: true });
-
-    // ================= 终末之诗 =================
-    function showEndPoem() {
-        let overlay = document.getElementById('end-poem-overlay');
-        let track   = document.getElementById('end-poem-track');
-        overlay.style.display = 'block';
-        // Reset then measure
-        track.style.animation = 'none';
-        track.style.transform = 'translateY(0)';
-        // Force reflow so we can read offsetHeight
-        track.offsetHeight;
-        let contentH = track.offsetHeight;
-        let totalDist = contentH + window.innerHeight; // scroll distance in px
-        // ~80px/s feels like a calm read
-        let dur = Math.round(totalDist / 80);
-        overlay.style.setProperty('--poem-dur', dur + 's');
-        overlay.classList.add('scrolling');
-    }
-
-    function handlePoemClick() {
-        let overlay = document.getElementById('end-poem-overlay');
-        overlay.style.display = 'none';
-        overlay.classList.remove('scrolling');
-        let track = document.getElementById('end-poem-track');
-        track.style.animation = 'none';
-        track.style.transform = 'translateY(0)';
-    }
-
-    // 初始化加载
-    window.onload = init;
+    // 执行入口
+    try { init(); } catch(e) { console.error('Init failed:', e); showDifficultySelect(); }
 </script>
 </body>
 </html>
