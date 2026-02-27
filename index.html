@@ -3,31 +3,362 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>济宁孔子学校 - V0.0.3 万象归一</title>
+    <title>孔子学校 - V0.0.3 万象归一</title>
     <style>
         :root {
-            --bg-body: #0f172a; --panel-bg: rgba(255, 255, 255, 0.96);
-            --board-bg: #1e293b; --chalk-white: #f8f9fa; --chalk-yellow: #fde047; --chalk-blue: #60a5fa;
-            --primary: #2563eb; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --purple: #8b5cf6;
-            --gold: #fbbf24; --wood: #452912;
-            --radius: 12px; --shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            --bg-body: #060a12;
+            --panel-bg: rgba(8, 15, 28, 0.95);
+            --panel-border: rgba(0, 200, 255, 0.18);
+            --board-bg: #0a1628;
+            --chalk-white: #e2f0ff; --chalk-yellow: #ffe566; --chalk-blue: #60c8ff;
+            --primary: #00c8ff; --success: #00ff9d; --warning: #ffaa00; --danger: #ff3355; --purple: #bf5fff;
+            --gold: #ffd700; --wood: #1a0a00;
+            --neon-green: #39ff14; --neon-cyan: #00ffe7; --neon-pink: #ff2d78;
+            --radius: 4px; --shadow: 0 0 30px rgba(0, 200, 255, 0.08);
+            --scan-line: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
         }
 
-        /* 基础布局 */
-        body { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; background: var(--bg-body); background-image: radial-gradient(circle at top, #1e293b, #0f172a); color: #334155; margin: 0; padding: 10px; display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
-        .container { width: 100%; max-width: 1450px; display: grid; gap: 15px; grid-template-columns: 320px 1fr 320px; transition: 0.5s; }
-        
-        /* 顶部横幅 */
-        .header-banner { grid-column: 1 / -1; background: linear-gradient(135deg, #7f1d1d, #991b1b); color: #fff; text-align: center; padding: 15px; border-radius: var(--radius); border: 3px solid #fca5a5; box-shadow: var(--shadow); position: relative; }
-        .header-banner h1 { margin: 0; font-size: 2.2rem; letter-spacing: 2px; color: var(--chalk-yellow); text-shadow: 2px 2px 5px rgba(0,0,0,0.6); }
-        
-        /* 系统栏 */
-        .sys-bar { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; background: var(--panel-bg); padding: 10px 20px; border-radius: var(--radius); box-shadow: var(--shadow); flex-wrap: wrap; gap:10px; }
-        .school-badge { padding: 5px 12px; background: linear-gradient(135deg, #fef08a, var(--gold)); color: #713f12; border-radius: 20px; font-weight: 800; border: 1px solid #d97706; }
-        .sys-btn { padding:6px 12px; cursor:pointer; background:#f8fafc; border:1px solid #cbd5e1; border-radius:6px; font-weight:bold; transition: 0.2s; color: #1e293b; display: inline-flex; align-items: center; gap: 4px; font-size: 0.85rem; }
-        .sys-btn:hover:not(:disabled) { background: #e2e8f0; transform: translateY(-1px); }
-        .btn-auto.active { background: var(--danger); color: white; border-color: #b91c1c; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239,68,68,0.5);} 70% {box-shadow: 0 0 0 8px rgba(239,68,68,0);} 100% {box-shadow: 0 0 0 0 rgba(239,68,68,0);} }
+        body {
+            font-family: 'Courier New', 'Microsoft YaHei', monospace;
+            background: var(--bg-body);
+            background-image:
+                radial-gradient(ellipse at 20% 20%, rgba(0,100,255,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(150,0,255,0.06) 0%, transparent 60%),
+                var(--scan-line);
+            color: #8ab4cc;
+            margin: 0; padding: 10px;
+            display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%; max-width: 1450px;
+            display: grid; gap: 12px;
+            grid-template-columns: 310px 1fr 310px;
+            transition: 0.5s;
+        }
+
+        /* ══════════ 顶部横幅 ══════════ */
+        .header-banner {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(0,5,20,0.98), rgba(0,20,50,0.98));
+            border: 1px solid rgba(0,200,255,0.4);
+            border-top: 3px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 14px 24px;
+            position: relative; overflow: hidden;
+            box-shadow: 0 0 40px rgba(0,200,255,0.12), inset 0 0 60px rgba(0,50,100,0.3);
+        }
+        .header-banner::before {
+            content:'';
+            position:absolute; top:0; left:-100%; width:60%; height:100%;
+            background: linear-gradient(90deg, transparent, rgba(0,200,255,0.05), transparent);
+            animation: hdr-scan 6s linear infinite;
+        }
+        @keyframes hdr-scan { to { left: 150%; } }
+        .header-banner h1 {
+            margin: 0; font-size: 1.9rem; letter-spacing: 6px;
+            color: var(--primary);
+            text-shadow: 0 0 20px var(--primary), 0 0 40px rgba(0,200,255,0.4);
+            font-family: 'Courier New', monospace; font-weight: 900;
+        }
+        .header-banner p { margin: 4px 0 0; font-size: 0.78rem; color: rgba(0,200,255,0.5); letter-spacing: 3px; }
+        .hdr-corner {
+            position: absolute; top: 8px; right: 20px;
+            font-size: 0.65rem; color: rgba(0,200,255,0.35); letter-spacing: 2px;
+            font-family: monospace;
+        }
+
+        /* ══════════ 系统栏 ══════════ */
+        .sys-bar {
+            grid-column: 1 / -1;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0,8,20,0.97);
+            border: 1px solid var(--panel-border);
+            border-left: 3px solid var(--neon-cyan);
+            padding: 8px 16px; border-radius: var(--radius);
+            flex-wrap: wrap; gap: 8px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+        .school-badge {
+            padding: 4px 14px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,170,0,0.08));
+            color: var(--gold); border-radius: 2px; font-weight: 900;
+            border: 1px solid rgba(255,215,0,0.4);
+            font-family: monospace; letter-spacing: 1px; font-size: 0.85rem;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+        }
+        .sys-btn {
+            padding: 5px 11px; cursor: pointer;
+            background: rgba(0,200,255,0.05);
+            border: 1px solid rgba(0,200,255,0.25);
+            border-radius: 2px; font-weight: bold;
+            transition: 0.2s; color: #7ecfea;
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 0.78rem; font-family: monospace;
+            letter-spacing: 0.5px;
+        }
+        .sys-btn:hover:not(:disabled) {
+            background: rgba(0,200,255,0.15);
+            border-color: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(0,200,255,0.3);
+        }
+        .btn-auto.active {
+            background: rgba(255,51,85,0.2); color: var(--danger);
+            border-color: var(--danger);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,51,85,0.5)} 70%{box-shadow:0 0 0 8px rgba(255,51,85,0)} }
+
+        /* ══════════ 面板 ══════════ */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius);
+            padding: 14px;
+            box-shadow: var(--shadow), inset 0 0 30px rgba(0,0,20,0.6);
+            position: relative; overflow: hidden;
+        }
+        .panel::after {
+            content:'';
+            position:absolute; top:0; left:0; right:0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0.4;
+        }
+        .panel-title {
+            font-size: 0.72rem; font-weight: 900; letter-spacing: 3px;
+            color: var(--primary); margin: 0 0 10px;
+            border-bottom: 1px solid rgba(0,200,255,0.15);
+            padding-bottom: 6px; text-transform: uppercase;
+            font-family: monospace;
+            text-shadow: 0 0 8px rgba(0,200,255,0.4);
+        }
+        .panel-title::before { content: '▶ '; opacity: 0.6; font-size: 0.6rem; }
+
+        /* ══════════ 资源格 ══════════ */
+        .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .res-box {
+            background: rgba(0,200,255,0.03);
+            border: 1px solid rgba(0,200,255,0.12);
+            border-radius: 2px;
+            padding: 8px 10px;
+            font-size: 0.72rem; color: #5a8fa8;
+            letter-spacing: 0.5px; font-family: monospace;
+            position: relative;
+        }
+        .res-box span {
+            display: block; font-size: 1.3rem; font-weight: 900;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0,255,231,0.5);
+            line-height: 1.2; margin-top: 2px;
+        }
+        .res-sub { font-size: 0.6rem; color: #3a6070; margin-top: 2px; }
+
+        /* ══════════ 黑板→数据面板 ══════════ */
+        .blackboard {
+            background: rgba(0,5,15,0.9);
+            border: 1px solid rgba(0,200,255,0.15);
+            border-left: 3px solid rgba(0,200,255,0.4);
+            border-radius: 2px; padding: 12px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+        }
+        .stat-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+        .stat-label { width: 90px; font-size: 0.72rem; color: #5a8fa8; letter-spacing: 0.5px; font-family: monospace; flex-shrink: 0; }
+        .bar-bg {
+            flex: 1; height: 6px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(0,200,255,0.1);
+            border-radius: 1px; overflow: hidden;
+        }
+        .bar-fill { height: 100%; border-radius: 1px; transition: width 0.4s ease-out; }
+        .stat-val { width: 28px; text-align: right; font-size: 0.8rem; font-weight: 900; color: var(--chalk-yellow); font-family: monospace; }
+        .stress-warning {
+            display: none; color: var(--danger); font-size: 0.7rem;
+            font-weight: bold; text-align: center; margin: 4px 0;
+            animation: pulse 1s infinite;
+            text-shadow: 0 0 8px var(--danger);
+        }
+
+        /* ══════════ 按钮 ══════════ */
+        .btn-main {
+            background: linear-gradient(135deg, rgba(0,100,200,0.8), rgba(0,50,150,0.9));
+            color: #fff; border: 1px solid rgba(0,200,255,0.5);
+            font-size: 1rem; padding: 12px; border-radius: 2px;
+            cursor: pointer; font-weight: 900; width: 100%; margin-bottom: 10px;
+            box-shadow: 0 0 20px rgba(0,100,200,0.3);
+            text-align: center; font-family: monospace; letter-spacing: 2px;
+            transition: 0.2s; position: relative; overflow: hidden;
+        }
+        .btn-main::before {
+            content:''; position:absolute; top:0; left:-100%; width:50%; height:100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            transition: left 0.4s;
+        }
+        .btn-main:hover::before { left: 150%; }
+        .btn-main:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 30px rgba(0,200,255,0.4);
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background: rgba(0,200,255,0.04);
+            border: 1px solid rgba(0,200,255,0.2);
+            border-radius: 2px; padding: 9px 12px;
+            font-size: 0.82rem; cursor: pointer;
+            color: #7ecfea; font-family: monospace;
+            transition: 0.18s; display: flex; flex-direction: column;
+            gap: 2px; text-align: left; font-weight: bold;
+        }
+        .btn:hover {
+            background: rgba(0,200,255,0.12);
+            border-color: var(--primary); color: #fff;
+            box-shadow: 0 0 12px rgba(0,200,255,0.2);
+            transform: translateY(-1px);
+        }
+        .btn-desc {
+            font-size: 0.65rem; color: inherit; opacity: 0.55; font-weight: normal;
+            font-family: monospace; letter-spacing: 0.3px;
+        }
+        .c-val { color: var(--warning); }
+
+        /* ══════════ 彩色霓虹按钮 ══════════ */
+        .btn-c-green  { --bc:#00ff9d; border-color:rgba(0,255,157,0.35)!important; color:#00ff9d!important; }
+        .btn-c-orange { --bc:#ff8800; border-color:rgba(255,136,0,0.35)!important; color:#ff8800!important; }
+        .btn-c-pink   { --bc:#ff2d78; border-color:rgba(255,45,120,0.35)!important; color:#ff6ba8!important; }
+        .btn-c-blue   { --bc:#00c8ff; border-color:rgba(0,200,255,0.35)!important; color:#00c8ff!important; }
+        .btn-c-purple { --bc:#bf5fff; border-color:rgba(191,95,255,0.35)!important; color:#bf5fff!important; }
+        .btn-c-yellow { --bc:#ffe566; border-color:rgba(255,229,102,0.35)!important; color:#ffe566!important; }
+        .btn-c-cyan   { --bc:#00ffe7; border-color:rgba(0,255,231,0.35)!important; color:#00ffe7!important; }
+
+        .btn-c-green:hover,.btn-c-orange:hover,.btn-c-pink:hover,.btn-c-blue:hover,
+        .btn-c-purple:hover,.btn-c-yellow:hover,.btn-c-cyan:hover {
+            background: rgba(255,255,255,0.06)!important;
+            border-color: var(--bc)!important;
+            box-shadow: 0 0 16px rgba(255,255,255,0.08), inset 0 0 12px rgba(255,255,255,0.04)!important;
+            text-shadow: 0 0 8px var(--bc);
+        }
+        .btn-c-green:hover  { background: rgba(0,255,157,0.07)!important; }
+        .btn-c-orange:hover { background: rgba(255,136,0,0.07)!important; }
+        .btn-c-pink:hover   { background: rgba(255,45,120,0.07)!important; }
+        .btn-c-blue:hover   { background: rgba(0,200,255,0.07)!important; }
+        .btn-c-purple:hover { background: rgba(191,95,255,0.07)!important; }
+        .btn-c-yellow:hover { background: rgba(255,229,102,0.07)!important; }
+        .btn-c-cyan:hover   { background: rgba(0,255,231,0.07)!important; }
+
+        /* ══════════ 全局炫酷特效 ══════════ */
+        /* 流光边框动画 */
+        @keyframes border-flow {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* 赛博角标装饰 */
+        .panel { --corner: rgba(0,200,255,0.5); }
+        .panel::before {
+            content:'';
+            position:absolute; top:0; left:0;
+            width:12px; height:12px;
+            border-top:2px solid var(--corner);
+            border-left:2px solid var(--corner);
+            pointer-events:none; z-index:2;
+        }
+        /* 面板底部角标 */
+        .panel-corner-br {
+            position:absolute; bottom:0; right:0;
+            width:12px; height:12px;
+            border-bottom:2px solid rgba(0,200,255,0.3);
+            border-right:2px solid rgba(0,200,255,0.3);
+            pointer-events:none;
+        }
+
+        /* res-box 霓虹悬停 */
+        .res-box {
+            transition: 0.2s;
+            cursor:default;
+        }
+        .res-box:hover {
+            border-color: rgba(0,200,255,0.4);
+            box-shadow: 0 0 15px rgba(0,200,255,0.1);
+        }
+
+        /* 全局扫描线叠加 */
+        body::after {
+            content:'';
+            position:fixed; inset:0;
+            background: repeating-linear-gradient(
+                0deg, transparent, transparent 3px,
+                rgba(0,200,255,0.012) 3px, rgba(0,200,255,0.012) 4px
+            );
+            pointer-events:none; z-index:99999;
+        }
+
+        /* 动态网格背景点 */
+        #principal-container::before {
+            content:'';
+            position:fixed; inset:0;
+            background-image:
+                radial-gradient(circle, rgba(0,200,255,0.06) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events:none; z-index:0;
+            animation: grid-drift 20s linear infinite;
+        }
+        @keyframes grid-drift {
+            0%   { background-position: 0px 0px; }
+            100% { background-position: 40px 40px; }
+        }
+
+        /* 系统栏闪烁光标 */
+        @keyframes cursor-blink { 50% { opacity:0; } }
+        .sys-cursor { animation: cursor-blink 1.2s step-end infinite; }
+
+        /* 霓虹边框发光 - 用于重要元素 */
+        .neon-border-cyan { box-shadow: 0 0 0 1px rgba(0,200,255,0.3), 0 0 20px rgba(0,200,255,0.08); }
+        .neon-border-green { box-shadow: 0 0 0 1px rgba(0,255,157,0.3), 0 0 20px rgba(0,255,157,0.08); }
+
+
+        #ui-date {
+            font-size: 1.5rem; font-weight: 900;
+            color: var(--neon-cyan) !important;
+            text-shadow: 0 0 15px rgba(0,255,231,0.6);
+            letter-spacing: 3px; font-family: monospace;
+        }
+
+        /* ══════════ 日志 ══════════ */
+        .log-box {
+            flex: 1; overflow-y: auto; font-size: 0.78rem;
+            background: rgba(0,5,12,0.9);
+            border: 1px solid rgba(0,200,255,0.1);
+            padding: 10px; border-radius: 2px;
+            line-height: 1.6; color: #4a7a8a;
+            font-family: monospace;
+        }
+        .log-item { margin-bottom: 6px; border-bottom: 1px solid rgba(0,200,255,0.05); padding-bottom: 4px; }
+        .log-box::-webkit-scrollbar { width: 3px; }
+        .log-box::-webkit-scrollbar-thumb { background: rgba(0,200,255,0.3); border-radius: 2px; }
+
+        /* ══════════ 信箱 ══════════ */
+        .mailbox-container {
+            height: 150px; overflow-y: auto;
+            background: rgba(0,5,12,0.9);
+            padding: 8px; border-radius: 2px;
+            border: 1px solid rgba(0,200,255,0.1);
+            margin-bottom: 10px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .mailbox-container::-webkit-scrollbar { width: 3px; }
+        .mailbox-container::-webkit-scrollbar-thumb { background: rgba(0,200,255,0.2); }
+        .comment-bubble {
+            background: rgba(0,50,80,0.3);
+            border-left: 3px solid rgba(0,200,255,0.3);
+            padding: 7px 10px; border-radius: 0 3px 3px 0;
+            font-size: 0.78rem; color: #6a9aaa;
+            font-family: monospace;
+        }
+        .comment-meta { font-size: 0.62rem; color: #2a4a5a; margin-top: 3px; text-align: right; }
+
+
 
         /* ===== 战斗视觉特效 ===== */
         .b-dmg-float {
@@ -62,78 +393,70 @@
         #b-screen-flash   { position:absolute;inset:0;pointer-events:none;border-radius:8px;opacity:0;z-index:10; }
 
 
+
         /* 面板通用 */
-        .panel { background: var(--panel-bg); border-radius: var(--radius); padding: 15px; box-shadow: var(--shadow); display:flex; flex-direction: column; position: relative; }
-        .panel-title { font-size: 1.1rem; font-weight: 800; border-bottom: 3px solid var(--primary); padding-bottom: 8px; margin-top: 0; margin-bottom: 12px; color: #1e293b; display:flex; justify-content:space-between; align-items:flex-end; }
-        
-        /* 资源格子 */
-        .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .res-box { background: #f8fafc; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0; position: relative; }
-        .res-box span { display: block; font-size: 1.2rem; font-weight: 900; color: var(--primary); margin-top: 5px; font-family: monospace; }
-        .res-sub { font-size: 0.65rem; color: #64748b; position: absolute; bottom: 2px; right: 5px; font-weight:bold; }
-
-        /* 黑板属性条 */
-        .blackboard { background: var(--board-bg); border: 8px solid var(--wood); border-radius: 6px; padding: 15px; color: var(--chalk-white); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
-        .stat-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; position:relative; }
-        .stat-label { width: 85px; color: var(--chalk-blue); z-index:2; }
-        .bar-bg { flex: 1; height: 18px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); margin: 0 10px; position:relative; }
-        .bar-fill { height: 100%; transition: width 0.3s ease-out; background-image: linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 10px 100%; }
-        .stat-val { width: 35px; text-align: right; font-family: monospace; font-size: 1.1rem; color: var(--chalk-yellow); z-index:2; }
-        .stress-warning { color: #fca5a5; font-size: 0.75rem; text-align: center; animation: blink 0.8s infinite; margin-top:-5px; font-weight:bold; display:none; }
-        @keyframes blink { 50% { opacity: 0.5; } }
-
-        /* 按钮组件 */
-        .btn { width: 100%; padding: 10px; background: #fff; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.2s; font-weight: bold; color: #334155; display:flex; flex-direction:column; margin-bottom:8px; position: relative;}
-        .btn:hover:not(:disabled) { border-color: var(--primary); background: #eff6ff; transform: translateX(3px); }
-        .btn:disabled { background: #f1f5f9; border-color: #cbd5e1; color: #94a3b8; cursor: not-allowed; opacity: 0.7; }
-        .btn-desc { font-size: 0.7rem; color: #64748b; font-weight: normal; margin-top: 4px; }
-        .btn-main { background: linear-gradient(135deg, var(--primary), #1e40af); color: white; border: none; font-size: 1.2rem; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 900; width: 100%; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4); text-align:center; }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(37, 99, 235, 0.6); }
+        .panel { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow), inset 0 0 30px rgba(0,0,20,0.6); display:flex; flex-direction: column; position: relative; overflow:hidden; }
+        .panel::after { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--primary),transparent); opacity:0.4; }
+        .panel-title { font-size: 0.7rem; font-weight: 900; letter-spacing: 3px; color: var(--primary); margin: 0 0 10px; border-bottom: 1px solid rgba(0,200,255,0.15); padding-bottom: 6px; text-transform: uppercase; font-family: monospace; text-shadow: 0 0 8px rgba(0,200,255,0.4); }
+        .panel-title::before { content: '▶ '; opacity: 0.6; font-size: 0.6rem; }
 
         /* 模态框系统 */
-        .fs-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
-        .fs-content { background: #f8fafc; width: 100%; max-width: 1300px; max-height: 90vh; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .fs-header { background: #1e293b; color: white; padding: 15px 20px; display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; align-items:center; }
-        .fs-close { background: transparent; border: none; color: white; font-size: 1.8rem; cursor: pointer; line-height:1; }
-        .fs-body { padding: 20px; overflow-y: auto; flex: 1; }
+        .fs-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(2, 6, 18, 0.92); z-index: 2000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(6px); }
+        .fs-content { background: #060f1e; border: 1px solid rgba(0,200,255,0.2); width: 100%; max-width: 1300px; max-height: 90vh; border-radius: 4px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 60px rgba(0,200,255,0.1); }
+        .fs-header { background: rgba(0,20,40,0.95); color: var(--primary); padding: 12px 18px; display: flex; justify-content: space-between; font-size: 1rem; font-weight: bold; align-items:center; border-bottom: 1px solid rgba(0,200,255,0.2); font-family:monospace; letter-spacing:2px; }
+        .fs-close { background: transparent; border: 1px solid rgba(255,51,85,0.3); color: var(--danger); font-size: 1.2rem; cursor: pointer; line-height:1; padding: 2px 8px; border-radius:2px; transition:0.2s; }
+        .fs-close:hover { background: rgba(255,51,85,0.15); }
+        .fs-body { padding: 18px; overflow-y: auto; flex: 1; color: #8ab4cc; background: #060f1e; }
+        .fs-body::-webkit-scrollbar { width: 4px; }
+        .fs-body::-webkit-scrollbar-thumb { background: rgba(0,200,255,0.3); border-radius:2px; }
 
         /* 网格与卡片 */
-        .grid-sys { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-        .gacha-card { background: #fff; border: 2px solid #e2e8f0; padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 15px; position:relative; }
-        .expert-img { width: 65px; height: 65px; border-radius: 32px; object-fit: cover; border: 2px solid #cbd5e1; background: #f1f5f9; flex-shrink: 0; }
-        .upkeep-tag { position:absolute; top:5px; right:5px; font-size:0.7rem; background:#fee2e2; color:#991b1b; padding:2px 5px; border-radius:4px; font-weight:bold; }
-        .type-tag { position:absolute; bottom:5px; right:5px; font-size:0.7rem; padding:2px 5px; border-radius:4px; font-weight:bold; }
-        .type-battle { background: #fee2e2; color:#b91c1c; } .type-passive { background: #e0f2fe; color:#0369a1; }
-        .rarity-R { border-color: #3b82f6; box-shadow: 0 0 10px rgba(59,130,246,0.2); }
-        .rarity-SR { border-color: #a855f7; box-shadow: 0 0 15px rgba(168,85,247,0.3); }
-        .rarity-SSR { border-color: var(--gold); box-shadow: 0 0 20px rgba(251,191,36,0.5); background: linear-gradient(135deg, #fff, #fefce8); }
+        .grid-sys { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+        .gacha-card { background: rgba(0,20,40,0.8); border: 1px solid rgba(0,200,255,0.2); padding: 14px; border-radius: 3px; display: flex; align-items: center; gap: 12px; position:relative; }
+        .expert-img { width: 56px; height: 56px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(0,200,255,0.3); background: rgba(0,30,60,0.6); flex-shrink: 0; }
+        .upkeep-tag { position:absolute; top:4px; right:4px; font-size:0.62rem; background:rgba(255,51,85,0.15); color:var(--danger); padding:2px 5px; border-radius:2px; font-weight:bold; border:1px solid rgba(255,51,85,0.3); }
+        .type-tag { position:absolute; bottom:4px; right:4px; font-size:0.62rem; padding:2px 5px; border-radius:2px; font-weight:bold; }
+        .type-battle { background: rgba(255,51,85,0.12); color:var(--danger); border:1px solid rgba(255,51,85,0.3); }
+        .type-passive { background: rgba(0,200,255,0.1); color:var(--primary); border:1px solid rgba(0,200,255,0.3); }
+        .rarity-R { border-color: rgba(59,130,246,0.5); box-shadow: 0 0 8px rgba(59,130,246,0.15); }
+        .rarity-SR { border-color: rgba(168,85,247,0.5); box-shadow: 0 0 12px rgba(168,85,247,0.2); }
+        .rarity-SSR { border-color: rgba(255,215,0,0.6); box-shadow: 0 0 20px rgba(255,215,0,0.2); background: linear-gradient(135deg, rgba(0,20,40,0.9), rgba(30,20,0,0.9)); }
         
         /* 树形结构 */
-        .tree-tier { display: flex; gap: 15px; justify-content: center; width: 100%; margin-bottom: 25px; flex-wrap: wrap; }
-        .tree-node { width: 220px; background:#fff; border: 2px solid #cbd5e1; border-radius: 8px; padding: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
-        .tree-node.locked { filter: grayscale(1); opacity: 0.6; }
-        .tree-node.unlocked { border-color: var(--success); box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); background:#f0fdf4; }
-        .tree-node.branch-a { border-top: 5px solid var(--danger); }
-        .tree-node.branch-b { border-top: 5px solid var(--warning); }
-        .tree-node.branch-c { border-top: 5px solid #fbbf24; }
-        .tree-node.branch-d { border-top: 5px solid var(--success); }
+        .tree-tier { display: flex; gap: 12px; justify-content: center; width: 100%; margin-bottom: 20px; flex-wrap: wrap; }
+        .tree-node { width: 220px; background: rgba(0,15,30,0.9); border: 1px solid rgba(0,200,255,0.2); border-radius: 3px; padding: 12px; text-align: center; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; color:#8ab4cc; }
+        .tree-node.locked { filter: grayscale(1); opacity: 0.4; }
+        .tree-node.unlocked { border-color: var(--success); box-shadow: 0 0 15px rgba(0,255,157,0.15); background: rgba(0,255,157,0.04); }
+        .tree-node.branch-a { border-top: 2px solid var(--danger); }
+        .tree-node.branch-b { border-top: 2px solid var(--warning); }
+        .tree-node.branch-c { border-top: 2px solid var(--gold); }
+        .tree-node.branch-d { border-top: 2px solid var(--success); }
 
         /* 地图 */
-        .map-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; background: #84cc16; padding: 15px; border-radius: 8px; border: 4px solid #4d7c0f; }
-        .map-cell { background: rgba(255,255,255,0.5); border: 2px dashed #65a30d; border-radius: 6px; height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; position: relative; }
-        .map-cell:hover { background: rgba(255,255,255,0.9); }
-        .map-cell.selected { border: 3px solid var(--danger); background: #fff; }
+        .map-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; background: rgba(0,30,10,0.8); padding: 12px; border-radius: 4px; border: 1px solid rgba(0,255,100,0.2); }
+        .map-cell { background: rgba(0,255,100,0.03); border: 1px dashed rgba(0,255,100,0.2); border-radius: 3px; height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; position: relative; font-size:0.7rem; color:#4a8a5a; }
+        .map-cell:hover { background: rgba(0,255,100,0.08); border-color: rgba(0,255,100,0.5); color:#fff; }
+        .map-cell.selected { border: 1px solid var(--danger); background: rgba(255,51,85,0.08); }
 
-        /* 日志 */
-        .log-box { flex: 1; overflow-y: auto; font-size: 0.85rem; background: #fff; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; line-height: 1.5; }
-        .log-item { margin-bottom: 8px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 4px; }
+        /* 学生模式 */
+        #student-container { display: none; width: 100%; max-width: 1400px; background: rgba(8,15,28,0.98); border: 1px solid rgba(0,200,255,0.15); border-radius: 4px; padding: 12px; margin: 0 auto; box-shadow: var(--shadow); color:#8ab4cc; }
+        .stu-grid { display: grid; grid-template-columns: 185px 1fr 380px; gap: 8px; align-items: start; }
+        .stu-act-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+        .stu-act-btn { padding: 5px 7px; border: 1px solid rgba(0,200,255,0.15); border-radius: 2px; background: rgba(0,20,40,0.6); font-size: 0.7rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; transition:0.15s; text-align:left; line-height: 1.2; width: 100%; box-sizing: border-box; color:#7ecfea; font-family:monospace; }
+        .stu-act-btn:hover { border-color: var(--primary); background: rgba(0,200,255,0.1); color:#fff; }
+        .stu-act-btn .stu-icon { font-size: 1rem; flex-shrink: 0; }
+        .stu-act-btn b { font-size: 0.68rem; display:block; }
+        .stu-act-btn .btn-sub { font-size: 0.58rem; color:#2a5a6a; font-weight:normal; display:block; }
+        .stu-stat-box { background: rgba(0,10,25,0.95); color: #8ab4cc; border:1px solid rgba(0,200,255,0.15); padding: 10px; border-radius: 3px; margin-bottom: 8px; font-size: 0.8rem; font-family:monospace; }
+        .exam-board { background: linear-gradient(135deg, rgba(0,100,80,0.8), rgba(0,60,50,0.9)); color: white; padding: 15px; border-radius: 3px; text-align: center; margin-bottom: 10px; border: 1px solid rgba(0,255,157,0.3); }
         
-        /* 独立学生信箱样式 */
-        .mailbox-container { height: 180px; overflow-y: auto; background: #f1f5f9; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px;}
-        .comment-bubble { background: #fff; border-left: 4px solid var(--primary); padding: 10px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #1e293b; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .comment-meta { font-size: 0.7rem; color: #94a3b8; margin-top: 5px; text-align: right; }
+        .friend-card { background: rgba(0,15,30,0.8); border: 1px solid rgba(0,200,255,0.15); padding: 10px; border-radius: 3px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap:wrap; gap:5px; color:#8ab4cc; }
+        .friend-card.active { border-color: var(--success); background: rgba(0,255,157,0.04); }
+        .rebirth-points { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.15)); color: var(--gold); padding: 4px 10px; border-radius: 2px; font-weight: bold; font-size: 0.85rem; border:1px solid rgba(255,215,0,0.3); font-family:monospace; }
+        .family-card { background: rgba(0,15,30,0.8); border: 1px solid rgba(0,200,255,0.2); padding: 14px; border-radius: 3px; cursor: pointer; transition: 0.2s; position:relative; color:#8ab4cc; }
+        .family-card:hover { border-color: var(--primary); background: rgba(0,200,255,0.06); transform: translateY(-2px); box-shadow: 0 0 15px rgba(0,200,255,0.1); }
+        .family-card.selected { border-color: var(--primary); background: rgba(0,200,255,0.08); box-shadow: 0 0 0 1px rgba(0,200,255,0.4); }
 
-        /* 战斗系统布局 */
         .battle-ui { display: flex; flex-direction: column; height: 85vh; max-height:850px; background: #000; color: #a3e635; padding: 15px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; overflow: hidden; box-shadow: 0 0 30px rgba(101, 163, 13, 0.2); }
         .b-header { flex: 0 0 auto; display: flex; justify-content: space-between; border-bottom: 1px dashed #3f6212; padding-bottom: 10px; margin-bottom: 10px; font-weight: bold; color: #bef264; }
         .b-arena { flex: 0 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border: 2px solid #65a30d; border-radius: 8px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(20, 83, 45, 0.7)); position: relative; height: 160px; box-shadow: inset 0 0 25px rgba(101, 163, 13, 0.4); }
@@ -521,76 +844,97 @@
 <!-- ================= 校长模式 ================= -->
 <div class="container" id="principal-container">
     <div class="header-banner">
-        <h1>孔子学校 V0.0.3 万象归一</h1>
-        <p style="margin: 5px 0 0 0; font-size: 0.95rem; opacity: 0.9;">By ChansonTech | 大千世界，皆在局中</p>
+        <div style="position:relative;z-index:1;">
+            <h1 id="hdr-title" style="margin:0;font-size:1.9rem;letter-spacing:6px;color:var(--primary);text-shadow:0 0 20px var(--primary),0 0 40px rgba(0,200,255,0.4);font-family:monospace;font-weight:900;">孔子学校 V1.0a · 彼岸灯火</h1>
+            <p style="margin:4px 0 0;font-size:0.72rem;opacity:0.55;letter-spacing:3px;color:var(--primary);font-family:monospace;">BY CHANSONTECH · 大千世界，皆在局中 <span class="sys-cursor">█</span></p>
+        </div>
+        <div class="hdr-corner" id="hdr-clock" style="position:absolute;top:8px;right:20px;font-size:0.62rem;color:rgba(0,200,255,0.45);letter-spacing:2px;font-family:monospace;text-align:right;line-height:1.7;">
+            <div>SYS::ONLINE ■■■■■ 100%</div>
+            <div id="real-clock" style="color:rgba(0,255,231,0.4);"></div>
+        </div>
     </div>
 
     <div class="sys-bar">
         <div style="display:flex; align-items:center; gap: 10px;">
             <span class="school-badge" id="ui-level-name">🏆 乡镇中学</span>
-            <button class="sys-btn" onclick="checkUpgrade()">🎖️ 申请评级 (显示条件)</button>
+            <button class="sys-btn" onclick="checkUpgrade()">🎖️ 申请评级</button>
             <button class="sys-btn btn-auto" id="btn-auto" onclick="toggleAuto()">🤖 自动推演</button>
+            <span style="font-size:0.7rem;color:rgba(255,51,85,0.7);font-family:monospace;letter-spacing:1px;">⚔️ <span id="ui-examPoints" style="color:var(--danger);font-weight:900;">0</span> <span style="opacity:0.5;">PTS</span></span>
         </div>
-        <div style="display:flex; gap: 8px; align-items:center;">
-            <span style="font-weight:bold; color:var(--danger); font-size:0.9rem;">⚔️ 联考战绩: <span id="ui-examPoints">0</span>分</span>
-            <button class="sys-btn" style="background:var(--purple); color:white; border:none; padding:8px 15px;" onclick="switchMode('student')">👨‍🎓 切换至：学生深潜视角</button>
-            <span id="ui-diff-badge" style="font-size:0.8rem; background:#475569; color:white; padding:4px 8px; border-radius:4px; font-weight:bold;">难度: 正常</span>
-            <button class="sys-btn" style="background:linear-gradient(135deg,#1e3a5f,#1e40af); color:#93c5fd; border:none;" onclick="showSocialWindow()">🤝 社会关系</button>
-            <button class="sys-btn" style="background:linear-gradient(135deg,#064e3b,#065f46); color:#6ee7b7; border:none;" onclick="showMonthlyTargets()">🎯 月度目标</button>
-            <button class="sys-btn" style="background:linear-gradient(135deg,#4c1d95,#5b21b6); color:#c4b5fd; border:none;" onclick="showOlympiadSystem()">🏆 学科竞赛</button>
-            <button class="sys-btn" onclick="hardReset()" style="color:var(--danger)">🔄 抹除存档</button>
+        <div style="display:flex; gap: 7px; align-items:center;">
+            <button class="sys-btn" style="background:rgba(191,95,255,0.12);border-color:rgba(191,95,255,0.4);color:#bf5fff;" onclick="switchMode('student')">👨‍🎓 学生深潜视角</button>
+            <span id="ui-diff-badge" style="font-size:0.72rem;background:rgba(0,200,255,0.08);color:rgba(0,200,255,0.6);padding:3px 8px;border-radius:2px;font-weight:bold;border:1px solid rgba(0,200,255,0.2);font-family:monospace;">难度: 正常</span>
+            <button class="sys-btn" style="border-color:rgba(0,200,255,0.3);color:#60c8ff;" onclick="showSocialWindow()">🤝 社会关系</button>
+            <button class="sys-btn" style="border-color:rgba(0,255,157,0.3);color:#00ff9d;" onclick="showMonthlyTargets()">🎯 月度目标</button>
+            <button class="sys-btn" style="border-color:rgba(255,229,102,0.3);color:#ffe566;" onclick="showOlympiadSystem()">🏆 学科竞赛</button>
+            <button class="sys-btn" onclick="hardReset()" style="color:var(--danger);border-color:rgba(255,51,85,0.3);">🔄 抹除存档</button>
         </div>
     </div>
 
     <div class="panel">
+        <div class="panel-corner-br"></div>
         <h2 class="panel-title">📊 财务与行政中枢</h2>
         <div class="res-grid">
-            <div class="res-box">总资金(万) <span id="ui-funds" style="color:#059669;">100</span><div class="res-sub" id="ui-salary">常耗:-0 专家:-0</div></div>
-            <div class="res-box">在校生规模 <span id="ui-students" style="color:#2563eb;">300</span></div>
-            <div class="res-box">社会声誉 <span id="ui-rep" style="color:var(--warning)">100</span></div>
-            <div class="res-box">行政 AP <span><span id="ui-ap">10</span>/<span id="ui-maxap">20</span></span></div>
+            <div class="res-box" style="border-color:rgba(0,255,157,0.2);">
+                <div style="font-size:0.6rem;color:rgba(0,255,157,0.5);letter-spacing:2px;margin-bottom:2px;">FUNDS</div>
+                总资金(万) <span id="ui-funds" style="color:var(--success);text-shadow:0 0 10px rgba(0,255,157,0.5);">100</span>
+                <div class="res-sub" id="ui-salary" style="color:rgba(255,51,85,0.5);">常耗:-0 专家:-0</div>
+            </div>
+            <div class="res-box" style="border-color:rgba(0,200,255,0.2);">
+                <div style="font-size:0.6rem;color:rgba(0,200,255,0.5);letter-spacing:2px;margin-bottom:2px;">STUDENTS</div>
+                在校生规模 <span id="ui-students" style="color:var(--primary);text-shadow:0 0 10px rgba(0,200,255,0.5);">300</span>
+            </div>
+            <div class="res-box" style="border-color:rgba(255,170,0,0.2);">
+                <div style="font-size:0.6rem;color:rgba(255,170,0,0.5);letter-spacing:2px;margin-bottom:2px;">REPUTATION</div>
+                社会声誉 <span id="ui-rep" style="color:var(--warning);text-shadow:0 0 10px rgba(255,170,0,0.5);">100</span>
+            </div>
+            <div class="res-box" style="border-color:rgba(191,95,255,0.2);">
+                <div style="font-size:0.6rem;color:rgba(191,95,255,0.5);letter-spacing:2px;margin-bottom:2px;">ACTION_PT</div>
+                行政 AP <span style="color:var(--purple);text-shadow:0 0 10px rgba(191,95,255,0.5);"><span id="ui-ap">10</span>/<span id="ui-maxap">20</span></span>
+            </div>
         </div>
 
         <h2 class="panel-title" style="margin-top: 5px;">🧬 生源六维 (影响全校战力)</h2>
         <div class="blackboard">
-            <div class="stat-row"><div class="stat-label">📚 学业(攻击)</div><div class="bar-bg"><div id="bar-grade" class="bar-fill" style="background:linear-gradient(90deg, #3b82f6, #60a5fa);"></div></div><div class="stat-val" id="val-grade">40</div></div>
-            <div class="stat-row" style="margin-bottom:0;"><div class="stat-label">🤯 压力(熵增)</div><div class="bar-bg"><div id="bar-stress" class="bar-fill" style="background:linear-gradient(90deg, #ef4444, #f87171);"></div></div><div class="stat-val" id="val-stress">20</div></div>
+            <div class="stat-row"><div class="stat-label">📚 学业(攻击)</div><div class="bar-bg"><div id="bar-grade" class="bar-fill" style="background:linear-gradient(90deg, #3b82f6, #60a5fa);box-shadow:0 0 6px rgba(96,165,250,0.6);"></div></div><div class="stat-val" id="val-grade">40</div></div>
+            <div class="stat-row" style="margin-bottom:0;"><div class="stat-label">🤯 压力(熵增)</div><div class="bar-bg"><div id="bar-stress" class="bar-fill" style="background:linear-gradient(90deg, #ef4444, #f87171);box-shadow:0 0 6px rgba(248,113,113,0.6);"></div></div><div class="stat-val" id="val-stress">20</div></div>
             <div class="stress-warning" id="warn-stress">⚠️ 警告：思维熵增濒临崩溃极限！</div>
-            <div class="stat-row" style="margin-top:10px;"><div class="stat-label">🛡️ 纪律(防御)</div><div class="bar-bg"><div id="bar-disc" class="bar-fill" style="background:linear-gradient(90deg, #f59e0b, #fbbf24);"></div></div><div class="stat-val" id="val-disc">60</div></div>
-            <div class="stat-row"><div class="stat-label">🏃‍♂️ 体质(血量)</div><div class="bar-bg"><div id="bar-fit" class="bar-fill" style="background:linear-gradient(90deg, #10b981, #34d399);"></div></div><div class="stat-val" id="val-fit">50</div></div>
-            <div class="stat-row"><div class="stat-label">🎨 艺术(暴击)</div><div class="bar-bg"><div id="bar-art" class="bar-fill" style="background:linear-gradient(90deg, #8b5cf6, #a78bfa);"></div></div><div class="stat-val" id="val-art">30</div></div>
+            <div class="stat-row" style="margin-top:10px;"><div class="stat-label">🛡️ 纪律(防御)</div><div class="bar-bg"><div id="bar-disc" class="bar-fill" style="background:linear-gradient(90deg, #f59e0b, #fbbf24);box-shadow:0 0 6px rgba(251,191,36,0.6);"></div></div><div class="stat-val" id="val-disc">60</div></div>
+            <div class="stat-row"><div class="stat-label">🏃‍♂️ 体质(血量)</div><div class="bar-bg"><div id="bar-fit" class="bar-fill" style="background:linear-gradient(90deg, #10b981, #34d399);box-shadow:0 0 6px rgba(52,211,153,0.6);"></div></div><div class="stat-val" id="val-fit">50</div></div>
+            <div class="stat-row"><div class="stat-label">🎨 艺术(暴击)</div><div class="bar-bg"><div id="bar-art" class="bar-fill" style="background:linear-gradient(90deg, #8b5cf6, #a78bfa);box-shadow:0 0 6px rgba(167,139,250,0.6);"></div></div><div class="stat-val" id="val-art">30</div></div>
         </div>
     </div>
 
     <div class="panel">
-        <div style="text-align: center; margin-bottom: 15px; background:#f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
-            <div id="ui-date" style="font-size: 1.6rem; font-weight: 900; color: var(--primary); letter-spacing: 1px;">2018年 9月</div>
+        <div style="text-align: center; margin-bottom: 12px; background:rgba(0,200,255,0.04); padding: 10px; border-radius: 2px; border: 1px solid rgba(0,200,255,0.15); position:relative; overflow:hidden;">
+            <div style="font-size:0.6rem; color:rgba(0,200,255,0.4); letter-spacing:3px; margin-bottom:4px; font-family:monospace;">── TIMELINE NODE ──</div>
+            <div id="ui-date" style="font-size: 1.5rem; font-weight: 900; color: var(--neon-cyan); letter-spacing: 3px; font-family:monospace; text-shadow: 0 0 15px rgba(0,255,231,0.6);">2018年 9月</div>
         </div>
         <button class="btn-main" id="btn-advance" onclick="advanceMonth()">⏳ 推进一个月 (触发事件/联考/收学费)</button>
 
-        <h2 class="panel-title">🧠 战备中枢</h2>
+        <h2 class="panel-title">🧠 行政中枢</h2>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom:15px;">
-            <button class="btn" style="background:#ecfdf5; border-color:#10b981;" onclick="openModal('modal-map')">🗺️ 校园基建扩建<span class="btn-desc">3级特技建筑解锁</span></button>
-            <button class="btn" style="background:#fff7ed; border-color:#f97316;" onclick="if(!game||!game.map)return showToast('请先选择难度！');openModal('modal-shop');renderShop('infra')">🛒 特供商店<span class="btn-desc">蓝图·道具·政策速通</span></button>
-            <button class="btn" style="background:#fdf4ff; border-color:#c026d3;" onclick="openModal('modal-rnd')">🔭 装备研发中心<span class="btn-desc">卷·组合技·教学装备</span></button>
-            <button class="btn" style="background:#eff6ff; border-color:#3b82f6;" onclick="openModal('modal-experts')">👨‍🏫 寻访顶级名师<span class="btn-desc">40位专家+强力战技</span></button>
-            <button class="btn" style="background:#faf5ff; border-color:#a855f7;" onclick="openScheduleModal()">📅 师资与主科排课<span class="btn-desc">优化排课算法</span></button>
-            <button class="btn" style="background:#fefce8; border-color:#eab308;" onclick="openModal('modal-policy')">🏫 国家校策科技树<span class="btn-desc">教研点: <span id="ui-eduPoints" style="font-weight:bold;color:var(--danger)">0</span></span></button>
+            <button class="btn btn-c-green" onclick="openModal('modal-map')">🗺️ 校园基建扩建<span class="btn-desc">修建建筑，打造你的独特校园</span></button>
+            <button class="btn btn-c-orange" onclick="if(!game||!game.map)return showToast('请先选择难度！');openModal('modal-shop');renderShop('infra')">🛒 特供商店<span class="btn-desc">蓝图·道具·政策速通</span></button>
+            <button class="btn btn-c-pink" onclick="openModal('modal-rnd')">🔭 教学研发中心<span class="btn-desc">卷轴·组合技·教学装备</span></button>
+            <button class="btn btn-c-blue" onclick="openModal('modal-experts')">👨‍🏫 寻访顶级名师<span class="btn-desc">40位专家+强力战技</span></button>
+            <button class="btn btn-c-purple" onclick="openScheduleModal()">📅 师资与主科排课<span class="btn-desc">优化排课</span></button>
+            <button class="btn btn-c-yellow" onclick="openModal('modal-policy')">🏫 校策科技树<span class="btn-desc">教研点: <span id="ui-eduPoints" style="font-weight:bold;color:var(--danger)">0</span></span></button>
         </div>
 
         <h2 class="panel-title">🎯 战术与大势</h2>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-            <button class="btn" onclick="organizeExam()">📝 模拟阅卷出分<span class="btn-desc">耗AP:3, ￥<span id="cost-exam" class="c-val">2</span>万 | 六档分析+教研点</span></button>
-            <button class="btn" onclick="showGaokaoHistory()">📊 历年高考成绩<span class="btn-desc">查看历年成绩柱状图</span></button>
-            <button class="btn" id="btn-final-rating" onclick="showFinalRating('principal')" style="background:#faf5ff;border-color:#7c3aed;display:none;">🏁 查看当前结局<span class="btn-desc">评级·校友回访·终末诗</span></button>
-            <button class="btn" onclick="openModal('modal-branches')">🌍 建立全球分校<span class="btn-desc">耗巨资建立霸业分校</span></button>
-            <button class="btn" onclick="runAction('sponsor')">🤝 宴请拉赞助<span class="btn-desc">耗AP:4, 降声誉 | 得￥<span id="gain-spo" style="color:var(--success)">100</span>万</span></button>
-            <button class="btn" onclick="openModal('modal-achieve')">🏆 荣誉与校友录<span class="btn-desc">成就解锁与名人堂</span></button>
+            <button class="btn btn-c-cyan" onclick="organizeExam()">📝 举行模拟考试<span class="btn-desc">耗AP:3, ￥<span id="cost-exam" class="c-val">2</span>万 | 六档分析+教研点</span></button>
+            <button class="btn btn-c-cyan" onclick="showGaokaoHistory()">📊 历年高考成绩<span class="btn-desc">查看历年成绩柱状图</span></button>
+            <button class="btn btn-c-purple" id="btn-final-rating" onclick="showFinalRating('principal')" style="display:none;">🏁 查看当前结局<span class="btn-desc">评级·校友回访·终末诗</span></button>
+            <button class="btn btn-c-blue" onclick="openModal('modal-branches')">🌍 建立全球分校<span class="btn-desc">耗巨资建立分校</span></button>
+            <button class="btn btn-c-orange" onclick="runAction('sponsor')">🤝 宴请拉赞助<span class="btn-desc">耗AP:4, 降声誉 | 得￥<span id="gain-spo" style="color:var(--success)">100</span>万</span></button>
+            <button class="btn btn-c-yellow" onclick="openModal('modal-achieve')">🏆 荣誉与校友录<span class="btn-desc">成就解锁与名人堂</span></button>
         </div>
     </div>
 
     <div class="panel" style="display: flex; flex-direction: column;">
-        <h2 class="panel-title">📨 独立学生信箱 (实时窃听)</h2>
+        <h2 class="panel-title">📨 学生信箱</h2>
         <div id="student-comments-box" class="mailbox-container"></div>
 
         <h2 class="panel-title">📜 纪事本末</h2>
@@ -601,7 +945,7 @@
 <!-- ================= 学生模式 ================= -->
 <div id="student-container">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 3px solid var(--purple); padding-bottom:10px; margin-bottom:20px;">
-        <h1 style="margin:0; color:var(--purple);">👨‍🎓 学生视角：人生轮回模拟器</h1>
+        <h1 style="margin:0; color:var(--purple);">👨‍🎓 学生视角</h1>
         <div style="display:flex; align-items:center; gap:15px;">
             <span class="rebirth-points">☯️ 轮回点数: <span id="stu-ui-rp">0</span></span>
             <button class="sys-btn" style="background:linear-gradient(135deg,#1e1b4b,#312e81); color:#a5b4fc; border:none;" onclick="showStuJournal()">📓 内心日记</button>
@@ -703,7 +1047,7 @@
 <!-- ================= 模态框组 ================= -->
 <div id="modal-map" class="fs-modal">
     <div class="fs-content">
-        <div class="fs-header"><div>🗺️ 校园基建规划与特级升级 (20地块)</div><button class="fs-close" onclick="closeModal('modal-map')">×</button></div>
+        <div class="fs-header"><div>🗺️ 校园基建规划与特级升级</div><button class="fs-close" onclick="closeModal('modal-map')">×</button></div>
         <div class="fs-body map-fs-body" style="display:grid; grid-template-columns: 2fr 1fr; gap: 20px;">
             <div>
                 <div class="map-grid" id="map-grid"></div>
@@ -723,7 +1067,7 @@
 
 <div id="modal-experts" class="fs-modal">
     <div class="fs-content" style="max-width:1100px;">
-        <div class="fs-header"><div>👨‍🏫 猎头寻访系统 (40位顶级名师/解锁战技)</div><button class="fs-close" onclick="closeModal('modal-experts')">×</button></div>
+        <div class="fs-header"><div>👨‍🏫 寻访系统 (40位顶级名师/解锁战技)</div><button class="fs-close" onclick="closeModal('modal-experts')">×</button></div>
         <div class="fs-body">
             <div style="text-align:center; margin-bottom:20px;">
                 <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; align-items:center;">
@@ -811,8 +1155,9 @@
 <!-- ================= 史诗级学术战争 PVE UI ================= -->
 <div id="modal-battle" class="fs-modal" style="background: rgba(0,0,0,0.95); z-index: 6000;">
     <div class="fs-content" style="max-width: 1000px; background: transparent; box-shadow: none; border: 1px solid #3f6212; height:auto;">
-        <div class="battle-ui" id="b-main">
+        <div class="battle-ui" id="b-main" style="display:none;">
             <div id="b-screen-flash"></div>
+            <div class="b-header">
                 <div>[ACADEMIC_WARFARE_OS_v2.0]</div>
                 <div style="color:#bef264">>>> ROUND: <span id="b-turn-ui">1</span> / <span id="b-phase-ui" style="color:#fde047">NORMAL_PHASE</span> <<<</div>
             </div>
@@ -1979,16 +2324,31 @@
             el.classList.remove('b-hit','b-crit','b-heal','b-lunge');
             void el.offsetWidth;
             el.classList.add(cls);
-            setTimeout(()=>el.classList.remove(cls), 750);
+            setTimeout(function(){ el.classList.remove(cls); }, 750);
         }
         if(label) {
-            var r = el ? el.getBoundingClientRect() : {left:window.innerWidth/2,top:window.innerHeight/2,width:200,height:100};
+            // Use battle container center as fallback; entityId tells us which side
+            var bMain = document.getElementById('b-main');
+            var r = el ? el.getBoundingClientRect() : null;
+            var bx, by;
+            if(r && r.width > 0) {
+                bx = r.left + r.width * (0.2 + Math.random() * 0.5);
+                by = r.top + r.height * 0.2;
+            } else if(bMain) {
+                var br = bMain.getBoundingClientRect();
+                var isEnemy = entityId.indexOf('enemy') >= 0;
+                bx = br.left + (isEnemy ? br.width * 0.65 : br.width * 0.2) + Math.random() * 60;
+                by = br.top + br.height * 0.15;
+            } else {
+                bx = window.innerWidth * (entityId.indexOf('enemy') >= 0 ? 0.65 : 0.2);
+                by = window.innerHeight * 0.3;
+            }
             var f = document.createElement('div');
             f.className = 'b-dmg-float';
-            f.style.cssText = `left:${r.left+r.width*0.2+Math.random()*r.width*0.4}px;top:${r.top+r.height*0.25}px;font-size:${size||'1.5rem'};color:${color||'#ef4444'};`;
+            f.style.cssText = 'left:'+Math.round(bx)+'px;top:'+Math.round(by)+'px;font-size:'+(size||'1.5rem')+';color:'+(color||'#ef4444')+';';
             f.textContent = label;
             document.body.appendChild(f);
-            setTimeout(()=>f.remove(), 1600);
+            setTimeout(function(){ if(f.parentNode) f.remove(); }, 1700);
         }
     }
     function bScreenFlash(color, dur) {
@@ -2003,6 +2363,7 @@
 
     function pAction(sid) {
         let s = SKILL_DB[sid];
+        if(!s) return console.error('Unknown skill:', sid);
         if(bState.p.ap < s.ap) return showToast("AP不足！");
         bState.p.ap -= s.ap;
         document.getElementById('b-skills-container').innerHTML = ''; // Lock UI
@@ -2063,18 +2424,18 @@
         } else {
             // 非攻击技能
             if(sid==='def_0') bState.p.buffs.defUp = 2;
-            if(sid==='def_1') { let h=Math.floor(bState.p.maxHp*0.15); bState.p.hp += h; bState.p.buffs.atkDown=0; bState.p.buffs.defDown=0; bLog("状态恢复"); bFx('b-player-card','b-heal',`+${h}`,'#34d399','1.3rem'); }
+            if(sid==='def_1') { let h=Math.floor(bState.p.maxHp*0.15); bState.p.hp=Math.min(bState.p.maxHp,bState.p.hp+h); bState.p.buffs.atkDown=0; bState.p.buffs.defDown=0; bLog(`状态恢复 HP+${h}`); bFx('b-player-card','b-heal',`+${h}`,'#34d399','1.3rem'); }
             if(sid==='def_2') { bState.p.buffs.defUp=2; bState.p.ap+=5; }
             if(sid==='def_3') { bState.p.buffs.shield=1; bLog("获得护盾"); bScreenFlash('rgba(59,130,246,0.2)',0.35); }
-            if(sid==='def_4') { bState.p.stress=Math.max(0,bState.p.stress-20); bLog("压力下降"); bFx('b-player-card','b-heal','🧘','#a78bfa','1.8rem'); }
+            if(sid==='def_4') { bState.p.stress=Math.max(0,bState.p.stress-20); bLog("压力下降20"); bFx('b-player-card','b-heal','🧘-20压','#a78bfa','1.8rem'); }
             if(sid==='def_5') { bState.p.buffs.shield=2; bLog("获得巨额护盾"); bScreenFlash('rgba(59,130,246,0.3)',0.4); }
-            if(sid==='def_6') { let h=Math.floor(bState.p.maxHp*0.3); bState.p.hp += h; bState.p.buffs.hot=2; bLog("持续回血开始"); bFx('b-player-card','b-heal',`+${h}`,'#34d399','1.5rem'); }
+            if(sid==='def_6') { let h=Math.floor(bState.p.maxHp*0.3); bState.p.hp=Math.min(bState.p.maxHp,bState.p.hp+h); bState.p.buffs.hot=2; bLog(`名师点拨 HP+${h}，持续回血2回合`); bFx('b-player-card','b-heal',`+${h}`,'#34d399','1.5rem'); }
             if(sid==='def_7') { bState.p.buffs.dodge=1; bLog("进入闪避状态"); bScreenFlash('rgba(251,191,36,0.2)',0.3); }
             if(sid==='def_8') { bState.p.buffs.dmgUp=2; bLog("防守反击蓄力"); }
-            if(sid==='def_9') { let h=Math.floor(bState.p.maxHp*0.1); bState.p.hp+=h; bState.p.buffs.dot=0; bState.p.buffs.stun=0; bLog("清心寡欲"); bFx('b-player-card','b-heal',`+${h}`,'#34d399','1.2rem'); }
+            if(sid==='def_9') { let h=Math.floor(bState.p.maxHp*0.1); bState.p.hp=Math.min(bState.p.maxHp,bState.p.hp+h); bState.p.buffs.dot=0; bState.p.buffs.stun=0; bLog(`闭目养神 HP+${h}`); bFx('b-player-card','b-heal',`+${h}`,'#34d399','1.2rem'); }
             
-            if(sid==='sup_0') { bState.p.ap+=10; }
-            if(sid==='sup_1') { bState.p.hp+=bState.p.maxHp*0.05; bState.p.ap+=5; }
+            if(sid==='sup_0') { bState.p.ap+=10; bFx('b-player-card','b-heal','AP+10','#60a5fa','1.3rem'); }
+            if(sid==='sup_1') { let h=Math.floor(bState.p.maxHp*0.05); bState.p.hp=Math.min(bState.p.maxHp,bState.p.hp+h); bState.p.ap+=5; bFx('b-player-card','b-heal',`+${h}`,'#34d399','1.3rem'); }
             if(sid==='sup_2') { bState.p.buffs.atkUp=3; }
             if(sid==='sup_3') { bState.p.buffs.critUp=2; }
             if(sid==='sup_4') { bState.p.hp=bState.p.maxHp; bState.p.ap=game.maxAp; bLog("全员满状态复活！"); bFx('b-player-card','b-heal','✨ 满血复活','#fde047','1.6rem'); bScreenFlash('rgba(253,224,71,0.4)',0.6); }
@@ -2212,10 +2573,12 @@
             }
         }
         // 渲染组合技
-        if(cat==='ent' && game.combos && game.combos.length) {
+        if(cat==='combo' && game.combos && game.combos.length) {
             let div = document.createElement('div');
             div.innerHTML = renderComboSkills();
             c.appendChild(div);
+        } else if(cat==='combo') {
+            c.innerHTML = '<div style="color:#64748b;padding:15px;font-size:0.85rem;">尚未研发任何组合技。前往研发中心解锁。</div>';
         }
     }
     
@@ -4861,6 +5224,40 @@
 
     // 初始化加载
     window.onload = init;
+
+    // ===== 实时时钟 =====
+    (function tickClock() {
+        var el = document.getElementById('real-clock');
+        if(el) {
+            var d = new Date();
+            var hh = String(d.getHours()).padStart(2,'0');
+            var mm = String(d.getMinutes()).padStart(2,'0');
+            var ss = String(d.getSeconds()).padStart(2,'0');
+            el.textContent = hh + ':' + mm + ':' + ss + ' // NODE-CN';
+        }
+        setTimeout(tickClock, 1000);
+    })();
+
+    // ===== 标题随机干扰闪烁 =====
+    (function glitchTitle() {
+        var el = document.getElementById('hdr-title');
+        if(!el) return;
+        var orig = el.textContent;
+        var chars = '孔子学校V0.0.3万象归一ABCDEF01234';
+        // 随机间隔触发
+        var delay = 5000 + Math.random() * 8000;
+        setTimeout(function() {
+            var glitchCount = 0;
+            var iv = setInterval(function() {
+                if(glitchCount++ > 4) { clearInterval(iv); el.textContent = orig; glitchTitle(); return; }
+                var arr = orig.split('');
+                [Math.floor(Math.random()*arr.length), Math.floor(Math.random()*arr.length)].forEach(function(i) {
+                    arr[i] = chars[Math.floor(Math.random()*chars.length)];
+                });
+                el.textContent = arr.join('');
+            }, 80);
+        }, delay);
+    })();
 </script>
 </body>
 </html>
